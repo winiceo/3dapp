@@ -1,0 +1,43 @@
+@charset "utf-8";
+/* note :    智能会议公共样式重定义文件
+ * version:  1.0.1
+ * author：	刘沛
+ * creatTime:  2015-03-23
+ */
+*{ margin:0; padding:0;}
+html{-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;-webkit-font-smoothing: antialiased; font-family:'Roboto Slab', 'Microsoft YaHei';} 
+body{margin:0;font-size:14px; color:#242424; font-family: "微软雅黑";}
+article,aside,details,figcaption,figure,footer,header,hgroup,main,menu,nav,section,summary{display:block}
+div,p,h1,h2,h3,h4,h5,h6,strong,span,em,pre,ul,ol,li,dl,dt,dd,nav,footer{ padding:0; margin:0;}
+ul,ol,li { list-style:none; padding:0; margin:0;}
+img,a img{ border:0;}
+input, img { vertical-align: middle;}
+button,html input[type=button],input[type=reset],input[type=submit]{-webkit-appearance:button;cursor:pointer}
+table {border-spacing: 0;border-collapse: collapse;}
+td,th { padding: 0;}
+input,button,select,textarea{outline:none;font-family: "微软雅黑"; background-color:#FFF;}
+textarea{resize:none}
+header,section{ display: block;}
+.fl{float:left; display:inline;}
+.fr{float:right; display:inline;} 
+.visibility-hid{visibility:hidden;}
+.clearfix{ zoom: 1;display: table;}
+.clearfix:after{ content: "."; display: block; height: 0; clear: both; visibility: hidden;font-size:0;}
+.clear{clear:both;}
+.none{ display: none;}
+.block{ display: block;}
+.wrap{ width: 100%; margin: 0 auto;}
+.wrap990{ width: 990px; margin: 0 auto;}
+
+/*新增字体样式*/
+@font-face{ font-family:"THEXO"; src:url("/fonts/helveticaneueltpro-thex.otf");}
+/*全局a链接样式*/
+a,a:link,a:visited,a:hover{border:0; color: #0083ce; font-size: 12px; text-decoration: none;}
+a:active,a:hover {outline: 0; text-decoration: none;}
+/*公共按钮样式*/
+.btn-large,a.btn-large,.btn-large:link,.btn-large:visited,.btn-large:hover{ width: 100%; line-height: 50px; height: 50px; text-align: center; color: #FFF; font-size: 18px; border-radius: 3px; border: none; text-decoration: none;}
+.btn-blue{ background-color: #3b8ac1;}
+.btn-gray{ background-color: #ddd; color: #999;}
+/*定义公共placeholder样式*/
+input:-moz-placeholder { color: #ccc; }
+::-webkit-input-placeholder { color:#ccc; }

@@ -1,0 +1,71 @@
+<!-- 对对碰 -->
+<div id="mstching-wall-block" class="wall-box none">
+	<div class="mstching-wall-content">
+		<div class="mstching-wall-welcome" >
+			<img src="/images/wall/mstching/welcome.png" />
+		</div>
+		<div class="mstching-wall-list-wraper" >
+			<!-- // 心形头像模板 -->
+			<script type="text/template" id="mstching-wall-pair-template-heart">
+				<li class="mstching-wall-pair mstching-wall-pair-gender">
+					<div class="mstching-wall-pair-remove" ><i class="fa fa-times"></i></div>
+					<div class="mstching-wall-pair-avatar-wrapper male">
+						<img class="mstching-wall-pair-avatar" src="/images/wall/mstching/user-avatar-male.jpg" />
+						<span class="mstching-wall-pair-name"></span>
+					</div>
+					<div class="mstching-wall-pair-avatar-wrapper female">
+						<img class="mstching-wall-pair-avatar" src="/images/wall/mstching/user-avatar-female.jpg" />
+						<span class="mstching-wall-pair-name"></span>
+					</div>
+				</li>
+			</script>
+			<!-- // 圆形头像模板 -->
+			<script type="text/template" id="mstching-wall-pair-template-circle" >
+				<li class="mstching-wall-pair mstching-wall-pair-circle">
+					<div class="mstching-wall-pair-remove" ><i class="fa fa-times"></i></div>
+					<div class="mstching-wall-pair-avatar-wrapper male">
+						<img class="mstching-wall-pair-avatar" src="/images/wall/mstching/user-avatar-male.jpg" />
+						<span class="mstching-wall-pair-name"></span>
+					</div>
+					<div class="mstching-wall-pair-avatar-wrapper female">
+						<img class="mstching-wall-pair-avatar" src="/images/wall/mstching/user-avatar-female.jpg" />
+						<span class="mstching-wall-pair-name"></span>
+					</div>
+				</li>
+			</script>
+			<!-- // 对抗头像模板 -->
+			<script type="text/template" id="mstching-wall-pair-template-vs" >
+				<li class="mstching-wall-pair mstching-wall-pair-vs">
+					<div class="mstching-wall-pair-remove" ><i class="fa fa-times"></i></div>
+					<div class="mstching-wall-pair-avatar-wrapper male">
+						<img class="mstching-wall-pair-avatar" src="/images/wall/mstching/user-avatar-male.jpg" />
+						<span class="mstching-wall-pair-name"></span>
+					</div>
+					<img class="mstching-wall-pair-avatar-separator" src="/images/wall/mstching/mstching-wall-pair-avatar-vs-separator.png" />
+					<div class="mstching-wall-pair-avatar-wrapper female">
+						<img class="mstching-wall-pair-avatar" src="/images/wall/mstching/user-avatar-female.jpg" />
+						<span class="mstching-wall-pair-name"></span>
+					</div>
+				</li>
+			</script>
+			<ul class="mstching-wall-list" >
+			</ul>
+		</div>
+	</div>
+	<div class="mstching-wall-controler waiting" >
+		<div class="mstching-wall-animate-area male mstching-wall-males" >
+			<img class="mstching-wall-avatar" src="/images/wall/mstching/default-avatar-male.png" />
+			<span class="mstching-wall-animate-area-text">B(0人)</span>
+		</div>
+		<div class="mstching-wall-animate-area female mstching-wall-females" >
+			<span class="mstching-wall-animate-area-text">A(0人)</span>
+			<img class="mstching-wall-avatar" src="/images/wall/mstching/default-avatar-female.png" />
+		</div>
+		<button type="button" class="mstching-wall-fire-button waiting" href="javascript:;">对对碰</button>
+		<button type="button" class="mstching-wall-fire-button matching" href="javascript:;">停止</button>
+	</div>
+
+	<!-- // 模板 -->
+	<script type="text/template" id="mstching-wall-animate-avatar-male"></script>
+	<script type="text/template" id="mstching-wall-animate-avatar-female"></script>
+</div>
