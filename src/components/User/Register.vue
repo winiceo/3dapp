@@ -73,8 +73,6 @@
 </style>
 <script>
     require("../../assets/examples/css/pages/register-v2.min.css")
-    import {API_ROOT, Token} from '../../config.js'
-    import db from "../../utils/db"
 
     export default{
         data(){
@@ -86,7 +84,7 @@
             register: function () {
                 var _vm = this;
                 console.log(_vm.item)
-                fetch(API_ROOT + '/register', {
+                fetch(_vm.app.api + '/register', {
                     method: 'POST',
                     headers: {
                         'Accept': 'application/json',
@@ -102,12 +100,11 @@
 
                     return response.json();
                 }).then(function (docs) {
-                    var token="Bearer: "+docs.token
+                    var token="Bearer "+docs.token
 
-
-
-                    db.setItem('token', token).then(function () {
-                        return db.getItem('key');
+                    console.log(token)
+                    _vm.$setItem('token', token).then(function () {
+                        return _vm.$getItem('key');
                     }).then(function (value) {
                         toastr.info('保存成功')
                         window.router.go("/")
@@ -115,10 +112,6 @@
                     }).catch(function (err) {
 
                     });
-//                    setTimeout(function(){
-//                        db.set("token",docs.token)
-//                    },1000)
-                   // window.router.go("/")
 
 
 

@@ -1,0 +1,14 @@
+{
+  "name": "google-fonts",
+  "homepage": "https://github.com/google/fonts",
+  "_release": "a30ff88e1a",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "a30ff88e1a02d70aaf2589dfc3cef18a4128c495"
+  },
+  "_source": "https://github.com/google/fonts.git",
+  "_target": "*",
+  "_originalSource": "google-fonts",
+  "_direct": true
+}

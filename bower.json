@@ -1,0 +1,29 @@
+{
+  "name": "src",
+  "homepage": "https://github.com/winiceo/3dapp",
+  "authors": [
+    "赵少辉 <zhaoshaohui@pmkoo.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "blueimp-file-upload": "^9.12.3",
+    "bootstrap": "^3.3.6",
+    "dropzone": "^4.3.0",
+    "brand-icons": "*",
+    "font-awesome": "^4.6.3",
+    "holderjs": "^2.9.3",
+    "google-fonts": "*",
+    "switchery": "^0.8.1",
+    "vue-datetime-picker": "^0.1.1",
+    "weather-icons": "^2.0.10"
+  }
+}

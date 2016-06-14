@@ -9,13 +9,16 @@ import configRouter from '../../router/wall'
 import filters from '../../utils/filters'
 import App from '../../components/Wall/App'
 
-window.$ = window.jQuery = require('jquery');
 var Bootstrap = require('bootstrap');
 Bootstrap.$ = $
-window._=require("lodash");
+
 require('../../global/js/core.min');
 import '../../lib/wall'
- 
+
+
+import VueDb from '../../utils/vueDb'
+Vue.use(VueDb)
+
 Vue.use(VueRouter)
 Vue.use(VueValidator)
 //Vue.use(require('vue-moment'));

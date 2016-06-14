@@ -9,7 +9,7 @@
                         <button type="button" class="btn btn-outline btn-default">进行中</button>
                         <button type="button" class="btn btn-outline btn-default">已结束</button>
 
-                        <button type="button" class="btn btn-default btn-outline pull-right" v-link="'/new_activity'">创建新活动</button>
+                        <button type="button" class="btn btn-default btn-outline pull-right" v-link="'new_activity'">创建新活动</button>
                     </div>
 
                 </div>

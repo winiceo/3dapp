@@ -9,24 +9,42 @@
 
 <script>
 
-    import Navbar from './Navbar'
-    import Sitebar from './Sitebar'
 
-    //require("../helpers/external_links");
-    export default {
+    import Vue from "vue"
+    import {API_ROOT} from '../../config.js'
 
-        components: {Navbar, Sitebar},
-        ready(){
+    Vue.mixin({
 
-            (function (document, $) {
-                'use strict';
+        methods: {
+            init: function () {
 
+            },
+            _init: function (callback) {
+                this.app = {
+                    token: "",
+                    api: "",
+                    aid: 0,
+                    img: ''
+                }
+                var _vm = this;
+                _vm.$getItem("token").then(function (token) {
+                    if (!token) {
+                        window.location.href = ("/app/wall.html#!/login")
+                    }
 
-                //Site.run();
-
-            })(document, jQuery);
-
-
+                    _vm.$set("app.token", token);
+                    _vm.$set("app.api", API_ROOT + "/api/v1")
+                    _vm.$set("app.img", API_ROOT)
+                    _vm.$set("app.upload", API_ROOT + "/common/image/new")
+                    console.log(_vm.app)
+                    callback(_vm.app)
+                })
+            }
+        }, ready(){
+            this._init(this.init);
         }
-    }
+    })
+
+
+
 </script>

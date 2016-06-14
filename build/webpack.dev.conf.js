@@ -10,6 +10,7 @@ var CommonsChunkPlugin = webpack.optimize.CommonsChunkPlugin
 Object.keys(baseWebpackConfig.entry).forEach(function (name) {
   baseWebpackConfig.entry[name] = ['./build/dev-client'].concat(baseWebpackConfig.entry[name])
 })
+var chunks =Object.keys(baseWebpackConfig.entry) ;
 
 module.exports = merge(baseWebpackConfig, {
   module: {
@@ -19,18 +20,20 @@ module.exports = merge(baseWebpackConfig, {
   devtool: '#eval-source-map',
   plugins: [
 
-  new CommonsChunkPlugin({
-                name: 'common-b-c',
-                chunks: ['b', 'c']
-            }),
-            new CommonsChunkPlugin({
-                name: 'common',
-                chunks: ['common-b-c', 'a']
-            }),
-            new CommonsChunkPlugin({
-                name: 'vender',
-                chunks: ['common']
-            }),
+    new webpack.ProvidePlugin({
+      $: 'jquery',
+      jQuery: 'jquery',
+      _: 'lodash'
+    }),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendors', // 公共模块的名称
+      chunks: chunks,  // chunks是需要提取的模块
+      minChunks: chunks.length
+    }),
+      new webpack.ResolverPlugin(
+          new webpack.ResolverPlugin.DirectoryDescriptionFilePlugin(".bower.json", ["main"])
+      ),
+   
     new webpack.DefinePlugin({
       'process.env': config.dev.env
     }),
@@ -58,10 +61,10 @@ for (var pathname in pages) {
     inject: true              // js插入位置
   };
 
-  if(pathname in baseWebpackConfig.entry) {
-                conf.inject = 'body'
-                conf.chunks = ['vender', 'common', pathname]
-   }
+  if (pathname in module.exports.entry) {
+    conf.chunks = ['vendors', pathname];
+    conf.hash = false;
+  }
 
   if(/b|c/.test(pathname)) conf.chunks.splice(2, 0, 'common-b-c')
   // 需要生成几个html文件，就配置几个HtmlWebpackPlugin对象

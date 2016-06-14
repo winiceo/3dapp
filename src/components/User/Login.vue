@@ -64,24 +64,25 @@
 </style>
 <script>
     require("../../assets/examples/css/pages/login-v2.min.css")
-    import {API_ROOT, Token} from '../../config.js'
-    import db from "../../utils/db"
-    export default{
+      export default{
         data(){
             return {
-                item: {}
+                item: {
+                    username:"leven",
+                    password:"123456"
+                }
             }
         },
         methods:{
             login: function () {
                 var _vm = this;
                 console.log(_vm.item)
-                fetch(API_ROOT + '/login_check', {
+                fetch(_vm.app.api + '/login_check', {
                     method: 'POST',
                     headers: {
                         'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                        'Authorization': Token
+                        'Content-Type': 'application/json'
+
                     },
                     body: JSON.stringify(_vm.item)
 
@@ -92,16 +93,13 @@
 
                     return response.json();
                 }).then(function (docs) {
-                    var token="Bearer: "+docs.token
-                    db.setItem('token', token).then(function () {
-                        return db.getItem('key');
-                    }).then(function (value) {
+                    var token="Bearer "+docs.token
+
+                    console.log(docs)
+                    _vm.$setItem('token', token,function () {
                         toastr.info('保存成功')
                         window.router.go("/")
-
-                    }).catch(function (err) {
-
-                    });
+                    })
 
                 });
 

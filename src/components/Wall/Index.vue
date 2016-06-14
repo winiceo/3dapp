@@ -43,7 +43,8 @@
                                                                 <div class="row no-space vertical-align">
                                                                     <template v-for="(n,act) in acts">
 
-                                                                        <div class="col-sm-4" @click="openurl(act.url)">
+                                                                        <div class="col-sm-4"
+                                                                             @click="openurl(act.url,item.id)">
                                                                             <div class="counter counter-lg counter-inverse  vertical-align height-100"
                                                                                  :class="act.color">
                                                                                 <div class="vertical-align-middle">
@@ -221,36 +222,22 @@
 </style>
 <script>
 
-     require('../../assets/examples/css/dashboard/team.min.css');
+    require('../../assets/examples/css/dashboard/team.min.css');
 
 
-    var Parse = require("parse");
-    Parse.initialize("71an.com", "71an.com");
-    Parse.serverURL = ("http://baas.71an.com:8043/parse");
-    //Parse.User.logIn("leven", "56os.com", {
-    //    success: function(user) {
-    //        console.log(user)
-    //        // Do stuff after successful login.
-    //    },
-    //    error: function(user, error) {
-    //        // The login failed. Check error to see why.
-    //    }
-    //});
     var infiniteScroll = require('vue-infinite-scroll').infiniteScroll;
-    require("../../bower_components/dropzone/dist/min/dropzone.min.css")
-    var Dropzone = require("../../bower_components/dropzone/dist/min/dropzone-amd-module.min")
-    import {API_ROOT, Token} from '../../config.js'
-
-     import Navbar from './Navbar'
-     import Sitebar from './Sitebar'
+    require("dropzone/dist/min/dropzone.min.css")
+    var Dropzone = require("dropzone/dist/min/dropzone-amd-module.min")
+    import Navbar from './Navbar'
+    import Sitebar from './Sitebar'
 
     export default{
         directives: {infiniteScroll},
         components: {Navbar, Sitebar},
         data(){
             return {
-                baseUrl: API_ROOT,
-                imgUrl: API_ROOT + "/upload/",
+                token: '',
+
                 count: 0,
                 skip: 0,
                 busy: false,
@@ -270,8 +257,12 @@
 
         },
         methods: {
-            openurl: function (url) {
-                window.open(url + "?id=1")
+            init: function () {
+                window.Site.cc();
+                this.getdata();
+            },
+            openurl: function (url, id) {
+                window.open(url + "?id=" + id)
             },
 
             selected: function (item) {
@@ -279,59 +270,20 @@
                 this.item = item.toJSON();
             },
             remove: function (index, item) {
-                console.log(index, item)
-                //this.item.delete(index)
-
-                this.items.splice(item, 1)
-                item.destroy({
-                    success: function (o) {
-                        console.log(o)
-                        // The object was deleted from the Parse Cloud.
-                    },
-                    error: function (o, error) {
-                        // The delete failed.
-                        // error is a Parse.Error with an error code and message.
-                        console.log(error)
-                    }
-                });
-            },
-            newPoll: function () {
-                this.item = {
-                    title: '',
-                    options: [
-                        {pic: "", title: ""},
-                        {pic: "", title: ""}
-                    ]
-                }
-                var _vm = this;
-                setTimeout(function () {
-                    _vm.setup();
-                }, 500)
 
             },
-            save_poll: function () {
-                var _vm = this;
 
-                var Polls = Parse.Object.extend("Polls");
-                var poll = new Polls(this.item);
-                poll.save(null, {
-                    success: function (poll) {
-                        console.log(poll)
-                        _vm.items.unshift(poll)
-                    }
-                })
-            },
             getdata: function () {
 
 
                 var _vm = this;
 
-                fetch(API_ROOT + '/activities', {
+                fetch(_vm.app.api + '/activities', {
                     method: 'GET',
                     headers: {
                         'Accept': 'application/json',
                         'Content-Type': 'application/json',
-                        'Authorization': Token
+                        'Authorization': _vm.app.token
                     }
 
                 }).then(function (response) {
@@ -367,78 +319,7 @@
                 // this.getdata();
 
             },
-
-            setup: function () {
-                var _vm = this;
-                // alert($(".imgUpload").size())
-                $(".dropzone").each(function () {
-                    var that = this;
-                    console.log(234234)
-                    $(that).dropzone({
-                        url: "/upload",
-                        dictDefaultMessage: $(that).data("title"),
-                        maxFiles: 1,
-                        init: function () {
-                            //alert($(that).data("field"))
-
-                            this.on("success", function (file, response) {
-                                $('.dz-progress').hide();
-                                $('.dz-size').hide();
-                                $('.dz-error-mark').hide();
-                                console.log(response);
-                                console.log(file);
-
-                                _vm.item[$(that).data("field")] = response.name
-
-
-                                //$(".dz-message").show("slow")
-
-                            });
-                            this.on("addedfile", function (file) {
-                                var removeButton = Dropzone.createElement("<a href=\"#\">删除</a>");
-                                var _this = this;
-                                removeButton.addEventListener("click", function (e) {
-                                    e.preventDefault();
-                                    e.stopPropagation();
-                                    _this.removeFile(file);
-//                                var name = "largeFileName=" + cd.pi.largePicPath + "&smallFileName=" + cd.pi.smallPicPath;
-//                                $.ajax({type: 'POST', url: 'DeleteImage', data: name, dataType: 'json'});
-                                });
-                                file.previewElement.appendChild(removeButton);
-                            });
-
-                        }
-
-                    });
-                })
-            },
-        },
-
-        ready(){
-
-            this.getdata();
-            window.Site.cc();
-//      window.AppNoteBook = App.extend({
-//        handleHeight: function () {
-//          var height = $(document).height()
-//          console.log(height)
-//
-//
-//          $(".page-main").css("height", (height - 120) + "px")
-//        }, handleResize: function () {
-//          var self = this;
-//          $(window).on("resize", function () {
-//            self.handleHeight()
-//          })
-//        }, run: function (next) {
-//          this.handleHeight(), this.handleResize()
-//        }
-//      }),
-//              AppNoteBook.run()
-
-            Dropzone.autoDiscover = false;
-
-
         }
+
     }
 </script>

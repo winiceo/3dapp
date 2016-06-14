@@ -1,4 +1,6 @@
 <template>
+    <Navbar></Navbar>
+    <Sitebar></Sitebar>
     <div class="page animsition" style="animation-duration: 800ms; opacity: 1;">
         <div class="page-content container-fluid">
             <div class="row">
@@ -96,62 +98,44 @@
 
 </style>
 <script>
-    require("../../bower_components/dropzone/dist/min/basic.min.css")
-    require("../../bower_components/dropzone/dist/min/dropzone.min.css")
-    var Dropzone = require("../../bower_components/dropzone/dist/min/dropzone-amd-module.min")
+    require("dropzone/dist/min/basic.min.css")
+    require("dropzone/dist/min/dropzone.min.css")
+    var Dropzone = require("dropzone/dist/min/dropzone-amd-module.min")
     require('../../global/js/components/toastr.min');
 
-    import {API_ROOT, Token} from '../../config.js'
     import flatpickr from "flatpickr";
-    require("../../../node_modules/flatpickr/dist/flatpickr.material_blue.min.css");
-    export default{
+    require("flatpickr/dist/flatpickr.material_blue.min.css")
 
+    import Navbar from './Navbar'
+    import Sitebar from './Sitebar'
+    export default{
+        components: {Navbar, Sitebar},
         data(){
             return {
+                token:"",
 
-                baseUrl: API_ROOT,
-                imgUrl: API_ROOT + "/upload/",
                 item: {}
             }
         },
         methods: {
 
             init: function () {
-                var _vm = this;
-                fetch(API_ROOT + '/api/json', {
-                    method: 'GET',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                    }
 
-                })
-                        .then(function (response) {
-                            if (response.status >= 400) {
-                                throw new Error("Bad response from server");
-                            }
-
-                            return response.json();
-                        })
-                        .then(function (docs) {
-
-                            console.log(docs[0]);
-
-                            _vm.item = docs[0]
-
-                            _vm.flag != 1 ? _vm.setup() : "";
-                        });
+                flatpickr.init.prototype.l10n.weekdays.longhand = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'];
+                flatpickr('.flatpickr')
+                window.Site.cc();
 
             },
+
             save: function () {
                 var _vm = this;
                 console.log(_vm.item)
-                fetch(API_ROOT + '/activities/news', {
+                fetch(_vm.app.api + '/activity/new', {
                     method: 'POST',
                     headers: {
                         'Accept': 'application/json',
                         'Content-Type': 'application/json',
-                        'Authorization': Token
+                        'Authorization': _vm.app.token
                     },
                     body: JSON.stringify(_vm.item)
 
@@ -162,7 +146,7 @@
 
                     return response.json();
                 }).then(function (docs) {
-                    alert(docs)
+
                     console.log(docs);
                     toastr.info('保存成功')
                     window.router.go("/")
@@ -176,64 +160,7 @@
 
                 });
 
-            },
-            setup(){
-
-                this.flag = 1;
-
-                var _vm = this;
-
-                $(".dropzone").each(function () {
-                    var that = this;
-
-                    $(that).dropzone({
-                        dictDefaultMessage: $(that).data("title"),
-                        maxFiles: 1,
-                        init: function () {
-                            //alert($(that).data("field"))
-
-                            this.on("success", function (file, response) {
-                                $('.dz-progress').hide();
-                                $('.dz-size').hide();
-                                $('.dz-error-mark').hide();
-                                console.log(response);
-                                console.log(file);
-
-                                _vm.item[$(that).data("field")] = response.name
-
-
-                                //$(".dz-message").show("slow")
-
-                            });
-                            this.on("addedfile", function (file) {
-                                var removeButton = Dropzone.createElement("<a href=\"#\">删除</a>");
-                                var _this = this;
-                                removeButton.addEventListener("click", function (e) {
-                                    e.preventDefault();
-                                    e.stopPropagation();
-                                    _this.removeFile(file);
-//                                var name = "largeFileName=" + cd.pi.largePicPath + "&smallFileName=" + cd.pi.smallPicPath;
-//                                $.ajax({type: 'POST', url: 'DeleteImage', data: name, dataType: 'json'});
-                                });
-                                file.previewElement.appendChild(removeButton);
-                            });
-
-                        }
-
-                    });
-                })
-                flatpickr.init.prototype.l10n.weekdays.longhand = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'];
-                flatpickr('.flatpickr')
-                window.Site.cc();
             }
-        },
-
-        ready(){
-            Dropzone.autoDiscover = false;
-            flatpickr.init.prototype.l10n.weekdays.longhand = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'];
-            flatpickr('.flatpickr')
-            // this.init();
-
         }
     }
 </script>

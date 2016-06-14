@@ -18,7 +18,7 @@ export default function(router) {
         },
 
         '*': {
-            component: require('../components/NotFound.vue')
+            component: require('../components/Common/NotFound.vue')
         }
     })
 

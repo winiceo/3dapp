@@ -1,0 +1,29 @@
+{
+  "name": "brand-icons",
+  "main": [
+    "css/*",
+    "fonts/*",
+    "less/*",
+    "demo/*"
+  ],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "src",
+    "templates"
+  ],
+  "homepage": "https://github.com/amazingSurge/brand-icons",
+  "_release": "6679b4c4fe",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "6679b4c4fef6802c934f00a327f4fa88ac743da9"
+  },
+  "_source": "https://github.com/amazingSurge/brand-icons.git",
+  "_target": "*",
+  "_originalSource": "brand-icons",
+  "_direct": true
+}
