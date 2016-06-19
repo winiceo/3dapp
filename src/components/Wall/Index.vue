@@ -1,7 +1,23 @@
 <template>
 
     <Navbar></Navbar>
-    <Sitebar></Sitebar>
+    <div class="site-menubar site-menubar-light">
+        <div class="site-menubar-body">
+            <div>
+                <div>
+                    <div class="nav-button example-buttons">
+                        <button type="button" class="btn btn-outline btn-default" @click="calldata(-1)">全部活动</button>
+                        <button type="button" class="btn btn-outline btn-default" @click="calldata(0)">未开始</button>
+                        <button type="button" class="btn btn-outline btn-default" @click="calldata(1)">进行中</button>
+                        <button type="button" class="btn btn-outline btn-default" @click="calldata(2)">已结束</button>
+
+                        <button type="button" class="btn btn-default btn-outline pull-right" v-link="'new_activity'">创建新活动</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="page animsition">
 
 
@@ -237,14 +253,15 @@
         data(){
             return {
                 token: '',
+                status:-1,
 
                 count: 0,
-                skip: 0,
+                next: 1,
                 busy: false,
                 items: [],
                 item: {},
                 acts: [
-                    {text: "屏幕设计", icon: "wb-pencil", url: "", color: "bg-blue-600"},
+                    {text: "屏幕设计", icon: "wb-pencil", url: "/app/logo.html", color: "bg-blue-600"},
                     {text: "活动功能", icon: "wb-extension", url: "/app/admin.html", color: "bg-red-600"},
                     {text: "屏幕控制台", icon: "wb-hammer", url: "", color: "bg-purple-600"},
                     {text: "活动数据", icon: "wb-table", url: "", color: "bg-green-600"},
@@ -272,19 +289,33 @@
             remove: function (index, item) {
 
             },
+            calldata:function(status){
+              this.status=status;
+              this.next=1;
+              this.items=[];
+              this.getdata();
+            },
 
             getdata: function () {
 
 
                 var _vm = this;
+                var data={
+                    next:this.next,
+                    status:this.status
+                }
+                var u = new URLSearchParams();
+                u.append('next', this.next);
+                u.append('status', this.status);
 
-                fetch(_vm.app.api + '/activities', {
+                fetch(_vm.app.api + '/activities?'+u, {
                     method: 'GET',
                     headers: {
                         'Accept': 'application/json',
                         'Content-Type': 'application/json',
                         'Authorization': _vm.app.token
                     }
+
 
                 }).then(function (response) {
                     if (response.status >= 400) {
@@ -314,11 +345,11 @@
             },
             loadMore: function () {
                 this.busy = true;
-                this.skip += 10;
-                console.log(this.skip)
-                // this.getdata();
+                this.next += 1;
+                console.log(this.next)
+                this.getdata();
 
-            },
+            }
         }
 
     }
