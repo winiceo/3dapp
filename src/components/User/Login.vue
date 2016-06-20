@@ -4,7 +4,7 @@
             <div class="page-content">
                 <div class="page-brand-info">
                     <div class="brand">
-                        <img class="brand-img" src="../../assets/images/logo@2x.png" alt="...">
+                        <logo></logo>
                         <h2 class="brand-text font-size-40">快屏互动</h2>
                     </div>
                     <p class="font-size-20">首家专注3D互动大屏应用解决方案提供商.</p>
@@ -36,12 +36,12 @@
                         </div>
                         <button type="submit" class="btn btn-primary btn-block" @click="login()">登录</button>
 
-                    <p>No account? <a href="#" v-link="'/register'">注册</a></p>
+                    <p><a href="#" v-link="'/register'">注册</a></p>
 
                     <footer class="page-copyright">
                         <p>71an.com</p>
                         <p>© 2016. All RIGHT RESERVED.</p>
-                        <div class="social">
+                        <!-- <div class="social">
                             <a class="btn btn-icon btn-round social-twitter" href="javascript:void(0)">
                                 <i class="icon bd-twitter" aria-hidden="true"></i>
                             </a>
@@ -51,7 +51,7 @@
                             <a class="btn btn-icon btn-round social-google-plus" href="javascript:void(0)">
                                 <i class="icon bd-google-plus" aria-hidden="true"></i>
                             </a>
-                        </div>
+                        </div> -->
                     </footer>
                 </div>
 
@@ -60,10 +60,13 @@
     </div>
 </template>
 <style>
-
+ 
+ 
+ 
 </style>
 <script>
     require("../../assets/examples/css/pages/login-v2.min.css")
+    import logo from "../Common/logo.vue"
       export default{
         data(){
             return {
@@ -73,6 +76,7 @@
                 }
             }
         },
+        components: {logo},
         methods:{
             login: function () {
                 var _vm = this;
@@ -97,7 +101,7 @@
 
                     console.log(docs)
                     _vm.$setItem('token', token,function () {
-                        toastr.info('保存成功')
+                        toastr.info('登录成功')
                         window.router.go("/")
                     })
 
@@ -106,6 +110,7 @@
             }
         },
         ready(){
+            $("body").css({"padding-top":"0px"})
             window.Site.cc();
         }
     }

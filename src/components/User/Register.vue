@@ -4,7 +4,7 @@
             <div class="page-content">
                 <div class="page-brand-info">
                     <div class="brand">
-                        <img class="brand-img" src="../../assets/images/logo@2x.png" alt="...">
+                       <logo></logo>
                         <h2 class="brand-text font-size-40">快屏互动</h2>
                     </div>
                     <p class="font-size-20">首家专注3D互动大屏应用解决方案提供商.</p>
@@ -73,6 +73,7 @@
 </style>
 <script>
     require("../../assets/examples/css/pages/register-v2.min.css")
+    import logo from "../Common/logo.vue"
 
     export default{
         data(){
@@ -80,6 +81,7 @@
                 item: {}
             }
         },
+        components: {logo},
         methods:{
             register: function () {
                 var _vm = this;
@@ -121,6 +123,7 @@
             }
         },
         ready(){
+             $("body").css({"padding-top":"0px"})
             window.Site.cc();
         }
     }

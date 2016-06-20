@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import VueValidator from 'vue-validator'
+import validator from '../../utils/valid'
 import { sync } from 'vuex-router-sync'
 import store from '../../vuex/store'
 import configRouter from '../../router/admin'
@@ -26,7 +26,7 @@ Vue.use(VueRouter)
 
 Vue.use(vueSmoothScroll);
 
-Vue.use(VueValidator)
+Vue.use(validator)
 //Vue.use(require('vue-moment'));
 Object.keys(filters).forEach(k => Vue.filter(k, filters[k]))
 

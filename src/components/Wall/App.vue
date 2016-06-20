@@ -27,8 +27,10 @@
                     img: ''
                 }
                 var _vm = this;
+                var route=['/register','/login']
                 _vm.$getItem("token").then(function (token) {
-                    if (!token) {
+                    
+                    if (!token&&_.indexOf(route,_vm.$route.path)==-1) {
                         window.location.href = ("/app/wall.html#!/login")
                     }
 
@@ -41,6 +43,7 @@
                 })
             }
         }, ready(){
+            $("body").css({"padding-top":"110px"})
             this._init(this.init);
         }
     })

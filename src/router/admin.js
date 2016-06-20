@@ -33,6 +33,11 @@ export default function(router) {
             name: 'poll',
             component: require('../components/Admin/Poll.vue')
         },
+
+        '/message': {
+            name: 'message',
+            component: require('../components/Admin/Tt.vue')
+        },
         // '/message': {
         //     name: 'message',
         //     component: require('../components/Admin/Message.vue')

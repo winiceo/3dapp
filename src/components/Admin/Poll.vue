@@ -14,9 +14,9 @@
                         <div data-role="content">
                             <ul class="list-group" v-infinite-scroll="loadMore()" infinite-scroll-disabled="busy"
                                 infinite-scroll-distance="100">
-                                <template v-for="(index,item) in items">
+                                <template v-for="(index,item) in items" track-by="$index">
 
-                                    <li class="list-group-item active  " @click="selected(item)">
+                                    <li class="list-group-item    " @click="selected(item)">
                                         <h4 class="list-group-item-heading">{{item.title}}</h4>
 
                                         <div class="info">
@@ -42,7 +42,8 @@
         <div class="page-main">
             <div class="page-content">
 
-                <div class="row row-lg">
+                <div class="row row-lg ">
+                <form class="form_valid">
                     <div class="col-sm-6">
 
                         <div class="panel panel-bordered panel-dark"
@@ -52,59 +53,74 @@
 
                             </div>
                             <div class="panel-body">
-                                <form autocomplete="off" lpformnum="2">
 
-                                    <div class="form-group">
-                                        <label class="control-label">题目</label>
-                                        <input type="text" class="form-control" v-model="item.title">
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="control-label">是否多选</label>
-                                        <div>
-                                            <div class="radio-custom radio-default radio-inline">
-                                                <input type="radio" value=0 v-model="item.multiple">
-                                                <label>单选</label>
-                                            </div>
-                                            <div class="radio-custom radio-default radio-inline">
-                                                <input type="radio" value=1 v-model="item.multiple">
 
-                                                <label>多选</label>
-                                            </div>
+                                <div class="form-group">
+                                    <label class="control-label">题目</label>
+                                    <input type="text" name="title" class="form-control" v-model="item.title">
+
+
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label">是否多选</label>
+                                    <div>
+                                        <div class="radio-custom radio-default radio-inline">
+                                            <input type="radio" value=0 v-model="item.multiple">
+                                            <label>单选</label>
+                                        </div>
+                                        <div class="radio-custom radio-default radio-inline">
+                                            <input type="radio" value=1 v-model="item.multiple">
+
+                                            <label>多选</label>
                                         </div>
                                     </div>
-                                    <template v-if="item.multiple==1">
-                                        <div class="row row-lg">
+                                </div>
+                                <template v-if="item.multiple==1">
+                                    <div class="row row-lg">
 
-                                            <div class="form-group col-sm-4">
-                                                最多选(0表示不限)
-                                            </div>
-                                            <div class="form-group col-sm-4">
-                                                <input type="number" class="form-control"
-                                                       v-model="item.max_choices" placeholder="最多选">
-                                            </div>
-                                            <div class="form-group col-sm-4">
-                                                (0表示不限)
-                                            </div>
-
+                                        <div class="form-group col-sm-4">
+                                            最多选
                                         </div>
-                                        <div class="row row-lg">
-                                            <div class="form-group col-sm-4">
-                                                最少选(0表示不限)
-                                            </div>
-                                            <div class="form-group col-sm-4">
-                                                <input type="number" class="form-control"
-                                                       v-model="item.min_choices" placeholder="最少选">
-                                            </div>
-                                            <div class="form-group col-sm-4">
-                                                (0表示不限)
-                                            </div>
+                                        <div class="form-group col-sm-4">
+                                            <input type="number" class="form-control"
+                                                   v-model="item.max_choices" placeholder="最多选">
+                                        </div>
+                                        <div class="form-group col-sm-4">
+                                            (0表示不限)
                                         </div>
 
+                                    </div>
+                                    <div class="row row-lg">
+                                        <div class="form-group col-sm-4">
+                                            最少选
+                                        </div>
+                                        <div class="form-group col-sm-4">
+                                            <input type="number" class="form-control"
+                                                   v-model="item.min_choices" placeholder="最少选">
+                                        </div>
+                                        <div class="form-group col-sm-4">
+                                            (0表示不限)
+                                        </div>
+                                    </div>
 
-                                    </template>
 
-                                </form>
+                                </template>
+
+
+
+
+                                <div class="form-group">
+                                    <div class="col-sm-9 col-sm-offset-3">
+                                        <button type="submit"
+                                                class="btn btn-primary save_poll">保存
+                                        </button>
+
+                                    </div>
+                                </div>
+
+
                             </div>
+
                         </div>
 
 
@@ -122,17 +138,20 @@
                             </div>
                             <div class="panel-body" style="padding-top: 0px; ">
 
-                                <ul class="list-group list-group-dividered list-group-full">
-                                    <template v-for="(index,co) in item.choices" track-by="$index">
 
-                                        <li class="list-group-item">
+                                <ul class="list-group list-group-dividered list-group-full">
+
+                                    <template v-for="(index,co) in item.choices" track-by="$index"
+                                              class="validate-field">
+
+                                        <li class="list-group-item" id="li_{{$index}}">
                                             <div class="media">
                                                 <div class="media-left">
 
-                                                    <form action="{{uploadUrl}}" class="dropzone thumbnail"
+                                                    <div class="dropzone thumbnail"
                                                           id="dropzone_{{$index}}"
                                                           style="margin:10px;"
-                                                          enctype="multipart/form-data" data-index="{{$index}}"
+                                                            data-index="{{$index}}"
                                                           data-title="上传图片">
                                                         <template v-if="co.pic">
                                                             <img dz-clickable
@@ -140,7 +159,8 @@
                                                                  style="height:75px;width:75px;"
                                                                  :src="app.img+co.pic.url"
                                                                  alt="...">
-                                                            <span class="addMember-remove" @click="co.pic=null"><i
+                                                            <span class="addMember-remove"
+                                                                  @click="reset_dropzone($index)"><i
                                                                     class="wb-minus-circle"></i></span>
                                                         </template>
 
@@ -149,21 +169,29 @@
                                                         <div class="fallback">
 
                                                         </div>
-                                                    </form>
+                                                    </div>
                                                 </div>
                                                 <div class="media-body" style=" vertical-align: middle;">
                                                     <div class="pull-right timeline-icon" v-if="$index>=2">
                                                         <i class="icon wb-close"
                                                            @click="item.choices.splice($index,1)"></i>
                                                     </div>
-                                                    <div><input type="hidden" name="id[]" v-model="co.id">
-                                                        <input type="text" name="name[]" class=""
-                                                               v-model="co.name">
+
+                                                    <div>
+                                                        <div class="form-group">
+                                                             <input type="hidden" name="id[]" v-model="co.id">
+                                                            <input type="text" class="oo_name" name="name[]" placeholder="选项内容" v-model="co.name">
+
+
+                                                        </div>
+
+
                                                     </div>
                                                 </div>
                                             </div>
                                         </li>
                                     </template>
+
                                 </ul>
 
                             </div>
@@ -173,25 +201,8 @@
                         <!-- End Example Basic Form Without Label -->
                     </div>
 
-                    <div class="clearfix hidden-xs"></div>
 
-
-                </div>
-                <div class="row row-lg">
-
-                    <div class="col-sm-12 col-md-12">
-                        <div class="form-group">
-                            <div class="col-sm-9 col-sm-offset-3">
-                                <button type="button" @click="save_poll"
-                                        class="btn btn-primary save_poll">保存
-                                </button>
-                                <button type="reset" class="btn btn-default btn-outline">预览</button>
-                            </div>
-                        </div>
-                        <!-- End Example Horizontal Form -->
-                    </div>
-
-
+                </form>
                 </div>
 
 
@@ -240,14 +251,21 @@
             </div>
         </div>
     </div>
+
 </template>
 <style>
-    .page-aside + .page-main {
-        margin-left: 240px;
+    .errors p {
+        color: red
     }
 
+    .page-aside + .page-main {
+        margin-left: 270px;
+    }
+    .site-menubar-unfold .page, .site-menubar-unfold .site-footer {
+        margin-left: 200px;
+    }
     .page-aside {
-        width: 240px;
+        width: 250px;
     }
 
     .dropzone {
@@ -386,9 +404,9 @@
         top: -2px;
         right: -2px;
 
-        font-size: 20px;
+        font-size: 25px;
         line-height: 1;
-        color: #526069;
+        color: #e8313b;
         cursor: pointer;
         background-color: #fff;
         border-radius: 50%;
@@ -405,7 +423,7 @@
     var infiniteScroll = require('vue-infinite-scroll').infiniteScroll;
     require("dropzone/dist/min/dropzone.min.css")
     var Dropzone = require("dropzone/dist/min/dropzone-amd-module.min")
-    import {whatever,checkStatus} from "../../utils/leven"
+    import {whatever, checkStatus} from "../../utils/leven"
 
 
     var uuid = require('node-uuid');
@@ -415,6 +433,7 @@
 
         data(){
             return {
+
                 add: true,
                 context: "choices",
 
@@ -441,6 +460,7 @@
                 }
             }
         },
+
         methods: {
             init: function () {
                 this.uploadUrl = this.app.api + "/common/image/new",
@@ -468,7 +488,51 @@
 
                 Dropzone.autoDiscover = false;
                 this.new_poll()
+                this.formValid()
 
+
+            },
+            setNames:function(){
+                var _vm=this;
+                setTimeout(function () {
+                    var i=-1;
+                    _.forEach(_vm.item.choices, function (n, key) {
+                        var that = "#li_" + (++i);
+                        var $option   = $(that).find('[name="name[]"]');
+                        $('.form_valid').formValidation('addField', $option);
+
+                    });
+
+                }, 500)
+            },
+            formValid: function () {
+
+                var _vm = this;
+
+                $(".form_valid").formValidation({
+                    framework: "bootstrap",
+                    button: {selector: '[type="submit"]:not([formnovalidate])', disabled: "disabled"},
+                    icon: null,
+                    fields: {
+                        title: {validators: {notEmpty: {message: "题目不能为空"}}},
+                        'name[]': {
+                            validators: {
+                                notEmpty: {
+                                    message: '选项不能为空'
+                                },
+                                stringLength: {
+                                    max: 100,
+                                    message: '选项不能超过100个字'
+                                }
+                            }
+                        }
+
+                    }
+                }).on('success.form.fv', function (e) {
+
+                    _vm.save_poll();
+                    return false;
+                })
 
             },
             selected: function (item) {
@@ -505,10 +569,29 @@
                 });
             },
             add_choice: function () {
-
-                this.item.choices.push({id: "", pic: '', name: ""})
+                var choice = _.clone(this.choice);
+                this.item.choices.push(choice)
                 var _vm = this;
                 this.dropzone()
+            },
+            reset_dropzone: function (index) {
+                var _vm = this;
+                var that = "#dropzone_" + index;
+                _vm.setup(that);
+                console.log(that)
+                _vm.tempPic = _vm.item.choices[index].pic = null
+                // $(that).find("img").click(function (e) {
+
+
+                setTimeout(function () {
+                    if ($(that).find("a")[0]) {
+                        $(that).find("a")[0].click();
+                    }
+                    // $(that).click();
+                }, 100)
+
+
+                //})
             },
             dropzone: function () {
                 var _vm = this;
@@ -529,10 +612,9 @@
                                 $(that).click();
                             }, 100)
 
-
                         })
-
                     });
+                    _vm.setNames()
                     //_vm.setup("#dropzone_" + (_vm.item.choices.length - 1));
                 }, 100)
 
@@ -541,17 +623,23 @@
                 var _vm = this;
                 this.item = {}
                 this.item = this.options;
-                this.item.choices = [
-                    {id: "", pic: '', name: ""},
-                    {id: "", pic: '', name: ""}
-                ]
+                this.item.choices=[]
+                var choice = _.clone(this.choice);
+                $(".dz-preview").remove();
+                this.item.choices.push(choice);
+                var choice1 = _.clone(this.choice);
+                this.item.choices.push(choice1);
+
                 this.add = true;
                 this.dropzone();
+
 
             },
             save_poll: function () {
                 var _vm = this;
                 //_vm.item.style=parseInt(_vm.item.style);
+                //alert('form is '+(this.$valid() ? 'VALID' : 'INVALID'));
+
 
                 var act = this.add ? "new" : "update"
                 var id = this.add ? _vm.app.aid : _vm.item.id;
@@ -564,15 +652,21 @@
                     },
                     body: JSON.stringify(_vm.item)
 
-                }).then(checkStatus)
-                .then(function (response) {
-                            if (response.status >= 400) {
-                                throw new Error("Bad response from server");
-                            }
+                }).then(checkStatus).then(function (response) {
+                    if (response.status >= 400) {
+                        throw new Error("Bad response from server");
+                    }
 
-                            return response.json();
-                        }).then(function (o) {
-                    _vm.items.unshift(_vm.item)
+                    return response.json();
+                }).then(function (o) {
+                    if (_vm.add) {
+                        _vm.items.unshift(_vm.item)
+                    }
+                    _vm.item = {};
+
+                    _vm.new_poll()
+
+
                     console.log(_vm.item);
                     toastr.info('保存成功')
 
@@ -628,6 +722,7 @@
                         dictDefaultMessage: $(that).data("title"),
                         maxFiles: 1,
                         paramName: "file",
+                        url:_vm.app.upload,
 
                         // previewTemplate:"",
                         headers: {
