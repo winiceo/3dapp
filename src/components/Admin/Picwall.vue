@@ -222,7 +222,7 @@
         data(){
             return {
                 add: true,
-                context: "pics",
+                context: "picwall",
 
                 count: 0,
                 skip: 0,

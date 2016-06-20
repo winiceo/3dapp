@@ -18,7 +18,7 @@
 
                         <li class="site-menu-item">
                         <a class="animsition-link" v-link="'/media'">
-                            <i class="site-menu-icon wb-grid-4" aria-hidden="true"></i>
+                            <i class="site-menu-icon wb-large-point" aria-hidden="true"></i>
                             <span class="site-menu-title">媒体资源</span>
                             <div class="site-menu-label">
                                 <span class="label label-danger label-round">new</span>
@@ -27,7 +27,7 @@
                     </li>
                         <li class="site-menu-item">
                         <a class="animsition-link" v-link="'/danmu'">
-                            <i class="site-menu-icon wb-grid-4" aria-hidden="true"></i>
+                            <i class="site-menu-icon wb-volume-high" aria-hidden="true"></i>
                             <span class="site-menu-title">弹幕</span>
                             <div class="site-menu-label">
                                 
@@ -37,7 +37,7 @@
 
                      <li class="site-menu-item">
                         <a class="animsition-link" v-link="'/vipwall'">
-                            <i class="site-menu-icon wb-grid-4" aria-hidden="true"></i>
+                            <i class="site-menu-icon wb-plugin" aria-hidden="true"></i>
                             <span class="site-menu-title">嘉宾墙</span>
                             <div class="site-menu-label">
                                 
@@ -58,7 +58,7 @@
 
                     <li class="site-menu-item">
                         <a class="animsition-link" v-link="'/lottery'">
-                            <i class="site-menu-icon wb-grid-4" aria-hidden="true"></i>
+                            <i class="site-menu-icon wb-gallery" aria-hidden="true"></i>
                             <span class="site-menu-title">抽奖</span>
                             <div class="site-menu-label">
                                 
@@ -68,7 +68,7 @@
 
                     <li class="site-menu-item">
                         <a class="animsition-link" v-link="'/poll'">
-                            <i class="site-menu-icon wb-grid-4" aria-hidden="true"></i>
+                            <i class="site-menu-icon wb-thumb-up" aria-hidden="true"></i>
                             <span class="site-menu-title">投票</span>
                             <div class="site-menu-label">
                                 
