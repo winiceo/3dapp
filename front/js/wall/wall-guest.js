@@ -93,6 +93,7 @@
 			$('#wallcontrol .fr').hide();
 			$('#wallcontrol #play-handle').show();
 			$('#firstPage,#lastPage,#playPause').hide();
+			$('#audio-control').css('display', 'inline');
 			$('#prevPage').bind('click',function(){
 				var prevIndex = _this.curIndex - 1;
 				if(prevIndex < 0){ prevIndex = _this.userList.length - 1;}
@@ -131,17 +132,17 @@
 			var d = new DataContent();
 			d.getrequest({
 				load : false,
-				url : apidomain+'vipwalls/2',
+				url : apidomain+'vipwall/'+wallID,
 				callBack : function(data) {
 					//alert(data)
-					if (data[0].vips.length > 0) {
+					if (data.length > 0) {
 						var oldStr = JSON.stringify(_this.userList);
-						var newStr = JSON.stringify(data[0].vips);
+						var newStr = JSON.stringify(data);
 						if(oldStr != newStr){
 							// 用户信息有修改需要更新
 							flag = true;
 						}
-						_this.userList = data[0].vips;
+						_this.userList = data;
 					} else {
 						Debug.log('WallGuest', 'updateUserList', "嘉宾列表更新失败",
 								data);
@@ -167,7 +168,7 @@
 			for(var i = 0 ;i < _this.userList.length;i++){
 				var item = _this.userList[i];
 				html += '<li data-id="' + item.id + '">';
-				html += '<div class="pic"><img src="' + dealImgUrl(item.avatar.url,'/images/set/defaultguest.png') + '" alt=""></div>';
+				html += '<div class="pic"><img src="' + dealImgUrl(item.pic.url,'/images/set/defaultguest.png') + '" alt=""></div>';
 				html += '<div class="name">' + item.name + '</div>';
 				html += '<p>' + (item.title || '') + '</p>';
 				html += '</li>';
@@ -189,7 +190,7 @@
 			}
 			if(null != user){
 				// 显示详情
-				$('#guestPop .fl .pic img').attr('src',dealImgUrl(user.avatar.url,'/images/set/defaultguest.png'));
+				$('#guestPop .fl .pic img').attr('src',dealImgUrl(user.pic.url,'/images/set/defaultguest.png'));
 				$('#guestPop .fl .name').text(user.name);
 				$('#guestPop .fl p').text(user.title || '');
 				$('#guestPop .description').html(user.description || '');

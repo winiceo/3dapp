@@ -140,10 +140,14 @@ module.exports.plugins.push(
     //     chunks: ['vendor']
     // })
     // ,
-    // new CopyWebpackPlugin([
-    //     { from: '../front/**/*', to: './dist/' },
-    //
-    // ])
+    new CopyWebpackPlugin([
+        { from: '../front/**/*', to: './dist/' },
+
+    ]),
+    new CopyWebpackPlugin([
+        { from: '../web/**/*', to: './dist/' },
+
+    ])
 
 
 

@@ -93,6 +93,7 @@
 		this.playPrizesContral = null;
 		this.winUserList = [];
 		this.walllotteryConfig = null;
+		this.lotteryindex=0;
 		this.realCount = null;//满足后台设置的条件的待抽奖人数
 		
 		this.active = false;// 是否是主动点击开始
@@ -161,8 +162,22 @@
 		bindHotkeys(_this);
 		//绑定活动切换
 		$('#game-control-switch').css('display', 'inline');
+		$('#audio-control').css('display', 'inline');
 		$('#prevGame').bind('click',function(){
-			new DataContent({
+			var index = _this.lotteryindex-1;
+			if(index<0){
+				index = 0;
+			}
+			if(index>=_this.walllotteryConfig.walllotteryAwardsList.length){
+				index = _this.walllotteryConfig.walllotteryAwardsList.length-1;
+			}
+			if(index!=_this.lotteryindex){
+				_this.lotteryindex=index;
+				_this.walllotteryConfig.lotteryId = _this.walllotteryConfig.walllotteryAwardsList[index].id;
+				_this.refresh(_this.walllotteryConfig);
+			}
+
+			/*new DataContent({
 				where:{
 					flag:wallFlag,
 					type : 'up'
@@ -175,10 +190,23 @@
 						layer.msg( data.systemContent.msg );
 					}
 				}
-			});
+			});*/
 		});
 		$('#nextGame').bind('click',function(){
-			new DataContent({
+			var index = _this.lotteryindex+1;
+			if(index<0){
+				index = 0;
+			}
+			if(index>=_this.walllotteryConfig.walllotteryAwardsList.length){
+				index = _this.walllotteryConfig.walllotteryAwardsList.length-1;
+			}
+			if(index!=_this.lotteryindex){
+				_this.lotteryindex=index;
+				_this.walllotteryConfig.lotteryId = _this.walllotteryConfig.walllotteryAwardsList[index].id;
+				_this.refresh(_this.walllotteryConfig);
+			}
+
+			/*new DataContent({
 				where:{
 					flag:wallFlag,
 					type : 'down'
@@ -191,7 +219,7 @@
 						layer.msg( data.systemContent.msg );
 					}
 				}
-			});
+			});*/
 		});
 	};
 	WallLottery.prototype.afterActivity = function() {
@@ -216,13 +244,16 @@
 		if(null != walllotteryConfig && null != walllotteryConfig.walllotteryAwardsList && 0 != walllotteryConfig.lotteryId){
 			_this.walllotteryConfig = walllotteryConfig;
 			var lotteryAwardsList = walllotteryConfig.walllotteryAwardsList;
-			for(var i in lotteryAwardsList){
+			for(var i=0;i<lotteryAwardsList.length;i++){
 				var item = lotteryAwardsList[i];
 				if(item.id == walllotteryConfig.lotteryId){
+					_this.lotteryindex = i;
 					_this.currentLotterAwards = item;
 					// 设置图片
-					$('.luck-presz .imgbox').css('background-image','url('+item.prizeImg+')');
-					$('.luck-presz .luck-torryname').html(item.awardName + '<br>' + item.prizeName);
+					var imageurl = item.pic ? item.pic.url.dealUrl() : '/images/wall/unknow.png';
+
+					$('.luck-presz .imgbox').css('background-image','url('+imageurl+')');
+					$('.luck-presz .luck-torryname').html(item.award_name + '<br>' + item.prize_name);
 					break;
 				}
 			}

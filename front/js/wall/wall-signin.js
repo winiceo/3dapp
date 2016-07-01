@@ -127,15 +127,20 @@
 			var a = document.createElement('a');
 			//a.href =src[0];
 			//a.setAttribute('data-lightbox','roadtrip');
-			a.setAttribute('title',a.href.substr(a.href.lastIndexOf('/')+1));
+			//a.setAttribute('title',a.href.substr(a.href.lastIndexOf('/')+1));
 
 			var image=new Image();
 			image.src='';
 			image.alt="welcome";
-			image.width=120;
-			image.height=160;
+			image.width=200;
+			image.height=200;
 			a.appendChild(image);
 			element.appendChild( a );
+
+			/*var name = document.createElement( 'div' );
+			name.className = 'nickname';
+			name.textContent = '王二';
+			element.appendChild( name );*/
 
 			var object = new THREE.CSS3DObject( element );
 			object.position.x = Math.random() * 4000 - 2000;
@@ -146,8 +151,8 @@
 			_this.table.push(file);
 
 			var object = new THREE.Object3D();
-			object.position.x = (col * 160 ) - 1480;
-			object.position.y = - (row* 220 ) + 990;
+			object.position.x = (col * 240 ) - 2160;
+			object.position.y = - (row* 240 ) + 990;
 			_this.targets.table.push( object );
 
 			var phi = Math.acos( -1 + ( 2 * i ) / _this.maxcount);
@@ -160,10 +165,10 @@
 			object.lookAt( vector );
 			_this.targets.sphere.push( object );
 
-			var phi = i * 0.175 + Math.PI;
+			var phi = i * 0.35 + Math.PI;
 			var object = new THREE.Object3D();
-			object.position.x = 900 * Math.sin( phi );
-			object.position.y = - ( i * 8 ) + 450;
+			object.position.x = 1200 * Math.sin( phi );
+			object.position.y = - ( i * 16 ) + 850;
 			object.position.z = 900 * Math.cos( phi );
 			vector.x = object.position.x * 2;
 			vector.y = object.position.y;
@@ -188,8 +193,8 @@
 			var phi = 2*i*Math.PI/ _this.maxcount;
 			var object = new THREE.Object3D();
 			var p = Math.exp(Math.sin(phi))-2*Math.cos(4*phi)+Math.pow(Math.sin((2*phi-Math.PI)/24),5);
-			object.position.x = 400*p*Math.cos(phi);
-			object.position.y = 400*p*Math.sin(phi);;
+			object.position.x = 600*p*Math.cos(phi);
+			object.position.y = 400*p*Math.sin(phi)-100;
 			_this.targets.butterfly.push( object );
 		}
 		_this.transform(_this.targets.table, 2000);
@@ -214,6 +219,7 @@
 		/*活动初始化*/
 		$('#signin-wall-block').show();
 		$('#signinUserCount,#signinUserCount::before').show();
+		$('#audio-control').css('display', 'inline');
 		_this.autoPlayFlag = true;
 		_this.firstInit(function(){
 			/*活动初始化*/
@@ -294,8 +300,8 @@
 		if(_this.objectindex>=_this.maxcount)
 			_this.objectindex=0;
 
-        //var html = '<li data-id="' + id + '"><div class="use-block rotate"><a href="javascript:;"><img src="'+ url +'"></a><p class="nickname">'+name+'</p></div></li>';
-       	//$('.signIn_list').prepend(html);
+        var html = '<li data-id="' + id + '"><div class="use-block rotate"><a href="javascript:;"><img src="'+ url +'"></a><p class="nickname">'+name+'</p></div></li>';
+       	$('.signIn_list').html(html);
        	return true;
 	};
 
@@ -312,10 +318,10 @@
 		TWEEN.update();
 		//controls.update();
 		//renderer.render(scene,camera);
-		var timer = Date.now() * 0.0003;
+		/*var timer = Date.now() * 0.0003;
 		_this.camera.position.x = Math.cos( timer ) * 3000;
 		_this.camera.position.z = Math.sin( timer ) * 3000;
-		_this.camera.lookAt(_this.scene.position );
+		_this.camera.lookAt(_this.scene.position );*/
 		window.requestAnimationFrame(function(){
 			_this.threeAnimate();
 		});

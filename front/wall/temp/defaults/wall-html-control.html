@@ -59,9 +59,20 @@
 					<div>全屏</div>
 				</li>
 			</ul>
-			<audio class="fr" id="music" src="music/test.mp3" autoplay="autoplay" loop="loop" controls>
-				Your browser does not support the audio element.
-			</audio>
+			<div id="audio-control" class="fr">
+				<a id="volumeDown" href="javascript:;" class="fa-stack tooltip" title="调低音量">
+					<i class="fa fa-circle-thin fa-stack-2x"></i>
+					<i class="fa fa-volume-down fa-stack-1x"></i>
+				</a>
+				<a id="audioPause" href="javascript:;" class="fa-stack tooltip" title="暂停音乐">
+					<i class="fa fa-circle-thin fa-stack-2x"></i>
+					<i class="fa fa-pause fa-stack-1x"></i>
+				</a>
+				<a id="volumeUp" href="javascript:;" class="fa-stack tooltip" title="调高音量">
+					<i class="fa fa-circle-thin fa-stack-2x"></i>
+					<i class="fa fa-volume-up fa-stack-1x"></i>
+				</a>
+			</div>
 			<div id="play-handle" class="fr">
 				<a id="firstPage" href="javascript:;" class="fa-stack tooltip" title="首页，快捷键[←]">
 					<i class="fa fa-circle-thin fa-stack-2x"></i>

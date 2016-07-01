@@ -245,6 +245,7 @@
 		$('#wlk-wall-block').show();
 		$('#wallcontrol .fr').hide();
 		$('#wallcontrol #play-handle').css('display','inline');
+		$('#audio-control').css('display', 'inline');
 		_this.firstInit(function(flag){
 			if(_this.wallMessageConfig.showCount == 'Y'){
 				$('#msgCount,#msgCount::before').show();

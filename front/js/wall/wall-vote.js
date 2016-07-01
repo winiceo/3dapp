@@ -32,6 +32,7 @@
 		this.initAlready = false;
 		this.wall = wall;
 		this.wallvoteSubject = null;
+		this.voteindex=0;
 		//this.subjectTitle = '';
 		this.signinUserCount = 0;// 签到人数
 		this.dataColorClass = ['vote-color-red','vote-color-yellow','vote-color-green','vote-color-blue']; //柱形图颜色class的数组
@@ -97,35 +98,36 @@
 		bindHotkeys();
 		//绑定活动切换
 		$('#game-control-switch').css('display', 'inline');
+		$('#audio-control').css('display', 'inline');
 		$('#prevGame').bind('click',function(){
-			new DataContent({
-				where:{
-					flag:wallFlag,
-					type : 'up'
-				}
-			}).post({
-				load:false,
-				url:'/web/vote/voteSwitch.html',
-				callBack:function(data){
-					if( data.systemContent.msg.length >0 ){
-						layer.msg( data.systemContent.msg );
+			var request = new DataContent();
+			request.getrequest({
+				load : false,
+				url : apidomain+'pollwall/questions/last/'+wallID,
+				callBack : function(data) {
+					if(data!=null){
+						allConfig.wallvoteConfig.wallvoteSubject = data;
+						_this.refreshSubject(allConfig.wallvoteConfig);
 					}
+				},
+				errorCallBack : function(e) {
+					//alert('获取投票列表失败');
 				}
 			});
 		});
 		$('#nextGame').bind('click',function(){
-			new DataContent({
-				where:{
-					flag:wallFlag,
-					type : 'down'
-				}
-			}).post({
-				load:false,
-				url:'/web/vote/voteSwitch.html',
-				callBack:function(data){
-					if( data.systemContent.msg.length >0 ){
-						layer.msg( data.systemContent.msg );
+			var request = new DataContent();
+			request.getrequest({
+				load : false,
+				url : apidomain+'pollwall/questions/next/'+wallID,
+				callBack : function(data) {
+					if(data!=null){
+						allConfig.wallvoteConfig.wallvoteSubject = data;
+						_this.refreshSubject(allConfig.wallvoteConfig);
 					}
+				},
+				errorCallBack : function(e) {
+					//alert('获取投票列表失败');
 				}
 			});
 		});
@@ -205,10 +207,10 @@
 	// 投票图表初始化
 	WallVote.prototype.newChart = function() {
 		var _this = this,
-			voteTitle = _this.wallvoteSubject.name,
-			options = _this.wallvoteSubject.items,// 选项
+			voteTitle = _this.wallvoteSubject&&_this.wallvoteSubject.title? _this.wallvoteSubject.title:'',
+			options = _this.wallvoteSubject&&_this.wallvoteSubject.choices?_this.wallvoteSubject.choices:'',// 选项
 			voteTotalCount = getMaxCountByList(options,_this.signinUserCount),// 获取高度计算的基数
-			voteNum = _this.voteNum = options.length,
+			voteNum = _this.voteNum = options?options.length:0,
 			_html = '';
 		Debug.log('WallVote','newChart',_this.wallvoteSubject);
 		/*投票项排序*/
@@ -219,7 +221,14 @@
 		}
 		Debug.log('WallVote','options',options);
 		_html += '<h3>' + voteTitle + '</h3>';
-		if(voteNum == 0 || voteNum < 0 ){return};
+		if(voteNum == 0 || voteNum < 0 ){
+			$('#votewall').append(_html);
+			$('.tooltip').tooltipster({
+				theme: 'tooltipster-light',
+				position: 'bottom'
+			});
+			return
+		};
 		if(voteNum < 11 && voteNum > 0){
 			_html += '<ul class="style1">';
 		}else if(voteNum < 16 && voteNum > 10){
@@ -230,9 +239,9 @@
 		// 画图
 		for(var i=0;i<voteNum;i++){
 			var optionId = options[i].id,// data-id
-				optionName = options[i].optionName,
-				optionImg = options[i].optionImg,
-				count = options[i].count,
+				optionName = options[i].name,
+				optionImg = options[i].pic?options[i].pic.url:'',
+				count = options[i].poll,
 				votePercent = count/voteTotalCount;
 			if(voteNum < 11 && voteNum > 0){
 				var colorClass = _this.dataColorClass,

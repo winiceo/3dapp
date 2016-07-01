@@ -69,9 +69,9 @@
                             </i>
                         </a>
                     </li>
-                    <li class="hidden-xs" id="toggleFullscreen">
-                        <a class="icon icon-fullscreen" data-toggle="fullscreen" href="#" role="button">
-                            <span class="sr-only">Toggle fullscreen</span>
+                    <li>
+                        <a href="/app/wall.html">
+                            <i class="icon wb-grid-4" aria-hidden="true">活动列表</i>
                         </a>
                     </li>
 

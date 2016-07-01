@@ -9,7 +9,7 @@
 		this.dm = null;//生成弹幕对象
 		this.curSort = 0;// 当前的消息标识
 		this.openInterval = null;
-		this.danmuLoop = 'Y';//默认循环播放内容
+		this.danmuLoop = true;//默认循环播放内容
 	};
 	WallDanmu.prototype = {
 		firstInit: function(){
@@ -28,25 +28,25 @@
 							}
 						}
 					}
-					checkChange('loop','style','position','fontsize','speed');
+					checkChange('circulate','style','position','fontsize','speed');
 					This.walldanmuConfig = data;
 					if(changeArr.length == 1 && changeArr[0] == 'speed'){
 						//只改了速度
 						var dmWidth = document.body.clientWidth;
 						This.dm.conf.minTime = dmWidth/parseFloat(data.speed) - 1000;
 						This.dm.conf.maxTime = dmWidth/parseFloat(data.speed) + 1000;
-					}else if(changeArr.length == 1 && changeArr[0] == 'loop'){
-						This.danmuLoop = data.loop;
+					}else if(changeArr.length == 1 && changeArr[0] == 'circulate'){
+						This.danmuLoop = data.circulate;
 					}else{
 						//除速度以外的其他修改
-						This.danmuLoop = data.loop;
+						This.danmuLoop = data.circulate;
 						This.initDanmu();
 					}
 				}
 			});
 			This.wall.getWallGlobalItem('walldanmuConfig', function(item) {
 				This.walldanmuConfig = item;
-				This.danmuLoop = item.loop;
+				This.danmuLoop = item.circulate;
 				This.initDanmu();
 			});
 			// 绑定事件
@@ -67,7 +67,7 @@
 									obj.imgpath = obj.imgpath ? obj.imgpath.dealUrl() : defaultHead;
 									This.dm.push(obj);
 								}
-							}else if(This.danmuLoop == 'Y'){//消息循环
+							}else if(This.danmuLoop){//消息循环
 								This.curSort = 0;
 							}
 						});
@@ -86,25 +86,15 @@
 			var This = this;
 			var item = This.walldanmuConfig;
 			var dmWidth = document.body.clientWidth;
-			var fontsize = 24;
+			var fontsize = item.font_size;
 			//生成对象
 			This.dm = $('#danmu-wall').danMu({
 				minTime : dmWidth/parseFloat(item.speed) - 1000,
 				maxTime : dmWidth/parseFloat(item.speed) + 1000,
 				position : item.position
 			});
-			switch(item.fontsize){
-			case '24px':
-				fontsize = 24;
-				break;
-			case '36px':
-				fontsize = 36;
-				break;
-			case '48px':
-				fontsize = 48;
-				break;
-		}
-			if(item.style == 'simple'){
+
+			if(item.style == 1){
 				if(fontsize == 48){
 					This.dm.conf.lineHeight = 78;
 				}else{

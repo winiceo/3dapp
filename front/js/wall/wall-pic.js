@@ -221,6 +221,7 @@
 
 		$('#picture-wall-block').show();
 		$('#wallcontrol #play-handle').show();
+		$('#audio-control').css('display', 'inline');
 		_this.firstInit(function(flag) {
 			/* 活动初始化 */
 			if(flag){
@@ -438,7 +439,7 @@
 		var style = 'rotate(' + rotate + 'deg)';
 		imgObj.css('transform', style);
 
-		imgObj.fadeOut(200, function() {
+		imgObj.slideUp(200, function() {
 			imgObj.attr('src', data.imgPath.dealUrl());
 			ImgUtils.dealImgRotate({
 				imgObj : imgObj,
@@ -449,7 +450,7 @@
 						var marginTop = '-' + (height-width)/2 + 'px';
 						imgObj.css("margin-top",marginTop);
 					}				
-					imgObj.fadeIn(200, function() {
+					imgObj.slideDown(200, function() {
 						fn();
 					});
 				}

@@ -355,6 +355,38 @@ $(function() {
 				fullScreen();
 			}
 		});
+		// 背景音乐控制
+		$('#audioPause').click(function() {
+			var _btn = $(this),
+				_btni = _btn.find("i")[1];
+			if (_btn.hasClass('noClick')) return false;
+			var audio=$("#back-audio")[0];
+
+			if(audio.paused){
+				audio.play();
+				$(_btni).removeClass("fa-play").addClass("fa-pause");
+				_btn.tooltipster('content', "暂停音乐");
+				return;
+			}
+			else {
+				audio.pause();
+				$(_btni).removeClass("fa-pause").addClass("fa-play");
+				_btn.tooltipster('content', "播放音乐");
+			}
+		});
+
+		$('#volumeDown').click(function() {
+			var audio=$("#back-audio")[0];
+			audio.volume-=0.1;
+			if(audio.volume<0)
+				audio.volume=0;
+		});
+		$('#volumeUp').click(function() {
+			var audio=$("#back-audio")[0];
+			audio.volume+=0.1;
+			if(audio.volume>1)
+				audio.volume=1;
+		});
 		wall.bindAllControl();
 	};
 	/*绑定墙切换快捷键*/
@@ -434,7 +466,7 @@ $(function() {
 						return;
 					}
 					// 活动进行中
-					var logoUrl = item && item.logo ? item.logo.dealUrl() : '/images/placeholder.png';
+					var logoUrl = item && item.logo ? item.logo : '/images/placeholder.png';
 					var qrCodeUrl = item && item.qrCode ? item.qrCode.dealUrl() : '/images/placeholder.png';
 					var title = item && item.title ? item.title : '';
 					var ruleDes = item && item.ruleDes ? item.ruleDes : '';
@@ -454,7 +486,7 @@ $(function() {
 							$('.qrcode img').hide();
 						}
 
-						$('#wallHd').find('.wall_tit .wall-title-box').html(title);
+						$('#wallHd').find('.wall_tit .wall-title-box').html(title).addClass('animated zoomInLeft');
 
 						$('#wallNote').html($.base64.atob(ruleDes,true));
 						var getHtml = '';

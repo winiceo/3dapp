@@ -86,7 +86,7 @@
             register: function () {
                 var _vm = this;
                 console.log(_vm.item)
-                fetch(_vm.app.api + '/register', {
+                fetch(_vm.app.api + '/user/register', {
                     method: 'POST',
                     headers: {
                         'Accept': 'application/json',

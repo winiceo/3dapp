@@ -148,7 +148,7 @@
                                             <div class="media">
                                                 <div class="media-left">
 
-                                                    <div class="dropzone thumbnail"
+                                                    <div class="dropzone thumbnail poll"
                                                           id="dropzone_{{$index}}"
                                                           style="margin:10px;"
                                                             data-index="{{$index}}"
@@ -268,7 +268,7 @@
         width: 250px;
     }
 
-    .dropzone {
+    .poll {
         min-height: 80px;
         width: 80px;
         height: 80px;
@@ -277,7 +277,7 @@
 
     }
 
-    .dropzone .dz-preview .dz-image {
+    .poll .dz-preview .dz-image {
         border-radius: 10px;
         overflow: hidden;
         width: 100px;
@@ -486,7 +486,7 @@
                 }),
                         AppNoteBook.run()
 
-                Dropzone.autoDiscover = false;
+               // Dropzone.autoDiscover = false;
                 this.new_poll()
                 this.formValid()
 

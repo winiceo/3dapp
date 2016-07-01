@@ -1,7 +1,6 @@
 <template>
     <Navbar></Navbar>
-    <Sitebar></Sitebar>
-    <div class="page animsition" style="animation-duration: 800ms; opacity: 1;">
+     <div class="page animsition" style="animation-duration: 800ms; opacity: 1;">
         <div class="page-content container-fluid">
             <div class="row">
 
@@ -15,9 +14,7 @@
                                 <li class="active" role="presentation"><a data-toggle="tab" href="#activities"
                                                                           aria-controls="activities" role="tab"
                                                                           aria-expanded="false">会议设置 </a></li>
-                                <li role="presentation" class=""><a data-toggle="tab" href="#profile"
-                                                                    aria-controls="profile" role="tab"
-                                                                    aria-expanded="false">微信设置</a></li>
+
                             </ul>
 
                             <div class="tab-content">
@@ -36,20 +33,51 @@
                                         <div class="form-group">
 
                                             <label class="col-sm-3 control-label">
-                                                Start Datetime:
+                                                开始时间:
                                             </label>
                                             <div class="col-sm-3">
                                                 <input class=flatpickr data-enabletime=true data-time_24hr=true
                                                        data-timeFormat="H:i" v-model="item.startAt">
                                             </div>
                                             <label class="col-sm-3 control-label">
-                                                End Datetime:
+                                                结束时间:
                                             </label>
                                             <div class="col-sm-3">
                                                 <input class=flatpickr data-enabletime=true data-time_24hr=true
                                                        data-timeFormat="H:i" v-model="item.endAt">
                                             </div>
                                         </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label">微信设置</label>
+                                            <div>
+                                                <div class="radio-custom radio-default radio-inline">
+                                                    <input type="radio" value=0 v-model="item.multiple">
+                                                    <label>微信网页版(不需要绑定)</label>
+                                                </div>
+                                                <div class="radio-custom radio-default radio-inline">
+                                                    <input type="radio" value=1 v-model="item.multiple">
+
+                                                    <label>绑定版(需要公众号)</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <template v-if="item.multiple==1">
+                                            <div class="row row-lg">
+
+                                                <div class="form-group col-sm-4">
+                                                    上墙关键字
+                                                </div>
+                                                <div class="form-group col-sm-8">
+                                                    <input type="text" class="form-control"
+                                                           v-model="item.max_choices" placeholder="我要上墙">
+                                                </div>
+
+
+                                            </div>
+
+
+                                        </template>
 
 
                                         <div class="form-group">
@@ -124,6 +152,7 @@
                 flatpickr.init.prototype.l10n.weekdays.longhand = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'];
                 flatpickr('.flatpickr')
                 window.Site.cc();
+                this.$parent.hideLoading();
 
             },
 

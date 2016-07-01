@@ -152,6 +152,122 @@ Wall.Note.type = {
 			initDatabase(_this,fn);
 		}
 	}
+
+	function getActivityConfig(_this){
+		var alreday = 0;
+		var configList = new List();
+		var configCallBack = function(){
+			alreday++;
+			if(configList.size() == alreday){
+				setTimeout(function(){
+					_this.fn(_this);
+				},100);
+			}
+		};
+		configList.add(function(){
+			//根据活动ID获取活动详情
+			var request = new DataContent();
+			request.getrequest({
+				load : false,
+				url : apidomain+'activity/'+wallID,
+				callBack : function(data) {
+					//alert(data);
+					allConfig.wall.title = data.title;
+					allConfig.wall.logo = data.logo?data.logo:"./images/kplogo.svg";
+					allConfig.wall.startDate = data.start_at;
+					allConfig.wall.endDate = data.end_at;
+					allConfig.wall.updateDate = data.update_at;
+					allConfig.wall.createDate = data.create_at;
+					configCallBack();
+				},
+				errorCallBack : function(e) {
+					alert('获取活动信息失败');
+				}
+			});
+		});
+		configList.add(function(){
+			//获取弹幕设置
+			var request = new DataContent();
+			request.getrequest({
+				load : false,
+				url : apidomain+'danmaku/'+wallID,
+				callBack : function(data) {
+					if(data!=null){
+						allConfig.walldanmuConfig=data;
+					}
+					configCallBack();
+				},
+				errorCallBack : function(e) {
+					alert('获取弹幕配置失败');
+				}
+			});
+		});
+		configList.add(function(){
+			//获取签到用户列表
+			var request = new DataContent();
+			request.getrequest({
+				load : false,
+				url : apidomain+'signinwall/'+wallID,
+				callBack : function(data) {
+					if(data!=null){
+						//allConfig.walldanmuConfig=data;
+					}
+					configCallBack();
+				},
+				errorCallBack : function(e) {
+					alert('获取签到用户失败');
+				}
+			});
+		});
+		configList.add(function(){
+			//获取投票列表
+			var request = new DataContent();
+			request.getrequest({
+				load : false,
+				url : apidomain+'pollwall/questions/current/'+wallID,
+				callBack : function(data) {
+					if(data!=null){
+						allConfig.wallvoteConfig.wallvoteSubject = data;
+					}
+					configCallBack();
+				},
+				errorCallBack : function(e) {
+					alert('获取投票列表失败');
+				}
+			});
+		});
+		configList.add(function(){
+			//获取奖品列表
+			var request = new DataContent();
+			request.getrequest({
+				load : false,
+				url : apidomain+'awardwall/'+wallID,
+				callBack : function(data) {
+					if(data!=null&&data.length>0){
+						allConfig.walllotteryConfig.walllotteryAwardsList = data;
+						allConfig.walllotteryConfig.walllotteryAwards = data[0];
+						allConfig.walllotteryConfig.lotteryId = data[0].id;
+						for(var i = 0 ;i < data.length; i++){
+							if(data[i].active){
+								allConfig.walllotteryConfig.walllotteryAwards = data[i];
+								allConfig.walllotteryConfig.lotteryId = data[i].id;
+								break;
+							}
+						}
+					}
+					configCallBack();
+				},
+				errorCallBack : function(e) {
+					alert('获取奖品列表失败');
+				}
+			});
+		});
+		// 执行对应的初始化
+		for(var i = 0 ;i < configList.size(); i++){
+			configList.get(i)();
+		}
+	}
+
 	Wall.prototype.init = function() {
 		Debug.log('wall','wall----init');
 		var _this = this;
@@ -176,9 +292,7 @@ Wall.Note.type = {
 			});
 			_this.socket.connect();
 			// 连接初始化完成
-			setTimeout(function(){
-				_this.fn(_this);
-			},100);
+			getActivityConfig(_this);
 		});
 	};
 	/*处理活动的注册*/
@@ -426,15 +540,15 @@ Wall.Note.type = {
 					sort: 'asc'
 				},
 				exceptCol: ['deleteTag']
-			}).post({
+			}).getrequest({
 				load: false,
-				url: '/web/wall/getWallMessagePage.html',
+				url: apidomain+'msgwall/'+wallID,
 				callBack: function(data){
-					if(data.dataContent){
+					if(data.length>0){
 						try{
-							var dataList = data.dataContent.dataList;
-							var dataSize = dataList.length;
-							_this.insertMessage(dataList,function(){
+							//var dataList = data.dataContent.dataList;
+							var dataSize = data.length;
+							_this.insertMessage(data,function(){
 								_this.noteAll(Wall.Note.type.NEW_MESSAGE,data);
 								if(dataSize == pageSize){
 									syncMessageConl();
@@ -496,14 +610,16 @@ Wall.Note.type = {
 		}
 		var store = _this.db.objectStore(_this.messageDb);
 		var data = messageArr.shift();
+
+		data.sort = data.id;
 		// 图片预加载
 		if(data.contentType == 'image'){
 			ImgUtils.loadImg(data.content);
 		}
-		if((data.userId && data.wallId) && (data.userId != wallJson.userId || data.wallId != wallJson.id)){
+		/*if((data.userId && data.wallId) && (data.userId != wallJson.userId || data.wallId != wallJson.id)){
 			// 错误数据，剔除
 			_this.insertMessage(messageArr,fn);
-		}else{
+		}else{*/
 			if('Y' == data.hide || 'Pass' != data.auditState || 'Y' == data.deleteTag){
 				// 删除已经下墙的消息
 				store.delete(data.id).done(function(){
@@ -516,7 +632,7 @@ Wall.Note.type = {
 					},5);
 				});
 			}
-		}
+		//}
 	};
 	/*获取数据库count*/
 	Wall.prototype.storeCount = function(storeName,fn){

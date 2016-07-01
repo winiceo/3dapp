@@ -21,7 +21,7 @@
     <div class="page animsition">
 
 
-        <div class="page-content container-fluid lt-body bg-primary-100 text-center padding-20 "
+        <div v-show="items.length>0" class="page-content container-fluid lt-body bg-primary-100 text-center padding-20 "
              v-infinite-scroll="loadMore()" infinite-scroll-disabled="busy"
              infinite-scroll-distance="100">
             <div class="col-xlg-4 col-md-12">
@@ -92,6 +92,17 @@
             </div>
 
         </div>
+        <div class="page-content container-fluid lt-body bg-primary-100 text-center padding-20" v-show="nodata">
+
+            <div class="widget">
+
+
+
+                    暂时没有更多数据
+
+
+            </div>
+        </div>
 
 
         <!-- End Create New Notes Modal -->
@@ -105,7 +116,11 @@
 </template>
 <style>
 
+      .timeline::before {
 
+        height: 94%;
+
+    }
     .dropzone {
         min-height: 120px;
         width: 150px;
@@ -246,6 +261,7 @@
     var Dropzone = require("dropzone/dist/min/dropzone-amd-module.min")
     import Navbar from './Navbar'
     import Sitebar from './Sitebar'
+    import {whatever, checkStatus} from "../../utils/leven"
 
     export default{
         directives: {infiniteScroll},
@@ -266,7 +282,7 @@
                     {text: "屏幕控制台", icon: "wb-hammer", url: "", color: "bg-purple-600"},
                     {text: "活动数据", icon: "wb-table", url: "", color: "bg-green-600"},
                     {text: "上墙地址", icon: "wb-map", url: "", color: "bg-orange-600"},
-                    {text: "大屏幕", icon: "wb-grid-9", url: "/front/index.html", color: "bg-indigo-600"},
+                    {text: "大屏幕", icon: "wb-grid-9", url: "/wallmain.html", color: "bg-indigo-600"},
 
 
                 ]
@@ -276,7 +292,7 @@
         methods: {
             init: function () {
                 window.Site.cc();
-                this.getdata();
+                this.calldata(-1);
             },
             openurl: function (url, id) {
                 window.open(url + "?id=" + id)
@@ -292,6 +308,7 @@
             calldata:function(status){
               this.status=status;
               this.next=1;
+              this.$set("nodata",false);
               this.items=[];
               this.getdata();
             },
@@ -300,6 +317,7 @@
 
 
                 var _vm = this;
+                _vm.$parent.showLoading();
                 var data={
                     next:this.next,
                     status:this.status
@@ -317,7 +335,7 @@
                     }
 
 
-                }).then(function (response) {
+                }).then(checkStatus).then(function (response) {
                     if (response.status >= 400) {
                         throw new Error("Bad response from server");
                     }
@@ -333,10 +351,16 @@
 
                     });
 
+
                     _vm.busy = false;
-                    if (docs.length == 0) {
+                    if (_vm.items.length == 0) {
                         _vm.busy = true;
+                        _vm.$set("nodata",true);
+                    }else{
+                        _vm.$set("nodata",false);
                     }
+                    _vm.$parent.hideLoading();
+
 
 
                 });
@@ -344,6 +368,7 @@
 
             },
             loadMore: function () {
+
                 this.busy = true;
                 this.next += 1;
                 console.log(this.next)

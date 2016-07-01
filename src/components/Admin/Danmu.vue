@@ -4,7 +4,7 @@
         <div class="page-header">
             <h1 class="page-title">基本信息</h1>
 
-            <!--{{item|json}}-->
+            {{app|json}}
         </div>
         <div class="page-content">
             <div class="panel">

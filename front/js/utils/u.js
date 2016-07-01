@@ -1038,11 +1038,10 @@ DataContent.prototype.post = function(setting){
 
 DataContent.prototype.getrequest = function(setting){
 	var dataContent = this;
-	var auth = "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXUyJ9.eyJleHAiOjE0NjUyNjkzMDksInVzZXJuYW1lIjoiY2hlbnNoaSIsImlhdCI6IjE0NjUxODI5MDkifQ.BHOD2xL_SrvN1W2trHZZVGfz_qRNGXb8mCHzhPg6Ah2OSV_k8vixovQXGeUGdBd71hG9yZNAypzNOXe0T2pOXONw-djrEQUaKz0VKm6qx3XqNv9XDRkyzmj_N_I8uPzwnyYGUPH_RI9rUZBUGG9T5182EnWsHzT5EPx7V8aIHsy16bMSmVUc6tqXjBMD-UTV1sDxZo1Y5tW9vZlNfNFN4h5_NapAf9u-J1VNYkFw0KMSb4SkAYHBIGz0cAwvhI_wa0Yjsi84jX-AMh3cSqQru2BDmuHvSgFm1n82egemsJVdN51idzVo1A3Z-3Q2WRNALvgeCwZN3VhvkjghCyuitZdveVR1Yg-8rJoKtqmHiVfWZ1PALaawbjkv4cIb232_gQmzPEo2OD78tYwhMRC2bV2h-MwZaNFZs3P2T0zawUQq-AXpTNABKhK1nHJifgySdg73DpHBjT9FbOIZAFSesvGpQY4Z9bByk1K15olBT9-4ZVofz9hV7S0NyyvDfvDFXhxdOy6v4I_eUu78AxuL7PGsM6dVRzOqSiwm2ieP0vwMRb9rc4qJVDb012gfllLZ9mehGPu3KgN1sB-pZNJHQyeEUddELlTLM5S555Zo575paeIbv3E3bi2vQyurdz59i5dV1Xmrf57m5V01KhbF6Iv5X4RmhtPI8bTHi101B14";
 	var setting = $.extend({
 		url : '',
 		headers:{
-			Authorization:auth,
+			Authorization:usertoken,
 		},
 		dataType: 'json',
 		type: 'GET',
@@ -1218,9 +1217,11 @@ Socket.prototype.connect = function() {
 	_this.socket.onclose = this.setting.onClose;*/
 };
 Socket.prototype.close = function() {
-	if (this.socket != null) {
+	if (this.socket != null&&this.session!=null) {
 		//this.socket.close();
+		this.session.unsubscribe("andy/channel");
 		this.socket = null;
+		this.session=null;
 	}
 };
 Socket.prototype.isOpen = function() {
@@ -1231,7 +1232,7 @@ Socket.prototype.isOpen = function() {
 	}
 };
 Socket.prototype.send = function(data) {
-	if (this.session!=null) {
+	if (this.socket != null&&this.session!=null) {
 		this.session.publish("andy/channel",data);
 	}
 };

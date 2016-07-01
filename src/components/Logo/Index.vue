@@ -1,7 +1,7 @@
 <template>
 
 
-    <nav class="navbar navbar-default navbar-mega">
+    <nav class="site-navbar navbar navbar-default navbar-mega">
         <div class="container-fluid">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle hamburger hamburger-close collapsed" data-toggle="collapse"
@@ -14,6 +14,7 @@
             <div class="navbar-collapse collapse" id="navbar-collapse-2">
                 <ul class="nav navbar-nav">
                     <!-- Media Example -->
+
                     <li class="dropdown dropdown-mega"><a class="dropdown-toggle" data-toggle="dropdown" href="#"
                                                           aria-expanded="false">上传logo<b class="caret"></b></a>
                         <ul class="dropdown-menu" role="menu">
@@ -151,11 +152,9 @@
             return {
                 token: '',
                 status: -1,
-
                 count: 0,
                 next: 1,
                 busy: false,
-
                 item: {}
 
             }
@@ -164,8 +163,8 @@
         methods: {
             init: function () {
                 window.Site.cc();
-                //this.getdata();
-                this.initjs();
+               this.getdata();
+                ;
             },
             openurl: function (url, id) {
                 window.open(url + "?id=" + id)
@@ -184,20 +183,49 @@
                 this.items = [];
                 this.getdata();
             },
+            save: function () {
+                var _vm = this;
+                //_vm.item.style=parseInt(_vm.item.style);
 
-            getdata: function () {
+                var act = "update"
+                var id =  _vm.app.aid ;
+
+                fetch(_vm.app.api + '/logowall/' + act + '/' + id, {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'Authorization': _vm.app.token
+                    },
+                    body: JSON.stringify(_vm.item)
+
+                }).then(function (response) {
+                    if (response.status >= 400) {
+                        throw new Error("Bad response from server");
+                    }
+
+                    return response.json();
+                }).then(function (item) {
+                    console.log(item)
+
+                    toastr.info('保存成功')
+
+                });
+            },
+
+            getdata: function (callback) {
 
 
                 var _vm = this;
-                var data = {
-                    next: this.next,
-                    status: this.status
-                }
-                var u = new URLSearchParams();
-                u.append('next', this.next);
-                u.append('status', this.status);
+                // var data = {
+                //     next: this.next,
+                //     status: this.status
+                // }
+                // var u = new URLSearchParams();
+                // u.append('next', this.next);
+                // u.append('status', this.status);
 
-                fetch(_vm.app.api + '/activities?' + u, {
+                fetch(_vm.app.api + '/logowall/' + _vm.app.aid, {
                     method: 'GET',
                     headers: {
                         'Accept': 'application/json',
@@ -212,20 +240,12 @@
                     }
 
                     return response.json();
-                }).then(function (docs) {
+                }).then(function (item) {
 
-                    console.log(docs);
 
-                    _.forEach(docs, function (o) {
+                    _vm.item=item.data;
+                    _vm.initjs(item.data);
 
-                        _vm.items.push(o)
-
-                    });
-
-                    _vm.busy = false;
-                    if (docs.length == 0) {
-                        _vm.busy = true;
-                    }
 
 
                 });
@@ -233,7 +253,7 @@
 
             },
 
-            initjs: function () {
+            initjs: function (app) {
                 var _vm=this;
 
 
@@ -391,9 +411,11 @@
 
                    // initLogo();
 
-                    function setDesign(app){
+                    function setDesign(){
 
-                        var logoDesign=app.get("logoDesign")
+                        //var logoDesign=app.get("logoDesign")
+                        var logoDesign=_vm.item.logo_hex;
+
                         var logoWallObj = $('#customLogo'), squreColor, cellNum, showCell;
                         if (logoDesign) {
                             var logojson = JSON.parse($.base64.atob(logoDesign, true));
@@ -445,31 +467,31 @@
                             height: cellNum + 'px'
                         });
                     }
-
-                    function initDesign(){
-                        var logoData = Parse.Object.extend("walls");
-                        var query = new Parse.Query(logoData);
-                        query.equalTo("wallid", _vm.app.aid);
-                        query.limit(1)
-                        query.find({
-                            success: function(results) {
-                                if(results.length==1){
-                                    var app=results[0]
-                                    _vm.item=app;
-                                    setDesign(app)
-                                }else{
-                                    var app=new Parse.Object("walls");
-                                    _vm.item=app;
-                                    setDesign(app)
-                                }
-
-                            },
-                            error: function(error) {
-                                alert("Error: " + error.code + " " + error.message);
-                            }
-                        });
-                    }
-                    initDesign();
+//
+//                    function initDesign(){
+//                        var logoData = Parse.Object.extend("walls");
+//                        var query = new Parse.Query(logoData);
+//                        query.equalTo("wallid", _vm.app.aid);
+//                        query.limit(1)
+//                        query.find({
+//                            success: function(results) {
+//                                if(results.length==1){
+//                                    var app=results[0]
+//                                    _vm.item=app;
+//                                    setDesign(app)
+//                                }else{
+//                                    var app=new Parse.Object("walls");
+//                                    _vm.item=app;
+//                                    setDesign(app)
+//                                }
+//
+//                            },
+//                            error: function(error) {
+//                                alert("Error: " + error.code + " " + error.message);
+//                            }
+//                        });
+//                    }
+                     setDesign();
 
                     //上传图片生成方格图
                     $("#getResult").click(function () {
@@ -493,17 +515,17 @@
                             }
                             if (flag) {
                                 var oForm = _this.parents('form');
-//                                oForm.attr({
-//                                    'action': '/admin/common/callBackUpload.html',
-//                                    'enctype': 'multipart/form-data',
-//                                    'target': 'upload',
-//                                    'method': 'post'
-//                                });
-//                                layer.load(0, {
-//                                    shade: [0.5, '#6C6C6C'],
-//                                    skin: 'layui-layer-myloading'
-//                                });
-//                                oForm.submit();
+                                oForm.attr({
+                                    'action': _vm.app.upload,
+                                    'enctype': 'multipart/form-data',
+                                    'target': 'upload',
+                                    'method': 'post'
+                                });
+                                layer.load(0, {
+                                    shade: [0.5, '#6C6C6C'],
+                                    skin: 'layui-layer-myloading'
+                                });
+                                oForm.submit();
 
 
 
@@ -697,26 +719,30 @@
                             'showCell': showCellArr
                         };
                         var json = JSON.stringify(logoDesign);
+                        alert(json)
+                        _vm.item.logo_hex=$.base64.btoa(json, true);
 
-                        var jobApplication = _vm.item;
+                        //var jobApplication = _vm.item;
+                        _vm.$set("item.logo_hex",$.base64.btoa(json, true));
+                        _vm.save();
 
-                        jobApplication.set("logoDesign",$.base64.btoa(json, true));
-
-                        jobApplication.save(null,{
-                            success:function(item){
-                                $('#totalCell').text(showCellArr.length);
-                                if (!isTips) {
-                                    layer.msg('发布成功！')
-                                }
-                                ;
-                                if (fn) {
-                                    fn()
-                                }
-                            },
-                            error: function(item, error) {
-                                layer.msg(" (￣y▽￣)╭~刷新再试下吧亲~");
-                            }
-                        });
+//                        jobApplication.set("logoDesign",$.base64.btoa(json, true));
+//
+//                        jobApplication.save(null,{
+//                            success:function(item){
+//                                $('#totalCell').text(showCellArr.length);
+//                                if (!isTips) {
+//                                    layer.msg('发布成功！')
+//                                }
+//                                ;
+//                                if (fn) {
+//                                    fn()
+//                                }
+//                            },
+//                            error: function(item, error) {
+//                                layer.msg(" (￣y▽￣)╭~刷新再试下吧亲~");
+//                            }
+//                        });
 //                        var d = new DataContent({
 //                            where: {
 //                                wallId: parseInt(wall.id)

@@ -1,7 +1,7 @@
 <template>
     <div class="top-box">
 
-
+        <loading :show.sync="loading"></loading>
         <router-view></router-view>
 
     </div>
@@ -12,11 +12,24 @@
 
     import Vue from "vue"
     import {API_ROOT} from '../../config.js'
-
+    import {loading} from '../../lib/vue-strap'
     Vue.mixin({
-
+        data:function(){
+            return {
+                loading:true,
+                nodata:false,
+            }
+        },
+        components: {loading},
         methods: {
+            hideLoading:function(){
+              this.loading=false
+            },
+            showLoading:function(){
+                this.loading=true
+            },
             init: function () {
+
 
             },
             _init: function (callback) {

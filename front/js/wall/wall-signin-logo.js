@@ -58,6 +58,7 @@
 		var _this = this;
 
 		$('#signin-logo-wall-block').show();
+		$('#audio-control').css('display', 'inline');
 		// 左上角数量
 		$('#signinUserCount,#signinUserCount::before').show();
 		_this.autoPlayFlag = true;

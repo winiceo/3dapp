@@ -18,7 +18,7 @@ import '../../lib/site'
 import VueDb from '../../utils/vueDb'
 Vue.use(VueDb)
 
-
+Vue.config.debug = true
 
 Vue.use(VueRouter)
 
