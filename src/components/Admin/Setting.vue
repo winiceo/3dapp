@@ -35,15 +35,17 @@
                                                 开始时间:
                                             </label>
                                             <div class="col-sm-3">
-                                                <input class=flatpickr data-enabletime=true data-time_24hr=true
-                                                       data-timeFormat="H:i" v-model="item.start_at">
+                                                <input v-datepicker="item.start_at" data-enabletime=true data-time_24hr=true
+                                                       data-timeFormat="H:i"  v-model="item.start_at">
+
                                             </div>
                                             <label class="col-sm-3 control-label">
                                                 结束时间:
                                             </label>
                                             <div class="col-sm-3">
-                                                <input class=flatpickr data-enabletime=true data-time_24hr=true
-                                                       data-timeFormat="H:i" v-model="item.end_at">
+                                                <input v-datepicker="item.end_at" data-enabletime=true data-time_24hr=true
+                                                       data-timeFormat="H:i"  v-model="item.end_at">
+
                                             </div>
                                         </div>
 
@@ -51,17 +53,17 @@
                                             <label class="control-label">微信设置</label>
                                             <div>
                                                 <div class="radio-custom radio-default radio-inline">
-                                                    <input type="radio" value=0 v-model="item.multiple">
+                                                    <input type="radio" value=0 v-model="item.wxbound">
                                                     <label>微信网页版(不需要绑定)</label>
                                                 </div>
                                                 <div class="radio-custom radio-default radio-inline">
-                                                    <input type="radio" value=1 v-model="item.multiple">
+                                                    <input type="radio" value=1 v-model="item.wxbound">
 
                                                     <label>绑定版(需要公众号)</label>
                                                 </div>
                                             </div>
                                         </div>
-                                        <template v-if="item.multiple==1">
+                                        <template v-if="item.wxbound==1">
                                             <div class="row row-lg">
 
                                                 <div class="form-group col-sm-4">
@@ -69,7 +71,7 @@
                                                 </div>
                                                 <div class="form-group col-sm-8">
                                                     <input type="text" class="form-control"
-                                                           v-model="item.max_choices" placeholder="我要上墙">
+                                                           v-model="item.wxword" placeholder="我要上墙">
                                                 </div>
 
 
@@ -84,6 +86,14 @@
                                             <div class="col-md-6 col-xs-12 masonry-item">
                                                 <div class="form-group">
                                                     <label class="control-label">背景图片</label>
+
+
+                                                    <!--<div id="image-upload" class="styleguide-section">-->
+                                                        <!--<header class="styleguide-header">-->
+                                                            <!--<h1>Image Upload Preview (Drag &amp; Drop)</h1>-->
+                                                        <!--</header>-->
+                                                        <!--<upload-image info="Minimum width 700px, will be cropped to 16:9"></upload-image>-->
+                                                    <!--</div>-->
                                                     <div class="dropzone   vip_uppic"
                                                          id="dropzone_0"
                                                          style="margin:10px;"
@@ -172,8 +182,9 @@
     var infiniteScroll = require('vue-infinite-scroll').infiniteScroll;
 
     import {whatever} from "../../utils/leven"
-    import {aside} from '../../lib/vue-strap'
-    import flatpickr from "flatpickr";
+    import {aside,upload} from '../../lib/vue-strap'
+    require('../../lib/flatpickr')
+    //    import flatpickr from "flatpickr";
 
 
     require("flatpickr/dist/flatpickr.material_blue.min.css")
@@ -185,11 +196,13 @@
     var uuid = require('node-uuid');
     var Dropzone = require("dropzone/dist/min/dropzone-amd-module.min")
     Dropzone.autoDiscover = false;
-    require('../../global/js/components/toastr.min');
 
     export default{
         directives: {infiniteScroll},
-        components: {aside},
+        components: {
+            'aside':aside,
+            'upload-image': upload
+        },
         data(){
             return {
                 app: {},
@@ -226,8 +239,8 @@
                     _vm.setup("#dropzone_1");
 
                 });
-                flatpickr.init.prototype.l10n.weekdays.longhand = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'];
-                flatpickr('.flatpickr')
+//                flatpickr.init.prototype.l10n.weekdays.longhand = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'];
+//                flatpickr('.flatpickr')
 
                 window.Site.cc();
                 window.AppNoteBook = Site.extend({
@@ -330,7 +343,7 @@
 
                     return response.json();
                 }).then(function (item) {
-                    _vm.add ? _vm.items.push(item.data) : ""
+                    //_vm.add ? _vm.items.push(item.data) : ""
 
                     toastr.info('保存成功')
 
@@ -406,20 +419,22 @@
                                 $('.dz-progress').hide();
                                 $('.dz-size').hide();
                                 $('.dz-error-mark').hide();
+                                //$('.dz-message').remove();
                                 console.log(response.data)
                                 //_vm.$set(_vm.item,$(that).data("url"),response.data)
 
                                 if ($(that).data("url") == "bgImage") {
                                     _vm.$set('item.bg_image', response.data)
-                                    $(that).find(".dz-message").hide();
+                                    $(that).remove(".dz-message");
 
                                 }
                                 if ($(that).data("url") == "bgAudio") {
                                     _vm.$set('item.bg_audio', response.data)
                                     plyr.setup();
-                                    $(that).find(".dz-message").hide();
+                                    $(that).remove(".dz-message");
 
                                 }
+
                                 // _vm.item[$(that).data("url")] = response.data
                                 // alert(_vm.item.pic)
 
@@ -439,7 +454,7 @@
 
                     });
                 } catch (e) {
-                    alert(e)
+                    //alert(e)
                 }
             }
         }

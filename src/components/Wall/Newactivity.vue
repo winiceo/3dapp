@@ -1,6 +1,6 @@
 <template>
     <Navbar></Navbar>
-     <div class="page animsition" style="animation-duration: 800ms; opacity: 1;">
+    <div class="page animsition" style="animation-duration: 800ms; opacity: 1;">
         <div class="page-content container-fluid">
             <div class="row">
 
@@ -36,15 +36,16 @@
                                                 开始时间:
                                             </label>
                                             <div class="col-sm-3">
-                                                <input class=flatpickr data-enabletime=true data-time_24hr=true
-                                                       data-timeFormat="H:i" v-model="item.startAt">
+                                                <input v-datepicker="item.start_at" data-enabletime=true data-time_24hr=true
+                                                       data-timeFormat="H:i">
                                             </div>
                                             <label class="col-sm-3 control-label">
                                                 结束时间:
                                             </label>
                                             <div class="col-sm-3">
-                                                <input class=flatpickr data-enabletime=true data-time_24hr=true
-                                                       data-timeFormat="H:i" v-model="item.endAt">
+                                                <input v-datepicker="item.end_at" data-enabletime=true data-time_24hr=true
+                                                       data-timeFormat="H:i">
+
                                             </div>
                                         </div>
 
@@ -52,17 +53,17 @@
                                             <label class="control-label">微信设置</label>
                                             <div>
                                                 <div class="radio-custom radio-default radio-inline">
-                                                    <input type="radio" value=0 v-model="item.multiple">
+                                                    <input type="radio" value=0 v-model="item.wxbound">
                                                     <label>微信网页版(不需要绑定)</label>
                                                 </div>
                                                 <div class="radio-custom radio-default radio-inline">
-                                                    <input type="radio" value=1 v-model="item.multiple">
+                                                    <input type="radio" value=1 v-model="item.wxbound">
 
                                                     <label>绑定版(需要公众号)</label>
                                                 </div>
                                             </div>
                                         </div>
-                                        <template v-if="item.multiple==1">
+                                        <template v-if="item.wxbound==1">
                                             <div class="row row-lg">
 
                                                 <div class="form-group col-sm-4">
@@ -70,7 +71,7 @@
                                                 </div>
                                                 <div class="form-group col-sm-8">
                                                     <input type="text" class="form-control"
-                                                           v-model="item.max_choices" placeholder="我要上墙">
+                                                           v-model="item.wxword" placeholder="我要上墙">
                                                 </div>
 
 
@@ -87,29 +88,7 @@
                                     </div>
 
                                 </div>
-                                <div class="tab-pane animation-slide-left" id="profile" role="tabpanel">
-                                    <div class="example ">
-                                        <form autocomplete="off">
 
-
-                                            <div class="form-group">
-                                                <label class="control-label">AppID(应用ID)</label>
-                                                <input type="text" class="form-control" v-model="item.appid"
-                                                       placeholder="" autocomplete="off">
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="control-label">AppSecret(应用密钥)</label>
-                                                <input type="text" class="form-control" name="appsecret"
-                                                       v-model="item.appsecret"
-                                                       placeholder="" autocomplete="off">
-                                            </div>
-
-                                            <div class="form-group">
-                                                <button type="button" class="btn btn-primary " @click="save">保存</button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
 
 
                             </div>
@@ -130,8 +109,8 @@
     require("dropzone/dist/min/dropzone.min.css")
     var Dropzone = require("dropzone/dist/min/dropzone-amd-module.min")
     require('../../global/js/components/toastr.min');
-
-    import flatpickr from "flatpickr";
+    require('../../lib/flatpickr')
+    //    import flatpickr from "flatpickr";
     require("flatpickr/dist/flatpickr.material_blue.min.css")
 
     import Navbar from './Navbar'
@@ -140,7 +119,7 @@
         components: {Navbar, Sitebar},
         data(){
             return {
-                token:"",
+                token: "",
 
                 item: {}
             }
@@ -149,11 +128,26 @@
 
             init: function () {
 
-                flatpickr.init.prototype.l10n.weekdays.longhand = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'];
-                flatpickr('.flatpickr')
+//                flatpickr.init.prototype.l10n.weekdays.longhand = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'];
+//                var dateTime=flatpickr('.flatpickr',{
+//                    minDate:"today",
+//                    onChange:function(e){
+//                       alert( e)
+//                    }
+//                })
+//                _(dateTime).forEach(function(n,key){
+//                   alert(key)
+//                    n.set("onChange", function(d) {
+//                        alert(22)
+//                       // check_out.set("minDate", d.fp_incr(1)); //increment by one day
+//                    });
+//                })
                 window.Site.cc();
                 this.$parent.hideLoading();
 
+            },
+            dateChanged: function (e) {
+                console.log(e)
             },
 
             save: function () {
@@ -183,8 +177,6 @@
 //                      window.rout
 //
 //                    },1000);
-
-
 
 
                 });

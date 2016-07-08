@@ -1,6 +1,6 @@
 <template>
     <svg id="logo-svg" version="1.1" xmlns="http://www.w3.org/2000/svg"
-         xmlns:xlink="http://www.w3.org/1999/xlink" width="100" height="100" viewBox="0 0 251 181">
+         xmlns:xlink="http://www.w3.org/1999/xlink"    viewBox="0 0 251 181">
         <desc iVinci="yes" version="4.6" gridStep="20" showGrid="no" snapToGrid="no" codePlatform="0"/>
         <g id="Layer1" name="Layer 1" opacity="1">
             <g id="Shape1" data-start="0" data-duration="10">
@@ -32,8 +32,17 @@
         </g>
     </svg>
 
+
 </template>
 <style>
+    svg {
+        object-fit: contain;
+        width: 100%;
+        height: 100%;
+        max-width: 100%;
+        max-height: 100%;
+    }
+
 
 </style>
 <script>
@@ -43,7 +52,7 @@
             return {}
         },
         ready(){
-            $("#logo-svg").width(251).height(181)
+            $("#logo-svg").width(100).height(50)
             var logo = new Vivus('logo-svg', {
                 type: 'delayed',
                 duration: 200,

@@ -421,7 +421,7 @@
 
 
                                 _vm.item.pic = response
-                                alert(_vm.item.pic)
+                               // alert(_vm.item.pic)
 
 
                             });
@@ -439,7 +439,7 @@
 
                     });
                 } catch (e) {
-                    alert(e)
+                   // alert(e)
                 }
             }
         },

@@ -8,6 +8,7 @@ import filters from '../../utils/filters'
 import App from '../../components/Admin/App.vue'
 var vueSmoothScroll = require('vue-smoothscroll');
 
+ 
 
 var Bootstrap = require('bootstrap');
 Bootstrap.$ = $ 

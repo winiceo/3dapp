@@ -7,7 +7,14 @@
 
     </div>
 </template>
-
+<style>
+    .dropzone img{
+        float:left;
+    }
+    .dropzone .dz-message{
+        position: relative;
+    }
+</style>
 <script>
     import Navbar from '../wall/Navbar'
     import Sidebar from './Sidebar'
@@ -47,12 +54,13 @@
                     _vm.$set("app.img", API_ROOT)
 
                     _vm.$set("app.aid", req("id"))
-                    _vm.$set("app.upload",_vm.app.api + "/common/image/new")
+                    _vm.$set("app.upload", _vm.app.api + "/common/image/new")
                     console.log(_vm.app)
                     callback(_vm.app)
                 })
             }
         }, ready(){
+            window.Site.cc();
             this._init(this.init);
         }
     })

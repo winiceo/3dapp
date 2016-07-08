@@ -52,12 +52,13 @@
                                 <h3 class="panel-title">投票设置</h3>
 
                             </div>
+
                             <div class="panel-body">
 
 
                                 <div class="form-group">
                                     <label class="control-label">题目</label>
-                                    <input type="text" name="title" class="form-control" v-model="item.title">
+                                    <input type="text" name="title" id="title" class="form-control" v-model="item.title">
 
 
                                 </div>
@@ -246,7 +247,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default margin-0" data-dismiss="modal" @click="remove">确定
                     </button>
-                    <button type="button" class="btn btn-primary">取消</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">取消</button>
                 </div>
             </div>
         </div>
@@ -445,12 +446,7 @@
                 removeIndex: 0,
                 tempPic: '',
                 item: {},
-                options: {
-                    choices: [],
-                    max_choices: 3,
-                    min_choices: 2,
-                    multiple: 0
-                },
+
 
                 choice: {
 
@@ -621,8 +617,13 @@
             },
             new_poll: function () {
                 var _vm = this;
-                this.item = {}
-                this.item = this.options;
+
+                this.item = {
+                    choices: [],
+                    max_choices: 3,
+                    min_choices: 2,
+                    multiple: 0
+                };
                 this.item.choices=[]
                 var choice = _.clone(this.choice);
                 $(".dz-preview").remove();
@@ -692,7 +693,7 @@
                 }).then(function (items) {
 
                     console.log(items);
-                    _vm.items = items;
+                    _vm.items = items.data;
                     whatever(callback)
 
 

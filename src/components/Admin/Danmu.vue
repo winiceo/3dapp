@@ -1,11 +1,11 @@
 <template>
+    <div class="page animsition">
+        <div class="page-header page-header-bordered page-header-tabs">
+            <h3>弹幕</h3>
 
-    <div class="page animsition" style="animation-duration: 800ms; opacity: 1;">
-        <div class="page-header">
-            <h1 class="page-title">基本信息</h1>
 
-            {{app|json}}
         </div>
+
         <div class="page-content">
             <div class="panel">
                 <div class="panel-body container-fluid">
@@ -13,7 +13,7 @@
                         <div class="col-sm-12 col-md-6">
                             <!-- Example Horizontal Form -->
                             <div class="example-wrap">
-                                <h4 class="example-title">弹幕</h4>
+
 
                                 <div class="example">
                                     <form class="form-horizontal">

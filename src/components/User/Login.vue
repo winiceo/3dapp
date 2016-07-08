@@ -73,11 +73,18 @@
                 item: {
                     username:"leven",
                     password:"123456"
-                }
+                },
+                loading:false
+
+
             }
         },
         components: {logo},
         methods:{
+            init:function(){
+                this.$parent.hideLoading();
+
+            },
             login: function () {
                 var _vm = this;
                 console.log(_vm.item)
@@ -91,7 +98,11 @@
                     body: JSON.stringify(_vm.item)
 
                 }).then(function (response) {
+                    console.log(response.status)
                     if (response.status >= 400) {
+                        //throw new Error("Bad response from server");
+                        toastr.info('用户名或密码不正确,请重新登录')
+                        _vm.item={};
                         throw new Error("Bad response from server");
                     }
 

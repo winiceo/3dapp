@@ -23,7 +23,9 @@ module.exports = merge(baseWebpackConfig, {
     new webpack.ProvidePlugin({
       $: 'jquery',
       jQuery: 'jquery',
-      _: 'lodash'
+      _: 'lodash',
+      Promise: 'imports?this=>global!exports?global.Promise!es6-promise',
+      fetch: 'imports?this=>global!exports?global.fetch!whatwg-fetch'
     }),
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendors', // 公共模块的名称

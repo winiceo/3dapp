@@ -42,8 +42,11 @@
                 var _vm = this;
                 var route=['/register','/login']
                 _vm.$getItem("token").then(function (token) {
-                    
-                    if (!token&&_.indexOf(route,_vm.$route.path)==-1) {
+                   alert(_vm.$route.query.md5)
+                    if (!token&&_vm.$route.query.md5) {
+
+                        _vm.$set("app.token", "Bearer "+_vm.$route.query.md5);
+                    }else if (!token&&_.indexOf(route,_vm.$route.path)==-1) {
                         window.location.href = ("/app/wall.html#!/login")
                     }
 

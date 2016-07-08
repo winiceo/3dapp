@@ -7,10 +7,11 @@ var entries = utils.getEntry('./src/app/**/*.js'); // 获得入口js文件
 
 
 module.exports = {
-  entry: Object.assign(entries, {
+  entry: Object.assign(
         // 用到什么公共lib（例如React.js），就把它加进vender去，目的是将公用库单独提取打包
         // 'vender': ['vue','jquery']
-      }),
+       entries
+   ),
   output: {
     path: config.build.assetsRoot,
     publicPath: config.build.assetsPublicPath,

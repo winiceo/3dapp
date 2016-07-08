@@ -8,10 +8,10 @@ export default function(router) {
             name: 'danmu',
             component: require('../components/Admin/Danmu.vue')
         },
-        '/media': {
-            name: 'media',
-            component: require('../components/Admin/Media.vue')
-        },
+        // '/media': {
+        //     name: 'media',
+        //     component: require('../components/Admin/Media.vue')
+        // },
         
         '/vipwall': {
             name: 'vipwall',
@@ -34,10 +34,10 @@ export default function(router) {
             component: require('../components/Admin/Poll.vue')
         },
 
-        '/message': {
-            name: 'message',
-            component: require('../components/Admin/Tt.vue')
-        },
+        // '/message': {
+        //     name: 'message',
+        //     component: require('../components/Admin/Tt.vue')
+        // },
         // '/message': {
         //     name: 'message',
         //     component: require('../components/Admin/Message.vue')

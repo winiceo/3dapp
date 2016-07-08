@@ -1,20 +1,48 @@
 <template>
 
+    <nav class="site-navbar navbar navbar-default navbar-fixed-top navbar-mega navbar-inverse"
+         role="navigation">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle hamburger hamburger-close navbar-toggle-left hided"
+                    data-toggle="menubar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="hamburger-bar"></span>
+            </button>
+            <button type="button" class="navbar-toggle collapsed" data-target="#site-navbar-collapse"
+                    data-toggle="collapse">
+                <i class="icon wb-more-horizontal" aria-hidden="true"></i>
+            </button>
+            <a class="" href="../index.html">
 
-    <nav class="site-navbar navbar navbar-default navbar-mega">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle hamburger hamburger-close collapsed" data-toggle="collapse"
-                        data-target="#navbar-collapse-2">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="hamburger-bar"></span>
-                </button>
-                <a class="navbar-brand" href="javascript:void(0)">Logo墙设计</a>
-            </div>
-            <div class="navbar-collapse collapse" id="navbar-collapse-2">
-                <ul class="nav navbar-nav">
-                    <!-- Media Example -->
+                <logo></logo>
 
+            </a>
+
+            <!-- <button type="button" class="navbar-toggle collapsed" data-target="#site-navbar-search"
+                    data-toggle="collapse">
+                <span class="sr-only">Toggle Search</span>
+                <i class="icon wb-search" aria-hidden="true"></i>
+            </button> -->
+        </div>
+
+        <div class="navbar-container container-fluid">
+            <!-- Navbar Collapse -->
+            <div class="collapse navbar-collapse navbar-collapse-toolbar" id="site-navbar-collapse">
+                <!-- Navbar Toolbar -->
+                <ul class="nav navbar-toolbar">
+                    <li class="hidden-float" id="toggleMenubar">
+                        <a data-toggle="menubar" href="#" role="button">
+                            <i class="icon hamburger hamburger-arrow-left">
+                                <span class="sr-only">Toggle menubar</span>
+                                <span class="hamburger-bar"></span>
+                            </i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/app/wall.html">
+                            <i class="icon wb-grid-4" aria-hidden="true">活动列表</i>
+                        </a>
+                    </li>
                     <li class="dropdown dropdown-mega"><a class="dropdown-toggle" data-toggle="dropdown" href="#"
                                                           aria-expanded="false">上传logo<b class="caret"></b></a>
                         <ul class="dropdown-menu" role="menu">
@@ -22,24 +50,28 @@
                                 <div class="row">
                                     <div class="col-sm-6 logoset">
                                         <div class="fl">
-                                        <div class="img">
-                                            <img id="egImg" src="../../assets/logo/images/set/heart-default.jpg" width="115" height="64">
-                                            <canvas id="cv" class="none">ie</canvas>
-                                            <p class="txt">修改图片</p>
-                                            <form class="fileform" id="fileform">
-                                                <input type="hidden" name="callBack" value="callBack">
-                                                <input name="uploadFile" type="file" value="上传图片" id="up-button">
-                                                <input type="hidden" id="logopic">
-                                            </form>
-                                            <div class="remove">×</div>
-                                        </div>
+                                            <div class="img">
+                                                <img id="egImg" src="../../assets/logo/images/set/heart-default.jpg"
+                                                     width="115" height="64">
+                                                <canvas id="cv" class="none">ie</canvas>
+                                                <p class="txt">修改图片</p>
+                                                <form class="fileform" id="fileform">
+                                                    <input type="hidden" name="callBack" value="callBack">
+                                                    <input name="file" type="file" value="上传图片" id="up-button">
+                                                    <input type="hidden" id="logopic">
+                                                    <input type="hidden" name="context" value="logowall">
+                                                </form>
+                                                <div class="remove">×</div>
                                             </div>
+                                        </div>
                                     </div>
                                     <div class="col-sm-6">
+
                                         <p class="desc">图片主体是红色，背景为白色<br>建议尺寸990x560
 
-                                            <br><input id="getResult" type="button" name="shengcheng" class="btn btn-block btn-danger" value="转为LOGO图"/>
-                                            <span id="lookDefault">恢复默认</span>
+                                            <br><input id="getResult" type="button" name="shengcheng"
+                                                       class="btn btn-block btn-danger" value="转为LOGO图"/>
+
                                         </p>
                                     </div>
 
@@ -54,9 +86,9 @@
                                                           aria-expanded="false">配置<b class="caret"></b></a>
                         <ul class="dropdown-menu" role="menu">
                             <li>
-                                <div class="mega-content" style="width:600px">
+                                <div class="mega-content" style="width:400px">
                                     <div class="row">
-                                        <div class="fl" >
+                                        <div class="fl">
                                             <h3>效果设置</h3>
                                             <p>头像方块尺寸：
                                                 <!-- 定义单元格大小 -->
@@ -71,6 +103,11 @@
                                                 方块默认颜色：<input id="squreColor" type="color" value="#e50150">
                                                 <br>
                                                 签到方块数量： <span id="totalCell">566</span>
+                                                <br>
+                                                <button type="button" class="btn btn-warning ladda-button"
+                                                        data-style="zoom-in" data-plugin="ladda">
+                                                    <span id="lookDefault">恢复默认</span></button>
+
                                             </p>
                                         </div>
                                     </div>
@@ -80,19 +117,31 @@
                     </li>
 
 
-                    <li  >
+                    <li class="li-button">
 
-                        <button type="button" class="btn btn-block btn-success" id="save-edite">保存</button>
+
+                        <button type="button" class="btn btn-block btn-warning ladda-button" id="save-edite">保存</button>
 
 
                     </li>
-                </ul>
 
+                </ul>
+                <!-- End Navbar Toolbar -->
+
+                <!-- Navbar Toolbar Right -->
+
+                <!-- End Navbar Toolbar Right -->
             </div>
+            <!-- End Navbar Collapse -->
+
+            <!-- Site Navbar Seach -->
+
+            <!-- End Site Navbar Seach -->
         </div>
     </nav>
 
-    <div class="page animsition">
+
+    <div class="page animsition" style="padding-top: 50px">
 
 
         <div class="page-content container-fluid lt-body bg-primary-100 text-center padding-20 ">
@@ -127,27 +176,36 @@
         margin: 0;
         padding: 0;
     }
-    body{
+
+    body {
         padding-top: 0px;;
+    }
+
+    .li-button {
+        padding-top: 15px;
+        padding-bottom: 22px;
+        padding-left: 20px;
     }
 
 </style>
 <script>
-    var imgdomain=window.imgdomain=""
+    var imgdomain = window.imgdomain = ""
     require('../../assets/examples/css/dashboard/team.min.css');
     require('../../utils/u.js')
     require('layer/layer.js')
     require('layer/skin/layer.css')
-   // ##require('../../assets/logo/layer/skin/layer.css')
+    // ##require('../../assets/logo/layer/skin/layer.css')
     require('../../assets/logo/fonts/font-hixianchang.css')
     require('../../assets/logo/wall-set.css')
-     require('../../assets/logo/config')
+    require('../../assets/logo/config')
     require('../../assets/logo/jquery.base64.min')
     var Parse = require("parse");
+    import logo from "../Common/logo.vue"
+
 
     export default{
 
-
+        components: {logo},
         data(){
             return {
                 token: '',
@@ -163,7 +221,7 @@
         methods: {
             init: function () {
                 window.Site.cc();
-               this.getdata();
+                this.getdata();
                 ;
             },
             openurl: function (url, id) {
@@ -177,6 +235,8 @@
             remove: function (index, item) {
 
             },
+
+
             calldata: function (status) {
                 this.status = status;
                 this.next = 1;
@@ -188,7 +248,7 @@
                 //_vm.item.style=parseInt(_vm.item.style);
 
                 var act = "update"
-                var id =  _vm.app.aid ;
+                var id = _vm.app.aid;
 
                 fetch(_vm.app.api + '/logowall/' + act + '/' + id, {
                     method: 'POST',
@@ -243,9 +303,8 @@
                 }).then(function (item) {
 
 
-                    _vm.item=item.data;
+                    _vm.item = item.data;
                     _vm.initjs(item.data);
-
 
 
                 });
@@ -253,9 +312,9 @@
 
             },
 
-            initjs: function (app) {
-                var _vm=this;
 
+            initjs: function (app) {
+                var _vm = this;
 
 
                 //执行图片预加载，并上传默认图片.
@@ -283,7 +342,7 @@
                     $('#up-button').parents("form")[0].reset();
                     layer.closeAll();
                     if (null != commonFile) {
-                        var imgPath = commonFile.url();
+                        var imgPath = commonFile.url;
                         var imgObj = new Image();
                         imgObj.src = imgPath;
                         imgObj.onload = function () {
@@ -348,7 +407,7 @@
                                 "wallId": parseInt(wall.id)
                             }
                         }).post({
-                            type:'get',
+                            type: 'get',
                             url: "/static/read.json",
                             callBack: function (data) {
                                 if ('Right' == data.systemContent.state) {
@@ -409,12 +468,12 @@
                         });
                     }
 
-                   // initLogo();
+                    // initLogo();
 
-                    function setDesign(){
+                    function setDesign() {
 
                         //var logoDesign=app.get("logoDesign")
-                        var logoDesign=_vm.item.logo_hex;
+                        var logoDesign = _vm.item.logo_hex;
 
                         var logoWallObj = $('#customLogo'), squreColor, cellNum, showCell;
                         if (logoDesign) {
@@ -467,6 +526,7 @@
                             height: cellNum + 'px'
                         });
                     }
+
 //
 //                    function initDesign(){
 //                        var logoData = Parse.Object.extend("walls");
@@ -491,7 +551,7 @@
 //                            }
 //                        });
 //                    }
-                     setDesign();
+                    setDesign();
 
                     //上传图片生成方格图
                     $("#getResult").click(function () {
@@ -503,7 +563,7 @@
                                 img = new Image(),
                                 flag = true,
                                 _this = $(this);
-                        file=document.getElementById('up-button').files[0];
+                        file = document.getElementById('up-button').files[0];
                         reader.readAsDataURL(file);
                         reader.onload = function () {
                             img.src = reader.result;
@@ -525,33 +585,64 @@
                                     shade: [0.5, '#6C6C6C'],
                                     skin: 'layui-layer-myloading'
                                 });
-                                oForm.submit();
+                                var input = document.querySelector('input[type="file"]')
+
+                                var data = new FormData()
+                                data.append('file', input.files[0])
+                                data.append('content', 'logowall')
+                                // oForm.submit();
+
+                                fetch(_vm.app.upload, {
+                                    method: 'post',
+                                    headers: {
+                                        'Accept': 'application/json',
+
+                                        'Authorization': _vm.app.token
+                                    },
+                                    body: data
 
 
+                                }).then(function (response) {
+                                    if (response.status >= 400) {
+                                        throw new Error("Bad response from server");
+                                    }
 
-                                var name = "photo.jpg";
+                                    return response.json();
+                                }).then(function (item) {
 
-                                var parseFile = new Parse.File(name, file);
+                                    //layer.closeAll()
+                                    _vm.item.pic = item;
+                                    item.url=_vm.app.img+ item.url
+                                    callBack(item)
+                                   // $("#egImg")[0].src =_vm.app.img+ item.url;
 
 
-                                parseFile.save().then(function(a) {
-                                    // The file has been saved to Parse.
-                                    //console.log(a)
-
-                                    var jobApplication = _vm.item;
-                                    jobApplication.set("wallid",_vm.app.aid);
-                                    jobApplication.set("file", parseFile);
-                                    jobApplication.set("cate", "logo");
-                                    jobApplication.save();
-                                    console.log(parseFile);
-
-                                    //var profilePhoto = profile.get("photoFile");
-                                    //$("#profileImg")[0].src = parseFile.url();
-                                    callBack(parseFile)
-
-                                }, function(error) {
-                                    // The file either could not be read, or could not be saved to Parse.
                                 });
+
+
+//                                var name = "photo.jpg";
+//
+//                                var parseFile = new Parse.File(name, file);
+//
+//
+//                                parseFile.save().then(function(a) {
+//                                    // The file has been saved to Parse.
+//                                    //console.log(a)
+//
+//                                    var jobApplication = _vm.item;
+//                                    jobApplication.set("wallid",_vm.app.aid);
+//                                    jobApplication.set("file", parseFile);
+//                                    jobApplication.set("cate", "logo");
+//                                    jobApplication.save();
+//                                    console.log(parseFile);
+//
+//                                    //var profilePhoto = profile.get("photoFile");
+//                                    //$("#profileImg")[0].src = parseFile.url();
+//                                    callBack(parseFile)
+//
+//                                }, function(error) {
+//                                    // The file either could not be read, or could not be saved to Parse.
+//                                });
                             }
                         }
                     }
@@ -561,7 +652,7 @@
                     //转换成矩阵
                     function toLogoImg() {
                         var img = new Image();
-                        img.crossOrigin="anonymous";
+                        img.crossOrigin = "anonymous";
                         var oldImg = $('#logopic').val();
                         if (oldImg != defaultImg) {
                             img.src = $('#logopic').val();//.dealUrl(wwwdomain) + '?app=hi';
@@ -719,11 +810,11 @@
                             'showCell': showCellArr
                         };
                         var json = JSON.stringify(logoDesign);
-                        alert(json)
-                        _vm.item.logo_hex=$.base64.btoa(json, true);
+
+                        _vm.item.logo_hex = $.base64.btoa(json, true);
 
                         //var jobApplication = _vm.item;
-                        _vm.$set("item.logo_hex",$.base64.btoa(json, true));
+                        _vm.$set("item.logo_hex", $.base64.btoa(json, true));
                         _vm.save();
 
 //                        jobApplication.set("logoDesign",$.base64.btoa(json, true));

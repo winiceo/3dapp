@@ -66,8 +66,8 @@ exports.getEntry = function(globPath) {
         pathname = tmp.splice(0, 1) + '/' + basename; // 正确输出js和html的路径
         entries[pathname] = entry;
     });
-   
 
+    
 
     return entries;
 }

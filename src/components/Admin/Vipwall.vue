@@ -71,7 +71,7 @@
         </div>
     </div>
 
-    <aside :show.sync="showRight" placement="right" header="编辑信息" :width="250" style="top:70px;">
+    <aside :show.sync="showRight" placement="right" header="编辑信息" :width="550" style="top:70px;">
 
         <div class="task-main-editor">
 
@@ -260,9 +260,9 @@
                         this.handleHeight(), this.handleResize()
                     }
                 }),
-                        AppNoteBook.run()
+                 AppNoteBook.run()
 
-
+                window.Site.cc();
             },
 
             new_item: function () {
@@ -339,8 +339,9 @@
                     return response.json();
                 }).then(function (item) {
                     _vm.add ? _vm.items.push(item.data) : ""
-
+                    _vm.item={}
                     toastr.info('保存成功')
+                    _vm.showRight = false
 
                 });
             },
@@ -409,7 +410,7 @@
 
 
                                 _vm.item.pic = response
-                                alert(_vm.item.pic)
+
 
 
                             });
@@ -427,7 +428,7 @@
 
                     });
                 } catch (e) {
-                    alert(e)
+                    //alert(e)
                 }
             }
         },
