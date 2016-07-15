@@ -18,7 +18,7 @@
 <script>
     import Navbar from '../wall/Navbar'
     import Sidebar from './Sidebar'
-    import {API_ROOT} from '../../config.js'
+    import {API_ROOT,User_Center} from '../../config.js'
     import {req} from "../../utils/leven"
     import Vue from "vue"
     require("dropzone/dist/min/basic.min.css")
@@ -43,10 +43,10 @@
                 var _vm = this;
                 _vm.$getItem("token").then(function (token) {
                     if (!token) {
-                        window.location.href = ("/app/wall.html#!/login")
+                        window.location.href = User_Center+"/login"
                     }
                     if (!/^[\d+]*$/.test(req("id"))) {
-                        window.location.href = ("/app/wall.html#!/login")
+                        window.location.href = User_Center+"/login"
 
                     }
                     _vm.$set("app.token", token);

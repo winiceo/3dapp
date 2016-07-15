@@ -351,7 +351,8 @@
                     return response.json();
                 }).then(function (item) {
                     _vm.add ? _vm.items.push(item.data) : ""
-
+                    _vm.item={}
+                    _vm.showRight=false;
                     toastr.info('保存成功')
 
                 });

@@ -11,7 +11,7 @@
 
 
     import Vue from "vue"
-    import {API_ROOT} from '../../config.js'
+    import {API_ROOT,User_Center} from '../../config.js'
     import {loading} from '../../lib/vue-strap'
     Vue.mixin({
         data:function(){
@@ -32,6 +32,43 @@
 
 
             },
+            gettoken: function () {
+                var _vm = this;
+                console.log(_vm.item)
+                var key=_vm.$route.query.token
+                fetch(API_ROOT + '/api/v1/common/token/'+key, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+
+
+                    }
+
+                }).then(function (response) {
+                    console.log(response.status)
+                    if (response.status != 200) {
+                        //throw new Error("Bad response from server");
+                        toastr.info('用户名或密码不正确,请重新登录')
+                        _vm.item={};
+                        window.location.href = User_Center+"/login"
+                        //throw new Error("Bad response from server");
+                    }
+
+                    return response.json();
+                }).then(function (docs) {
+
+                    var token="Bearer "+docs.data.token
+                    //_vm.$set("app.token", token);
+                    //alert(docs)
+                    console.log(docs)
+                    _vm.$setItem('token', token,function () {
+                         _vm._init(_vm.init);
+                    })
+
+                });
+
+            },
             _init: function (callback) {
                 this.app = {
                     token: "",
@@ -40,17 +77,16 @@
                     img: ''
                 }
                 var _vm = this;
-                var route=['/register','/login']
+                //var route=['/register','/login']
                 _vm.$getItem("token").then(function (token) {
-                   alert(_vm.$route.query.md5)
-                    if (!token&&_vm.$route.query.md5) {
 
-                        _vm.$set("app.token", "Bearer "+_vm.$route.query.md5);
-                    }else if (!token&&_.indexOf(route,_vm.$route.path)==-1) {
-                        window.location.href = ("/app/wall.html#!/login")
+                     if (!token) {
+                         window.location.href = User_Center+"/login"
+                    }else{
+                        _vm.$set("app.token", token);
                     }
 
-                    _vm.$set("app.token", token);
+
                     _vm.$set("app.api", API_ROOT + "/api/v1")
                     _vm.$set("app.img", API_ROOT)
                     _vm.$set("app.upload", API_ROOT + "/common/image/new")
@@ -60,10 +96,13 @@
             }
         }, ready(){
             $("body").css({"padding-top":"110px"})
-            this._init(this.init);
+            if(this.$route.query.token){
+                this.gettoken()
+            }else{
+                this._init(this.init);
+            }
+
         }
     })
-
-
 
 </script>

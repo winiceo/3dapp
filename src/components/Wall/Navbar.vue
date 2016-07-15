@@ -279,9 +279,9 @@
         </div>
     </nav>
 
-    <modal-alert :show.sync="showModalAlert" title="更新密码",foot="false">
+    <modal-alert :show.sync="showModalAlert" title="更新密码" ,foot="false">
 
-        <div  slot="content" id="form" class="styleguide-section">
+        <div slot="content" id="form" class="styleguide-section">
 
             <div class="grid-form cf">
                 <form-input
@@ -298,14 +298,14 @@
                         :model.sync="userinfo.repassword"
                         type="password"
                         label="重复密码"
-                       :error="error"
+                        :error="error"
 
 
                         message="重复密码输入不一致"
-                         >
+                >
                 </form-input>
-                {{error}}
-                <button class="button button-general" :class="{'button-disabled' : error}"  @click="save">
+
+                <button class="button button-general" :class="{'button-disabled' : error}" @click="save">
                     确定
                 </button>
             </div>
@@ -326,39 +326,39 @@
     import {ModalAlert, FormInput} from "../../lib/components"
     //require('../../global/js/components/toastr.min');
     //import { vsFormInput } from 'vuestrap-base-components/src/components'
-
+    import {User_Center} from "../../config"
 
     export default{
         data(){
             return {
-                userinfo:{},
-                error:false,
+                userinfo: {},
+                error: false,
                 showModalAlert: false
             }
         },
-        computed:{
-            error:function(){
-                return this.userinfo.password==this.userinfo.repassword?false:true
+        computed: {
+            error: function () {
+                return this.userinfo.password == this.userinfo.repassword ? false : true
             },
-            checkPasswd:function(){
-                if(this.userinfo.password){
-                    return this.userinfo.password.toString().length<6
-                }else{
+            checkPasswd: function () {
+                if (this.userinfo.password) {
+                    return this.userinfo.password.toString().length < 6
+                } else {
                     return false;
                 }
 
                 //this.error=this.userinfo.password==this.userinfo.repassword?false:true;
             }
         },
-        components: {logo, ModalAlert,FormInput},
+        components: {logo, ModalAlert, FormInput},
         methods: {
 
             logout: function () {
                 this.$clearStorage();
-                window.location.href = "/app/wall.html#!/login"
+                window.location.href = User_Center + "/logout";//"/app/wall.html#!/login"
             },
-            getuser:function(){
-                var _vm=this;
+            getuser: function () {
+                var _vm = this;
                 fetch(_vm.app.api + '/user', {
                     method: 'POST',
                     headers: {
@@ -377,13 +377,13 @@
                 }).then(function (item) {
                     //_vm.add ? _vm.items.push(item.data) : ""
                     console.log(item)
-                    _vm.userinfo=item;
+                    _vm.userinfo = item;
 
                 });
             },
-            save:function(){
+            save: function () {
 
-                var _vm=this;
+                var _vm = this;
                 fetch(_vm.app.api + '/user/update', {
                     method: 'POST',
                     headers: {
@@ -403,7 +403,7 @@
                     //_vm.add ? _vm.items.push(item.data) : ""
 
                     //toastr.info('更新成功');
-                    _vm.showModalAlert=false;
+                    _vm.showModalAlert = false;
 
                 });
             }

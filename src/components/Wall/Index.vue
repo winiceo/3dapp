@@ -340,7 +340,7 @@
                     this.item = item;
                     this.$broadcast('show::modal', act.url)
                 } else {
-                    window.open(act.url + "?id=" + item.id)
+                    window.location.href=(act.url + "?id=" + item.id)
                 }
             },
 

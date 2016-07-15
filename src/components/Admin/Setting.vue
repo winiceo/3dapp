@@ -369,7 +369,7 @@
                 }).then(function (item) {
 
                     //console.log(items);
-                    _vm.item = item;
+                    _vm.item = item.data;
                     setTimeout(function () {
                         if (_vm.item.bg_audio) {
                             plyr.setup();

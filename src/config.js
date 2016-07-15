@@ -6,4 +6,6 @@ export const CookieDomain = (process.env.NODE_ENV === 'production')
 			? '.71an.com'
 			:''
 
+export const User_Center='http://wall.71an.com'
+
  

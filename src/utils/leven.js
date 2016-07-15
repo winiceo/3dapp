@@ -1,6 +1,7 @@
 /**
  * Created by leven on 16/6/7.
  */
+import {User_Center} from '../config.js'
 
 exports.req = function (param) {
     var urlParams;
@@ -32,11 +33,12 @@ exports.checkStatus = function (response) {
     if (response.status >= 200 && response.status < 300) {
         return response
     }else if(response.status == 401){
-        window.location.href="/app/wall.html#!/login"
+        window.location.href=User_Center+"/login"
     } else {
         var error = new Error(response.statusText)
         error.response = response
         throw error
+        window.location.href=User_Center+"/login"
     }
 
 }

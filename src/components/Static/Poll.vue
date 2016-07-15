@@ -74,15 +74,7 @@
         </div>
 
 
-        <!-- Site Action -->
-        <div class="site-action">
-            <button type="button" @click="new_poll"
-                    class="site-action-toggle btn-raised btn btn-success btn-floating ">
-                <i class="front-icon wb-plus animation-scale-up" aria-hidden="true"></i>
-                <i class="back-icon wb-close animation-scale-up" aria-hidden="true"></i>
-            </button>
 
-        </div>
         <!-- End Site Action -->
 
 
