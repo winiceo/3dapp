@@ -2,11 +2,11 @@
     <nav class="site-navbar navbar navbar-default navbar-fixed-top navbar-mega navbar-inverse"
          role="navigation">
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle hamburger hamburger-close navbar-toggle-left hided"
-                    data-toggle="menubar">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="hamburger-bar"></span>
-            </button>
+            <!--<button type="button" class="navbar-toggle hamburger hamburger-close navbar-toggle-left hided"-->
+                    <!--data-toggle="menubar">-->
+                <!--<span class="sr-only">Toggle navigation</span>-->
+                <!--<span class="hamburger-bar"></span>-->
+            <!--</button>-->
             <button type="button" class="navbar-toggle collapsed" data-target="#site-navbar-collapse"
                     data-toggle="collapse">
                 <i class="icon wb-more-horizontal" aria-hidden="true"></i>
@@ -279,11 +279,12 @@
         </div>
     </nav>
 
-    <modal-alert :show.sync="showModalAlert" title="更新密码" ,foot="false">
+    <modal-alert :show.sync="showModalAlert" class='my3d' title="更新密码" ,foot="false">
 
         <div slot="content" id="form" class="styleguide-section">
 
-            <div class="grid-form cf">
+            <div class="  cf password">
+                <div class="form-group">
                 <form-input
                         :model.sync="userinfo.password"
                         type="password"
@@ -293,7 +294,10 @@
 
                         message="密码不能小于6位数"
                 >
+
                 </form-input>
+                    </div>
+                <div class="form-group">
                 <form-input
                         :model.sync="userinfo.repassword"
                         type="password"
@@ -304,10 +308,13 @@
                         message="重复密码输入不一致"
                 >
                 </form-input>
+                </div>
+                <div class="form-group" style="text-align:center">
 
-                <button class="button button-general" :class="{'button-disabled' : error}" @click="save">
+                <button class="button btn btn-default btn-outline" :class="{'button-disabled' : error}" @click="save">
                     确定
                 </button>
+                    </div>
             </div>
 
         </div>
@@ -316,7 +323,13 @@
     </modal-alert>
 </template>
 <style>
-
+    .password > div{
+        width:100%;
+    }
+    .my3d .modal-header {
+       padding: 0;
+        border-bottom: none;
+    }
 
 </style>
 <script>

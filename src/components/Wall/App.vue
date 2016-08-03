@@ -77,10 +77,10 @@
                     img: ''
                 }
                 var _vm = this;
-                //var route=['/register','/login']
+                var route=['/register','/login']
                 _vm.$getItem("token").then(function (token) {
 
-                     if (!token) {
+                     if (!token&&_.indexOf(route,_vm.$route.path)==-1) {
                          window.location.href = User_Center+"/login"
                     }else{
                         _vm.$set("app.token", token);

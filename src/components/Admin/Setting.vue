@@ -444,6 +444,11 @@
 
 
                             });
+
+                            this.on("error", function (file) {
+                                toastr.warning('上传失败请重试')
+
+                            });
                             this.on("complete", function (file) {
                                 this.removeFile(file);
 

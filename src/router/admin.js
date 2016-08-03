@@ -33,6 +33,15 @@ export default function(router) {
             name: 'poll',
             component: require('../components/Admin/Poll.vue')
         },
+        '/shake': {
+            name: 'shake',
+            component: require('../components/Admin/Shake.vue')
+        },
+        '/shakeprize': {
+            name: 'shakeprize',
+            component: require('../components/Admin/Shakeprize.vue')
+        },
+
 
         // '/message': {
         //     name: 'message',

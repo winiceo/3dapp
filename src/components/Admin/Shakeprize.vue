@@ -7,7 +7,7 @@
                 <i class="icon wb-chevron-right" aria-hidden="true"></i>
             </div>
             <div class="page-aside-inner">
-                <div class="well">投票列表</div>
+                <div class="well">摇大奖列表</div>
 
                 <div class="app-notebook-list " data-plugin="pageAsideScroll">
                     <div data-role="container">
@@ -57,63 +57,23 @@
 
 
                                 <div class="form-group">
-                                    <label class="control-label">题目</label>
+                                    <label class="control-label">摇大奖标题</label>
                                     <input type="text" name="title" id="title" class="form-control" v-model="item.title">
 
 
                                 </div>
+
                                 <div class="form-group">
-                                    <label class="control-label">是否多选</label>
-                                    <div>
-                                        <div class="radio-custom radio-default radio-inline">
-                                            <input type="radio" value=0 v-model="item.multiple">
-                                            <label>单选</label>
-                                        </div>
-                                        <div class="radio-custom radio-default radio-inline">
-                                            <input type="radio" value=1 v-model="item.multiple">
+                                    <label class="control-label">摇大奖时间</label>
+                                    <input type="number" name="duration" id="duration" class="form-control" v-model="item.duration">
 
-                                            <label>多选</label>
-                                        </div>
-                                    </div>
+
                                 </div>
-                                <template v-if="item.multiple==1">
-                                    <div class="row row-lg">
-
-                                        <div class="form-group col-sm-4">
-                                            最多选
-                                        </div>
-                                        <div class="form-group col-sm-4">
-                                            <input type="number" class="form-control"
-                                                   v-model="item.max_choices" placeholder="最多选">
-                                        </div>
-                                        <div class="form-group col-sm-4">
-                                            (0表示不限)
-                                        </div>
-
-                                    </div>
-                                    <div class="row row-lg">
-                                        <div class="form-group col-sm-4">
-                                            最少选
-                                        </div>
-                                        <div class="form-group col-sm-4">
-                                            <input type="number" class="form-control"
-                                                   v-model="item.min_choices" placeholder="最少选">
-                                        </div>
-                                        <div class="form-group col-sm-4">
-                                            (0表示不限)
-                                        </div>
-                                    </div>
-
-
-                                </template>
-
-
-
 
                                 <div class="form-group">
                                     <div class="col-sm-9 col-sm-offset-3">
                                         <button type="submit"
-                                                class="btn btn-primary save_poll">保存
+                                                class="btn btn-primary save_snake">保存
                                         </button>
 
                                     </div>
@@ -131,7 +91,7 @@
                         <div class="panel panel-bordered panel-dark"
                              style="animation-fill-mode: backwards; animation-duration: 250ms; animation-delay: 0ms;">
                             <div class="panel-heading">
-                                <h3 class="panel-title">添加选项</h3>
+                                <h3 class="panel-title">添加奖项</h3>
                                 <div class="panel-actions">
 
                                     <a class="  icon wb-plus" @click="add_choice"></a>
@@ -142,14 +102,14 @@
 
                                 <ul class="list-group list-group-dividered list-group-full">
 
-                                    <template v-for="(index,co) in item.choices" track-by="$index"
+                                    <template v-for="(index,co) in item.awards" track-by="$index"
                                               class="validate-field">
 
                                         <li class="list-group-item" id="li_{{$index}}">
                                             <div class="media">
                                                 <div class="media-left">
 
-                                                    <div class="dropzone thumbnail poll"
+                                                    <div class="dropzone thumbnail snake"
                                                           id="dropzone_{{$index}}"
                                                           style="margin:10px;"
                                                             data-index="{{$index}}"
@@ -175,13 +135,15 @@
                                                 <div class="media-body" style=" vertical-align: middle;">
                                                     <div class="pull-right timeline-icon" v-if="$index>=2">
                                                         <i class="icon wb-close"
-                                                           @click="item.choices.splice($index,1)"></i>
+                                                           @click="item.awards.splice($index,1)"></i>
                                                     </div>
 
                                                     <div>
                                                         <div class="form-group">
                                                              <input type="hidden" name="id[]" v-model="co.id">
-                                                            <input type="text" class="oo_name" name="name[]" placeholder="选项内容" v-model="co.name">
+                                                              <input type="text" class="oo_name" name="award_name[]" placeholder="奖品名称" v-model="co.prize_name">
+                                                             <input type="text" class="oo_name" name="prize_num[]" placeholder="发放数量" v-model="co.prize_num">
+                                                             <textarea type="text" class="oo_name" name="description[]" placeholder="恭喜中奖！  请尽快联系主办方领奖吧" v-model="co.description"></textarea>
 
 
                                                         </div>
@@ -214,7 +176,7 @@
 
         <!-- Site Action -->
         <div class="site-action">
-            <button type="button" @click="new_poll"
+            <button type="button" @click="new_snake"
                     class="site-action-toggle btn-raised btn btn-success btn-floating ">
                 <i class="front-icon wb-plus animation-scale-up" aria-hidden="true"></i>
                 <i class="back-icon wb-close animation-scale-up" aria-hidden="true"></i>
@@ -269,7 +231,7 @@
         width: 250px;
     }
 
-    .poll {
+    .snake {
         min-height: 80px;
         width: 80px;
         height: 80px;
@@ -278,7 +240,7 @@
 
     }
 
-    .poll .dz-preview .dz-image {
+    .snake .dz-preview .dz-image {
         border-radius: 10px;
         overflow: hidden;
         width: 100px;
@@ -436,7 +398,7 @@
             return {
 
                 add: true,
-                context: "choices",
+                context: "awards",
 
                 count: 0,
                 skip: 0,
@@ -447,12 +409,13 @@
                 tempPic: '',
                 item: {},
 
-
-                choice: {
+                award: {
 
                     id: "",
                     pic: "",
-                    name: ""
+                    award_name: "",
+                    prize_num: "",
+                    description:"恭喜中奖！  请尽快联系主办方领奖吧"
                 }
             }
         },
@@ -463,6 +426,7 @@
                         // this.uploadUrl = "http://localhost:9999/upload",
 
                         this.getdata();
+
                 window.Site.cc();
                 window.AppNoteBook = Site.extend({
                     handleHeight: function () {
@@ -480,10 +444,11 @@
                         this.handleHeight(), this.handleResize()
                     }
                 }),
-                        AppNoteBook.run()
+
+                AppNoteBook.run()
 
                // Dropzone.autoDiscover = false;
-                this.new_poll()
+                this.new_snake()
                 this.formValid()
 
 
@@ -492,7 +457,7 @@
                 var _vm=this;
                 setTimeout(function () {
                     var i=-1;
-                    _.forEach(_vm.item.choices, function (n, key) {
+                    _.forEach(_vm.item.awards, function (n, key) {
                         var that = "#li_" + (++i);
                         var $option   = $(that).find('[name="name[]"]');
                         $('.form_valid').formValidation('addField', $option);
@@ -526,7 +491,7 @@
                     }
                 }).on('success.form.fv', function (e) {
 
-                    _vm.save_poll();
+                    _vm.save_snake();
                     return false;
                 })
 
@@ -543,7 +508,7 @@
                 //this.item.delete(index)
                 var _vm = this;
                 this.items.splice(item, 1)
-                fetch(_vm.app.api + '/pollwall/question/delete/' + item.id, {
+                fetch(_vm.app.api + '/shakeprizewall/shakeprize/delete/' + item.id, {
                     method: 'POST',
                     headers: {
                         'Accept': 'application/json',
@@ -565,8 +530,8 @@
                 });
             },
             add_choice: function () {
-                var choice = _.clone(this.choice);
-                this.item.choices.push(choice)
+                var choice = _.clone(this.award);
+                this.item.awards.push(choice)
                 var _vm = this;
                 this.dropzone()
             },
@@ -575,7 +540,7 @@
                 var that = "#dropzone_" + index;
                 _vm.setup(that);
                 console.log(that)
-                _vm.tempPic = _vm.item.choices[index].pic = null
+                _vm.tempPic = _vm.item.awards[index].pic = null
                 // $(that).find("img").click(function (e) {
 
 
@@ -593,14 +558,14 @@
                 var _vm = this;
                 setTimeout(function () {
                     var i = -1;
-                    _.forEach(_vm.item.choices, function (n, key) {
+                    _.forEach(_vm.item.awards, function (n, key) {
                         var that = "#dropzone_" + (++i);
                         _vm.setup(that);
                         console.log(that)
 
                         $(that).find("img").click(function (e) {
                             ///$(this).hide();
-                            //_vm.tempPic= _vm.item.choices[$(that).data("index")].pic = null
+                            //_vm.tempPic= _vm.item.awards[$(that).data("index")].pic = null
                             setTimeout(function () {
                                 if ($(that).find("a")[0]) {
                                     $(that).find("a")[0].click();
@@ -611,32 +576,29 @@
                         })
                     });
                     _vm.setNames()
-                    //_vm.setup("#dropzone_" + (_vm.item.choices.length - 1));
+                    //_vm.setup("#dropzone_" + (_vm.item.awards.length - 1));
                 }, 100)
 
             },
-            new_poll: function () {
+            new_snake: function () {
                 var _vm = this;
 
                 this.item = {
-                    choices: [],
-                    max_choices: 3,
-                    min_choices: 2,
-                    multiple: 0
+                    awards: []
+
                 };
-                this.item.choices=[]
-                var choice = _.clone(this.choice);
+                this.item.awards=[]
+                var choice = _.clone(this.award);
                 $(".dz-preview").remove();
-                this.item.choices.push(choice);
-                var choice1 = _.clone(this.choice);
-                this.item.choices.push(choice1);
+                this.item.awards.push(choice);
+
 
                 this.add = true;
                 this.dropzone();
 
 
             },
-            save_poll: function () {
+            save_snake: function () {
                 var _vm = this;
                 //_vm.item.style=parseInt(_vm.item.style);
                 //alert('form is '+(this.$valid() ? 'VALID' : 'INVALID'));
@@ -644,7 +606,7 @@
 
                 var act = this.add ? "new" : "update"
                 var id = this.add ? _vm.app.aid : _vm.item.id;
-                fetch(_vm.app.api + '/pollwall/question/' + act + '/' + id, {
+                fetch(_vm.app.api + '/shakeprizewall/shakeprize/' + act + '/' + id, {
                     method: 'POST',
                     headers: {
                         'Accept': 'application/json',
@@ -665,7 +627,7 @@
                     }
                     _vm.item = {};
 
-                    _vm.new_poll()
+                    _vm.new_snake()
 
 
                     console.log(_vm.item);
@@ -676,7 +638,7 @@
             getdata: function (callback) {
                 var _vm = this;
                 console.log(this.app)
-                fetch(_vm.app.api + '/pollwall/' + _vm.app.aid, {
+                fetch(_vm.app.api + '/shakeprizewall/' + _vm.app.aid, {
                     method: 'GET',
                     headers: {
                         'Accept': 'application/json',
@@ -743,11 +705,11 @@
                                 console.log(response);
                                 console.log(file);
                                 $(".dz-image-preview").hide();
-                                _vm.item.choices[$(that).data("index")].pic = response
+                                _vm.item.awards[$(that).data("index")].pic = response
                                 setTimeout(function () {
                                     $(that).find("img").click(function (e) {
 
-                                        // _vm.item.choices[$(that).data("index")].pic = null
+                                        // _vm.item.awards[$(that).data("index")].pic = null
                                         setTimeout(function () {
                                             if ($(that).find(".drop_delete")[0]) {
                                                 $(that).find(".drop_delete")[0].click();
