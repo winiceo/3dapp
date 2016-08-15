@@ -49,7 +49,7 @@
                         <div class="panel panel-bordered panel-dark"
                              style="animation-fill-mode: backwards; animation-duration: 250ms; animation-delay: 0ms;">
                             <div class="panel-heading">
-                                <h3 class="panel-title">投票设置</h3>
+                                <h3 class="panel-title">摇大奖设置</h3>
 
                             </div>
 
@@ -94,7 +94,8 @@
                                 <h3 class="panel-title">添加奖项</h3>
                                 <div class="panel-actions">
 
-                                    <a class="  icon wb-plus" @click="add_choice"></a>
+                                    <a class="  icon wb-plus" @click="add_choice">实物奖品</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <a class="  icon wb-library  " @click="add_red_choice">红包奖品</a>
                                 </div>
                             </div>
                             <div class="panel-body" style="padding-top: 0px; ">
@@ -109,7 +110,7 @@
                                             <div class="media">
                                                 <div class="media-left">
 
-                                                    <div class="dropzone thumbnail snake"
+                                                    <div v-if="co.type==0" class="dropzone thumbnail snake"
                                                           id="dropzone_{{$index}}"
                                                           style="margin:10px;"
                                                             data-index="{{$index}}"
@@ -131,22 +132,52 @@
 
                                                         </div>
                                                     </div>
+                                                    <div v-if="co.type==1" style="width:120px">
+                                                        <img src="../../assets/red.png"   width=100 height="100" style=" padding:10px">
+                                                    </div>
                                                 </div>
                                                 <div class="media-body" style=" vertical-align: middle;">
-                                                    <div class="pull-right timeline-icon" v-if="$index>=2">
+                                                    <div class="pull-right timeline-icon" >
                                                         <i class="icon wb-close"
                                                            @click="item.awards.splice($index,1)"></i>
                                                     </div>
 
                                                     <div>
-                                                        <div class="form-group">
+                                                        <div class="form-group"  >
+                                                            <label class="control-label">奖品名称</label>
                                                              <input type="hidden" name="id[]" v-model="co.id">
-                                                              <input type="text" class="oo_name" name="award_name[]" placeholder="奖品名称" v-model="co.prize_name">
-                                                             <input type="text" class="oo_name" name="prize_num[]" placeholder="发放数量" v-model="co.prize_num">
-                                                             <textarea type="text" class="oo_name" name="description[]" placeholder="恭喜中奖！  请尽快联系主办方领奖吧" v-model="co.description"></textarea>
+                                                              <input type="text" class="oo_name form-control" name="prize_name[]" placeholder="奖品名称" v-model="co.prize_name">
 
 
                                                         </div>
+                                                        <div class="form-group"  >
+                                                            <label class="control-label">发放数量</label>
+
+                                                            <input type="number" class="oo_name form-control" name="prize_num[]" placeholder="发放数量" v-model="co.prize_num">
+
+
+                                                        </div>
+                                                        <div class="form-group" v-if="co.type==0">
+                                                            <label class="control-label">中奖后信息</label>
+
+                                                            <textarea type="text" class="oo_name form-control" name="description[]" placeholder="恭喜中奖！  请尽快联系主办方领奖吧" v-model="co.description"></textarea>
+
+                                                        </div>
+
+
+                                                        <div class="form-group" v-if="co.type==1">
+                                                            <label class="control-label">红包金额(分),不能小于100</label>
+
+                                                            <input type="number" class="oo_name form-control" name="amount[]" placeholder="红包金额" v-model="co.amount">
+
+                                                        </div>
+                                                        <div class="form-group" v-if="co.type==1">
+                                                            <label class="control-label">红包祝福语</label>
+                                                            <textarea type="text" class="oo_name form-control" name="wishing[]" placeholder="恭喜中了一个红包" v-model="co.wishing"></textarea>
+
+
+                                                        </div>
+
 
 
                                                     </div>
@@ -410,12 +441,21 @@
                 item: {},
 
                 award: {
-
+                    type:0,
                     id: "",
                     pic: "",
-                    award_name: "",
-                    prize_num: "",
+                    prize_name: "",
+                    prize_num: "" ,
                     description:"恭喜中奖！  请尽快联系主办方领奖吧"
+
+                },
+                redaward:{
+                    type:1,
+                    id: "",
+                    prize_name: "",
+                    prize_num: "" ,
+                    wishing:"恭喜你中了一个红包"
+
                 }
             }
         },
@@ -459,7 +499,13 @@
                     var i=-1;
                     _.forEach(_vm.item.awards, function (n, key) {
                         var that = "#li_" + (++i);
-                        var $option   = $(that).find('[name="name[]"]');
+                        var $option   = $(that).find('[name="prize_name[]"]');
+                        $('.form_valid').formValidation('addField', $option);
+
+                        var $option   = $(that).find('[name="prize_num[]"]');
+                        $('.form_valid').formValidation('addField', $option);
+
+                        var $option   = $(that).find('[name="amount[]"]');
                         $('.form_valid').formValidation('addField', $option);
 
                     });
@@ -476,7 +522,7 @@
                     icon: null,
                     fields: {
                         title: {validators: {notEmpty: {message: "题目不能为空"}}},
-                        'name[]': {
+                        'award_name[]': {
                             validators: {
                                 notEmpty: {
                                     message: '选项不能为空'
@@ -484,6 +530,29 @@
                                 stringLength: {
                                     max: 100,
                                     message: '选项不能超过100个字'
+                                }
+                            }
+                        },
+                        'prize_num[]': {
+                            validators: {
+                                notEmpty: {
+                                    message: '选项不能为空'
+                                },
+                                stringLength: {
+                                    max: 100,
+                                    message: '选项不能超过100个字'
+                                }
+                            }
+                        },
+                        'amount[]': {
+                            validators: {
+                                notEmpty: {
+                                    message: '选项不能为空'
+                                },
+                                between: {
+                                    min: 100,
+                                    max: 20000,
+                                    message: '金额大小为100-20000之间单们为分'
                                 }
                             }
                         }
@@ -498,6 +567,7 @@
             },
             selected: function (item) {
                 var _vm = this;
+                
                 this.item = item;
                 this.add = false;
                 this.dropzone();
@@ -507,7 +577,7 @@
                 console.log(index, item)
                 //this.item.delete(index)
                 var _vm = this;
-                this.items.splice(item, 1)
+                //this.items.splice(item, 1)
                 fetch(_vm.app.api + '/shakeprizewall/shakeprize/delete/' + item.id, {
                     method: 'POST',
                     headers: {
@@ -523,6 +593,11 @@
 
                     return response.json();
                 }).then(function (item) {
+                    _vm.items = _.filter(_vm.items, function (o) {
+                        return o.id != _vm.item.id;
+                    });
+
+                    _vm.new_snake();
 
                     console.log(item);
                     toastr.info('删除成功')
@@ -531,6 +606,15 @@
             },
             add_choice: function () {
                 var choice = _.clone(this.award);
+
+                this.item.awards.push(choice)
+
+                var _vm = this;
+                this.dropzone()
+            },
+            add_red_choice: function () {
+                var choice = _.clone(this.redaward);
+
                 this.item.awards.push(choice)
                 var _vm = this;
                 this.dropzone()
@@ -584,14 +668,14 @@
                 var _vm = this;
 
                 this.item = {
-                    awards: []
 
+                    awards:[]
                 };
-                this.item.awards=[]
-                var choice = _.clone(this.award);
-                $(".dz-preview").remove();
-                this.item.awards.push(choice);
 
+                var choice = _.clone(this.award);
+
+                this.item.awards.push(choice);
+                $(".dz-preview").remove();
 
                 this.add = true;
                 this.dropzone();

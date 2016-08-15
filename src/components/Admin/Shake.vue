@@ -2,7 +2,7 @@
 
     <div class="page animsition award">
         <div class="page-header page-header-bordered page-header-tabs">
-            <h3>奖品管理</h3>
+            <h3>摇一摇</h3>
             <div class="page-header-actions">
                 <button type="button" class="btn btn-dark" @click="new_item" data-animation="scale-up"><i
                         class="icon wb-plus" aria-hidden="true"></i>添加
@@ -13,42 +13,24 @@
         </div>
 
         <div class="page-content ">
-            <div class="panel">
+
                 <ul class="blocks blocks-100 blocks-xlg-4 blocks-md-3 blocks-sm-2" id="exampleList"
                     data-filterable="true">
                     <template v-for="(index,co) in items" track-by="$index">
                         <li data-type="animal" @click="showRight = true ,item=co,index=index,add=false">
 
+                            <div class="panel panel-bordered panel-warning">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">{{co.title}}</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>摇一摇时间:{{co.duration}}秒</p>
+                                    <p> 最终显示前几名:{{co.number}}</p>
 
-                            <figure class="widget widget-article widget-shadow">
-                                <div class="widget-header cover">
-                                    <img :src="app.img+co.pic.url" class="cover-image" height=150 alt="">
+
 
                                 </div>
-                                <div class="widget-content">
-                                    <ul class="list-group list-group-bordered">
-                                        <li class="list-group-item">
-
-                                            <i class="icon wb-inbox" aria-hidden="true" draggable="true"></i>
-                                            奖项名称: {{co.award_name}}
-                                        </li>
-                                        <li class="list-group-item">
-
-                                            <i class="icon wb-user" aria-hidden="true" draggable="true"></i>
-                                            奖品名称:{{co.prize_name}}
-                                        </li>
-                                        <li class="list-group-item">
-                                            <i class="icon wb-bell" aria-hidden="true" draggable="true"></i>
-                                            奖品数量:{{co.prize_num}}
-                                        </li>
-                                        <li class="list-group-item">
-                                            <i class="icon wb-info-circle" aria-hidden="true" draggable="true"></i>
-                                            每次抽取数:{{co.single_num}}
-                                        </li>
-                                    </ul>
-                                </div>
-
-                            </figure>
+                            </div>
 
 
                         </li>
@@ -56,7 +38,7 @@
 
                 </ul>
             </div>
-        </div>
+
     </div>
 
 
@@ -86,53 +68,20 @@
 
         <div class="task-main-editor">
 
-            <div class="form-group">
-
-
-                <div class="dropzone   award_uppic"
-                     id="dropzone_0"
-                     style="margin:10px;"
-
-                     data-title="上传图片">
-                    <template v-if="item.pic">
-                        <img dz-clickable
-                             class="image  " style="z-index:-10"
-
-                             :src="app.img+item.pic.url" height="120"
-                             alt="...">
-                               <span class="addMember-remove"
-                                     @click="reset()"><i
-                                       class="wb-minus-circle"></i></span>
-                    </template>
-
-                    <input type="hidden" name="context" value="{{context}}">
-
-                    <div class="fallback">
-
-                    </div>
-                </div>
-
-            </div>
-
 
             <div class="form-group">
-                <label class="control-label">奖项名称</label>
-                <input type="text" class="form-control" v-model="item.award_name"
+                <label class="control-label">摇一摇标题</label>
+                <input type="text" class="form-control" v-model="item.title"
                        placeholder="" autocomplete="off">
             </div>
             <div class="form-group">
-                <label class="control-label">奖品名称</label>
-                <input type="text" class="form-control" v-model="item.prize_name"
+                <label class="control-label">摇一摇时间(秒)</label>
+                <input type="number" class="form-control" v-model="item.duration"
                        placeholder="" autocomplete="off">
             </div>
             <div class="form-group">
-                <label class="control-label">奖品数量</label>
-                <input type="text" class="form-control" v-model="item.prize_num"
-                       placeholder="" autocomplete="off">
-            </div>
-            <div class="form-group">
-                <label class="control-label">每次抽取数量</label>
-                <input type="text" class="form-control" v-model="item.single_num"
+                <label class="control-label">最终显示前几名</label>
+                <input type="number" class="form-control" v-model="item.number"
                        placeholder="" autocomplete="off">
             </div>
 
@@ -279,33 +228,33 @@
 
             new_item: function () {
                 this.showRight = true
-                this.item = {pic: null}
+                this.item = {duration: 30,number:1}
                 this.add = true;
                 var _vm = this;
-                setTimeout(function () {
-                    _vm.setup(".dropzone");
-
-                }, 200)
+//                setTimeout(function () {
+//                    _vm.setup(".dropzone");
+//
+//                }, 200)
 
 
             },
             reset: function () {
                 var _vm = this;
                 _vm.item.pic = null;
-                _vm.setup(".dropzone");
+                // _vm.setup(".dropzone");
             },
             selected: function (item) {
                 this.item = item;
                 this.add = false;
-                _vm.setup(".dropzone");
+                //_vm.setup(".dropzone");
 
             },
             remove: function () {
 
                 //this.item.delete(index)
                 var _vm = this;
-                this.items.splice(_vm.index, 1)
-                fetch(_vm.app.api + '/awardwall/award/delete/' + _vm.item.id, {
+                //this.items.splice(_vm.index, 1)
+                fetch(_vm.app.api + '/shakewall/shake/delete/' + _vm.item.id, {
                     method: 'POST',
                     headers: {
                         'Accept': 'application/json',
@@ -322,7 +271,9 @@
                 }).then(function (item) {
 
                     console.log(item);
-                    _vm.items=_.filter(_vm.items, function(o) { return o.id !=item.id; });
+                    _vm.items = _.filter(_vm.items, function (o) {
+                        return o.id != _vm.item.id;
+                    });
 
                     toastr.info('删除成功')
 
@@ -334,7 +285,7 @@
 
                 var act = this.add ? "new" : "update"
                 var id = this.add ? _vm.app.aid : _vm.item.id;
-                fetch(_vm.app.api + '/awardwall/award/' + act + '/' + id, {
+                fetch(_vm.app.api + '/shakewall/shake/' + act + '/' + id, {
                     method: 'POST',
                     headers: {
                         'Accept': 'application/json',
@@ -351,8 +302,8 @@
                     return response.json();
                 }).then(function (item) {
                     _vm.add ? _vm.items.push(item.data) : ""
-                    _vm.item={}
-                    _vm.showRight=false;
+                    _vm.item = {}
+                    _vm.showRight = false;
                     toastr.info('保存成功')
 
                 });
@@ -360,7 +311,7 @@
             getdata: function (callback) {
                 var _vm = this;
                 console.log(this.app)
-                fetch(_vm.app.api + '/awardwall/' + _vm.app.aid, {
+                fetch(_vm.app.api + '/shakewall/' + _vm.app.aid, {
                     method: 'GET',
                     headers: {
                         'Accept': 'application/json',
@@ -374,10 +325,10 @@
                     }
 
                     return response.json();
-                }).then(function (items) {
+                }).then(function (data) {
 
-                    console.log(items);
-                    _vm.items = items;
+
+                    _vm.items = data.data;
                     whatever(callback)
 
 
@@ -422,7 +373,7 @@
 
 
                                 _vm.item.pic = response
-                               // alert(_vm.item.pic)
+                                // alert(_vm.item.pic)
 
 
                             });
@@ -440,7 +391,7 @@
 
                     });
                 } catch (e) {
-                   // alert(e)
+                    // alert(e)
                 }
             }
         },

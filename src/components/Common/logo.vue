@@ -52,7 +52,7 @@
             return {}
         },
         ready(){
-            $("#logo-svg").width(100).height(50)
+            $("#logo-svg").width(100).height(60)
             var logo = new Vivus('logo-svg', {
                 type: 'delayed',
                 duration: 200,

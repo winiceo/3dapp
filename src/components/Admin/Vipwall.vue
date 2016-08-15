@@ -410,7 +410,7 @@
 
 
                                 _vm.item.pic = response
-
+                                _vm.item.name=
 
 
                             });

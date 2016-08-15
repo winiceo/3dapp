@@ -1,7 +1,7 @@
 <template>
     <div class="top-box">
 
-        <loading :show.sync="loading"></loading>
+        <loading :show.sync="loading"   ></loading>
         <router-view></router-view>
 
     </div>
@@ -16,6 +16,7 @@
     Vue.mixin({
         data:function(){
             return {
+
                 loading:true,
                 nodata:false,
             }
@@ -32,7 +33,7 @@
 
 
             },
-            gettoken: function () {
+            gettoken: function (callback) {
                 var _vm = this;
                 console.log(_vm.item)
                 var key=_vm.$route.query.token
@@ -61,15 +62,20 @@
                     var token="Bearer "+docs.data.token
                     //_vm.$set("app.token", token);
                     //alert(docs)
-                    console.log(docs)
+                   // console.log(docs)
+
                     _vm.$setItem('token', token,function () {
-                         _vm._init(_vm.init);
+                         setTimeout(function() {
+                             _vm._init(callback);
+                         },300)
+
                     })
 
                 });
 
             },
             _init: function (callback) {
+
                 this.app = {
                     token: "",
                     api: "",
@@ -81,7 +87,13 @@
                 _vm.$getItem("token").then(function (token) {
 
                      if (!token&&_.indexOf(route,_vm.$route.path)==-1) {
-                         window.location.href = User_Center+"/login"
+
+                         if(_vm.$route.query.token){
+
+                             _vm.gettoken(callback);
+                         }else{
+                             window.location.href = User_Center+"/login"
+                         }
                     }else{
                         _vm.$set("app.token", token);
                     }
@@ -94,15 +106,15 @@
                     callback(_vm.app)
                 })
             }
-        }, ready(){
-            $("body").css({"padding-top":"110px"})
-            if(this.$route.query.token){
-                this.gettoken()
-            }else{
-                this._init(this.init);
-            }
 
+        },
+        ready:function(){
+            console.log("parent.ready")
+            this._init(this.init);
         }
+
+
     })
+
 
 </script>

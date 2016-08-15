@@ -7,17 +7,17 @@
                 <!--<span class="sr-only">Toggle navigation</span>-->
                 <!--<span class="hamburger-bar"></span>-->
             <!--</button>-->
-            <button type="button" class="navbar-toggle collapsed" data-target="#site-navbar-collapse"
-                    data-toggle="collapse">
-                <i class="icon wb-more-horizontal" aria-hidden="true"></i>
-            </button>
+            <!--<button type="button" class="navbar-toggle collapsed" data-target="#site-navbar-collapse"-->
+                    <!--data-toggle="collapse">-->
+                <!--<i class="icon wb-more-horizontal" aria-hidden="true"></i>-->
+            <!--</button>-->
             <a class="" href="../index.html">
 
                 <logo></logo>
 
             </a>
 
-            <!-- <button type="button" class="navbar-toggle collapsed" data-target="#site-navbar-search"
+             <!-- <button type="button" class="navbar-toggle collapsed" data-target="#site-navbar-search"
                     data-toggle="collapse">
                 <span class="sr-only">Toggle Search</span>
                 <i class="icon wb-search" aria-hidden="true"></i>
@@ -29,17 +29,23 @@
             <div class="collapse navbar-collapse navbar-collapse-toolbar" id="site-navbar-collapse">
                 <!-- Navbar Toolbar -->
                 <ul class="nav navbar-toolbar">
-                    <li class="hidden-float" id="toggleMenubar">
-                        <a data-toggle="menubar" href="#" role="button">
-                            <i class="icon hamburger hamburger-arrow-left">
-                                <span class="sr-only">Toggle menubar</span>
-                                <span class="hamburger-bar"></span>
-                            </i>
-                        </a>
-                    </li>
+                    <!--<li class="hidden-float" id="toggleMenubar">-->
+                        <!--<a data-toggle="menubar" href="#" role="button">-->
+                            <!--<i class="icon hamburger hamburger-arrow-left">-->
+                                <!--<span class="sr-only">Toggle menubar</span>-->
+                                <!--<span class="hamburger-bar"></span>-->
+                            <!--</i>-->
+                        <!--</a>-->
+                    <!--</li>-->
                     <li>
                         <a href="/app/wall.html">
                             <i class="icon wb-grid-4" aria-hidden="true">活动列表</i>
+                        </a>
+                    </li>
+
+                    <li v-show="showScreen">
+                        <a href="/wallmain.html?id={{aid}}" id="screenUrl">
+                            <i class="icon wb-grid-4" aria-hidden="true">进入大屏</i>
                         </a>
                     </li>
 
@@ -346,9 +352,13 @@
             return {
                 userinfo: {},
                 error: false,
+                aid:0,
+                showScreen:this.$parent.showScreen,
                 showModalAlert: false
             }
         },
+
+
         computed: {
             error: function () {
                 return this.userinfo.password == this.userinfo.repassword ? false : true
@@ -365,7 +375,10 @@
         },
         components: {logo, ModalAlert, FormInput},
         methods: {
+            init:function(){
 
+                this.aid =this.app.aid;
+            },
             logout: function () {
                 this.$clearStorage();
                 window.location.href = User_Center + "/logout";//"/app/wall.html#!/login"

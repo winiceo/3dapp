@@ -142,6 +142,8 @@
 //                       // check_out.set("minDate", d.fp_incr(1)); //increment by one day
 //                    });
 //                })
+
+
                 window.Site.cc();
                 this.$parent.hideLoading();
 

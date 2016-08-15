@@ -1,6 +1,6 @@
 <template>
 
-    <Navbar></Navbar>
+    <Navbar   ></Navbar>
     <div class="site-menubar site-menubar-light">
         <div class="site-menubar-body">
             <div>
@@ -51,6 +51,17 @@
                                                                     </div>
                                                                     <div class="font-size-10">
                                                                         {{item.start_at}}~{{item.end_at}}
+                                                                    </div>
+                                                                    <div class="font-size-10">
+                                                                        <ul class="operates">
+
+                                                                            <li>
+
+                                                                                <button class="btn btn-outline btn-danger btn-round" @click="removeItem=item;"
+                                                                                        data-animation="scale-up" data-target="#remove_activty"
+                                                                                        data-toggle="modal">删除</button>
+                                                                            </li>
+                                                                        </ul>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -116,6 +127,65 @@
 
     </div>
 
+
+
+
+    <!-- Modal -->
+    <div class="modal fade modal-super-scaled" id="remove_activty" aria-hidden="true"
+         aria-labelledby="exampleModalTitle" role="dialog" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title">确认要删除吗</h4>
+                </div>
+                <div class="modal-body">
+                    <p style="text-align:center;font-size:20px">{{removeItem.title}}</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default margin-0" data-dismiss="modal" @click="remove">确定
+                    </button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">取消</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade modal-super-scaled" id="copy_activty" aria-hidden="true"
+         aria-labelledby="exampleModalTitle" role="dialog" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title">确认要删除吗</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-4 form-group">
+                            <input type="text" class="form-control" name="firstName" placeholder="First Name">
+                        </div>
+                        <div class="col-lg-4 form-group">
+                            <input type="email" class="form-control" name="lastName" placeholder="Last Name">
+                        </div>
+                        <div class="col-lg-4 form-group">
+                            <input type="email" class="form-control" name="email" placeholder="Your Email">
+                        </div>
+                        <div class="col-lg-12 form-group">
+                            <textarea class="form-control" rows="5" placeholder="Type your message"></textarea>
+                        </div>
+                        <div class="col-sm-12 pull-right">
+                            <button class="btn btn-primary btn-outline" data-dismiss="modal" type="button">Add Comment</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
     <vs-modal id="modal1" size="md" :fade="false">
         <div slot="modal-header">
             <h3>上墙地址</h3>
@@ -127,7 +197,7 @@
                     <div class="overlay-panel overlay-background vertical-align">
                         <div class="vertical-align-middle">
                             <a class="" href="javascript:void(0)">
-                                <img alt="" :src="item.wx_address+'&size=100'">
+                                <img alt="" :src="item.wx_address+'&size=100'" width=200>
                             </a>
                             <div class="font-size-20 margin-top-10">
                                 <div class="form-group">
@@ -150,9 +220,17 @@
             </button>
         </div>
     </vs-modal>
+
+
+
 </template>
 <style>
 
+
+    .modal-super-scaled .modal-header {
+        background-color: #f96868;
+        border-radius: 4px 4px 0 0;
+    }
     .timeline::before {
 
         height: 94%;
@@ -307,9 +385,11 @@
         components: {Navbar, Sitebar, 'vs-modal': vuestrapBase.modal},
         data(){
             return {
+                showScreen:false,
                 token: '',
                 status: -1,
-
+                removeItem:{},
+                copyItem:{},
                 count: 0,
                 next: 1,
                 busy: false,
@@ -329,10 +409,35 @@
 
         },
         methods: {
-            init: function () {
+            start: function () {
+
+
+                if(this.app.api!=""){
+                    this.calldata(-1);
+                }
                 window.Site.cc();
-                this.calldata(-1);
+                window.AppNoteBook = Site.extend({
+                    handleHeight: function () {
+                        var height = $(document).height()
+                        console.log(height)
+
+
+                        $(".page-main").css("height", (height - 70) + "px")
+                    }, handleResize: function () {
+                        var self = this;
+                        $(window).on("resize", function () {
+                            self.handleHeight()
+                        })
+                    }, run: function (next) {
+                        this.handleHeight(), this.handleResize()
+                    }
+                }),
+
+                  AppNoteBook.run()
+
+
             },
+
             openurl: function (item, act) {
 
                 if (act.target == "modal") {
@@ -349,7 +454,36 @@
                 this.item = item.toJSON();
             },
             remove: function (index, item) {
+                var index = this.removeIndex, item = this.removeItem;
+                console.log(index, item)
+                //this.item.delete(index)
+                var _vm = this;
+                //this.items.splice(item, 1)
+                fetch(_vm.app.api + '/activity/delete/' + item.id, {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'Authorization': _vm.app.token
+                    }
 
+                }).then(checkStatus).then(function (response) {
+                    if (response.status >= 400) {
+                        throw new Error("Bad response from server");
+                    }
+
+                    return response.json();
+                }).then(function (item) {
+                    _vm.items = _.filter(_vm.items, function (o) {
+                        return o.id != _vm.removeItem.id;
+                    });
+
+
+
+                    console.log(item);
+                    toastr.info('删除成功')
+
+                });
             },
             calldata: function (status) {
                 this.status = status;
@@ -371,7 +505,9 @@
                 var u = new URLSearchParams();
                 u.append('next', this.next);
                 u.append('status', this.status);
-
+                if(_vm.app.api==""){
+                    return ;
+                }
                 fetch(_vm.app.api + '/activities?' + u, {
                     method: 'GET',
                     headers: {
@@ -421,6 +557,17 @@
 
             }
         }
+        ,ready:function(){
+            console.log("child.index.ready")
+                $("body").css({"padding-top":"110px"})
+                if(this.$route.query.token){
 
+                    this.gettoken(this.start);
+                }else{
+                    this._init(this.start);
+                }
+
+
+        }
     }
 </script>

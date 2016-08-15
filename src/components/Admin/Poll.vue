@@ -542,8 +542,7 @@
                 console.log(index, item)
                 //this.item.delete(index)
                 var _vm = this;
-                this.items.splice(item, 1)
-                fetch(_vm.app.api + '/pollwall/question/delete/' + item.id, {
+                 fetch(_vm.app.api + '/pollwall/question/delete/' + item.id, {
                     method: 'POST',
                     headers: {
                         'Accept': 'application/json',
@@ -558,7 +557,9 @@
 
                     return response.json();
                 }).then(function (item) {
-
+                    _vm.items = _.filter(_vm.items, function (o) {
+                        return o.id != _vm.item.id;
+                    });
                     console.log(item);
                     toastr.info('删除成功')
 

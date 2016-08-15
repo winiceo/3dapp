@@ -1,0 +1,31 @@
+{
+  "globals": {
+    // Put things like jQuery, etc
+    "jQuery": true,
+    "$": true
+  },
+  "env": {
+    // I write for browser
+    "browser": true,
+    // in CommonJS
+    "node": true,
+    "es6":true
+  },
+  "plugins": [
+
+        "html"
+  ],
+
+  "parserOptions" :  {
+        "ecmaVersion" :  6 ,
+        "sourceType" :  "module" ,
+        "ecmaFeatures" :  {
+            "jsx" :  true
+        }
+    },
+    "rules" :  {
+        "semi": [0, "always", { "omitLastInOneLineBlock": true}],
+
+        "quotes": [0, "double"]
+    }
+}

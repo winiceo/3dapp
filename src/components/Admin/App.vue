@@ -1,6 +1,6 @@
 <template>
     <div class="top-box">
-        <Navbar></Navbar>
+        <Navbar  ></Navbar>
         <Sidebar></Sidebar>
 
         <router-view></router-view>
@@ -69,7 +69,9 @@
     //require("../helpers/external_links");
     export default {
         data(){
-            return {}
+            return {
+                showScreen:true
+            }
         },
         components: {Navbar, Sidebar},
         ready(){

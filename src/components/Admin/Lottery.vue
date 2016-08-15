@@ -304,7 +304,7 @@
 
                 //this.item.delete(index)
                 var _vm = this;
-                this.items.splice(_vm.index, 1)
+                //this.items.splice(_vm.index, 1)
                 fetch(_vm.app.api + '/awardwall/award/delete/' + _vm.item.id, {
                     method: 'POST',
                     headers: {
@@ -322,7 +322,7 @@
                 }).then(function (item) {
 
                     console.log(item);
-                    _vm.items=_.filter(_vm.items, function(o) { return o.id !=item.id; });
+                    _vm.items=_.filter(_vm.items, function(o) { return o.id !=_vm.item.id; });
 
                     toastr.info('删除成功')
 
