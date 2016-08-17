@@ -12,4 +12,15 @@
 
 .page {
     background: #eceff1;
-}    
+}
+
+
+ table th{
+ background-color: #263238;
+ color:white;
+}
+
+.table>tfoot>tr>th, .table>thead>tr>th {
+ font-weight: 400;
+ color: white;
+}

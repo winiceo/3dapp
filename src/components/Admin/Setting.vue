@@ -103,7 +103,7 @@
                                                             <img dz-clickable
                                                                  class="image  " style="z-index:-10"
 
-                                                                 :src="app.img+item.bg_image.url" height="120"
+                                                                 v-lazy="app.img+item.bg_image.url" height="120"
                                                                  alt="...">
 
                                             <span class="addMember-remove"
@@ -122,6 +122,8 @@
                                             <div class="col-md-6 col-xs-12 masonry-item">
                                                 <div class="form-group">
                                                     <label class="control-label">背景音乐</label>
+
+
                                                     <div class="dropzone   vip_uppic"
                                                          id="dropzone_1"
                                                          style="margin:10px;"
@@ -129,8 +131,8 @@
                                                          data-title="上传背景音乐" data-url="bgAudio">
                                                         <template v-if="item.bg_audio">
 
-
                                                             <div class="cover plyr plyr--audio plyr--stopped">
+
                                                                 <audio>
                                                                     <!-- Audio Files -->
                                                                     <source type="audio/mp3"
@@ -430,7 +432,9 @@
                                 }
                                 if ($(that).data("url") == "bgAudio") {
                                     _vm.$set('item.bg_audio', response.data)
-                                    plyr.setup();
+                                    setTimeout(function(){
+                                        plyr.setup();
+                                    },100)
                                     $(that).remove(".dz-message");
 
                                 }

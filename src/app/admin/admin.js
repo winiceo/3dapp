@@ -22,7 +22,10 @@ Vue.use(VueDb)
 Vue.config.debug = true
 
 Vue.use(VueRouter)
+import lazyload from 'vue-lazyload'
 
+
+Vue.use(lazyload)
 
 
 Vue.use(vueSmoothScroll);

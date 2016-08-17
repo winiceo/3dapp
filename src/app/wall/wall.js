@@ -30,6 +30,12 @@ const router = new VueRouter({
   suppressTransitionError: true
 });
 
+
+import lazyload from 'vue-lazyload'
+
+
+Vue.use(lazyload)
+
 configRouter(router)
 sync(store, router)
 

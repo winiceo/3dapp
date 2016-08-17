@@ -14,6 +14,16 @@
     .dropzone .dz-message{
         position: relative;
     }
+    .example table th{
+        background-color: #263238;
+        color:white;
+    }
+
+    .table>tfoot>tr>th, .table>thead>tr>th {
+        font-weight: 400;
+        color: white;
+    }
+
 </style>
 <script>
     import Navbar from '../wall/Navbar'

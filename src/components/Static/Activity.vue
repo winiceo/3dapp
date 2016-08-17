@@ -3,7 +3,7 @@
     <div class="page animsition  ">
         <div class="page-header page-header-bordered page-header-tabs">
             <h3>活动数据</h3>
-
+            <p v-if="count">签到总人数({{count}})
 
 
         </div>
@@ -192,7 +192,7 @@
         data(){
             return {
                 item: {},
-
+                count:0,
                 columns: ['avatar','nickname',  'openid','city','sex']
 
             }
@@ -262,6 +262,7 @@
                     })
                     console.log(data)
                     _vm.item = data;
+                    _vm.count=items.data.total_signin
                     whatever(callback)
 
 

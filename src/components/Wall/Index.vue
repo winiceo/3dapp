@@ -197,7 +197,8 @@
                     <div class="overlay-panel overlay-background vertical-align">
                         <div class="vertical-align-middle">
                             <a class="" href="javascript:void(0)">
-                                <img alt="" :src="item.wx_address+'&size=100'" width=200>
+
+                                <img    v-lazy="item.wx_address" width=200>
                             </a>
                             <div class="font-size-20 margin-top-10">
                                 <div class="form-group">
@@ -379,7 +380,10 @@
     import Sitebar from './Sitebar'
     import {whatever, checkStatus} from "../../utils/leven"
     import  vuestrapBase from  'vuestrap-base-components/dist/vuestrapBase.min'
+    import lazyload from 'vue-lazyload'
 
+    import Vue from "vue";
+    Vue.use(lazyload)
     export default{
         directives: {infiniteScroll},
         components: {Navbar, Sitebar, 'vs-modal': vuestrapBase.modal},
@@ -439,11 +443,15 @@
             },
 
             openurl: function (item, act) {
-
+                var self=this;
                 if (act.target == "modal") {
 
                     this.item = item;
-                    this.$broadcast('show::modal', act.url)
+                    setTimeout(function(){
+
+                        self.$broadcast('show::modal', act.url)
+                    },10)
+
                 } else {
                     window.location.href=(act.url + "?id=" + item.id)
                 }

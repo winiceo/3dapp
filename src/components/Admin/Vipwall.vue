@@ -17,11 +17,11 @@
             <ul class="blocks blocks-100 blocks-xlg-4 blocks-md-2 blocks-sm-2" id="exampleList"
                 data-filterable="true">
                 <template v-for="(index,co) in items" track-by="$index">
-                    <li data-type="animal" @click="showRight = true ,item=co,index=index,add=false">
+                    <li data-type="animal" @click="selected(co);">
 
                         <div class="widget widget-shadow " style="margin:10px">
                             <figure class="widget-header bg-white-600 padding-10 overlay-hover  ">
-                                <a v-if="co.pic"
+                                <a v-if="co.pic!=null"
                                    class="avatar   img-bordered bg-white pull-left margin-right-20"
                                    href="javascript:void(0)">
                                     <img :src="app.img+co.pic.url" class="avatar_img" width=100 height=100 alt="">
@@ -72,8 +72,8 @@
     </div>
 
     <aside :show.sync="showRight" placement="right" header="编辑信息" :width="550" style="top:70px;">
-
-        <div class="task-main-editor">
+        <form class="form_valid">
+        <div class="task-main-editor ">
 
             <div class="form-group">
 
@@ -83,7 +83,7 @@
                      style="margin:10px;"
 
                      data-title="上传图片">
-                    <template v-if="item.pic">
+                    <template v-if="item.pic!=null">afasdf
                         <img dz-clickable
                              class="image  " style="z-index:-10"
 
@@ -107,12 +107,12 @@
             <div class="form-group">
                 <label class="control-label">
                     嘉宾姓名</label>
-                <input type="text" class="form-control" v-model="item.name"
+                <input type="text" class="form-control" name='name' v-model="item.name"
                        placeholder="" autocomplete="off">
             </div>
             <div class="form-group">
                 <label class="control-label">嘉宾职位</label>
-                <input type="text" class="form-control" v-model="item.title"
+                <input type="text" class="form-control" name="title" v-model="item.title"
                        placeholder="" autocomplete="off">
             </div>
             <div class="form-group">
@@ -125,11 +125,12 @@
 
 
             <div class="form-group">
-                <button class="btn btn-primary task-main-editor-save" type="button" @click="save">保存</button>
-                <button class="btn btn-primary task-main-editor-save" type="button" @click="remove">删除</button>
+                <button class="btn btn-primary  " type="submit"  >保存</button>
+                <button class="btn btn-primary  " type="button" @click="remove">删除</button>
             </div>
 
         </div>
+        </form>
     </aside>
 
 
@@ -262,6 +263,8 @@
                 }),
                  AppNoteBook.run()
 
+                this.formValid();
+
                 window.Site.cc();
             },
 
@@ -285,14 +288,49 @@
             selected: function (item) {
                 this.item = item;
                 this.add = false;
-                _vm.setup(".dropzone");
+                this.showRight = true
+
+
+                this.setup(".dropzone");
+
+
+            },
+            formValid: function () {
+
+                var _vm = this;
+
+                $(".form_valid").formValidation({
+                    framework: "bootstrap",
+                    button: {selector: '[type="submit"]:not([formnovalidate])', disabled: "disabled"},
+                    icon: null,
+                    fields: {
+
+                        'name': {
+                            validators: {
+                                notEmpty: {
+                                    message: '姓名不能为空'
+                                },
+                                stringLength: {
+                                    max: 100,
+                                    message: '选项不能超过100个字'
+                                }
+                            }
+                        }
+
+
+                    }
+                }).on('success.form.fv', function (e) {
+
+                    _vm.save();
+                    return false;
+                })
 
             },
             remove: function () {
 
                 //this.item.delete(index)
                 var _vm = this;
-                this.items.splice(_vm.index, 1)
+                //this.items.splice(_vm.index, 1)
                 fetch(_vm.app.api + '/vipwall/vip/delete/' + _vm.item.id, {
                     method: 'POST',
                     headers: {
@@ -310,8 +348,8 @@
                 }).then(function () {
 
 
-                    _vm.items=_.filter(_vm.items, function(o) { return o.id !=item.id; });
-
+                    _vm.items=_.filter(_vm.items, function(o) { return o.id !=_vm.item.id; });
+                    _vm.showRight=false;
                     toastr.info('删除成功')
 
                 });
@@ -410,7 +448,7 @@
 
 
                                 _vm.item.pic = response
-                                _vm.item.name=
+                                 
 
 
                             });
@@ -430,7 +468,7 @@
 
                     });
                 } catch (e) {
-                    //alert(e)
+                     //alert(e)
                 }
             }
         },

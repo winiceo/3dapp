@@ -13,6 +13,14 @@ export default function(router) {
             name: 'lottery',
             component: require('../components/Static/Lottery.vue')
         },
+        '/shakeprize': {
+            name: 'lottery',
+            component: require('../components/Static/Shakeprize.vue')
+        },
+        '/shake': {
+            name: 'lottery',
+            component: require('../components/Static/Shake.vue')
+        },
         
         '*': {
             component: require('../components/Common/NotFound.vue')

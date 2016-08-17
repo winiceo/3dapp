@@ -103,6 +103,16 @@
                             </a>
                         </li>
 
+                        <li class="site-menu-item">
+                            <a class="animsition-link" v-link="'/zjd'">
+                                <i class="site-menu-icon wb-hammer" aria-hidden="true"></i>
+                                <span class="site-menu-title">砸金蛋</span>
+                                <div class="site-menu-label">
+
+                                </div>
+                            </a>
+                        </li>
+
                         <!--<li class="site-menu-item">-->
                         <!--<a class="animsition-link" v-link="'/message'">-->
                         <!--<i class="site-menu-icon wb-grid-4" aria-hidden="true"></i>-->
