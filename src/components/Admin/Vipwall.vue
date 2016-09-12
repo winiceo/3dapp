@@ -14,36 +14,36 @@
 
         <div class="page-content ">
             <div class="panel">
-            <ul class="blocks blocks-100 blocks-xlg-4 blocks-md-2 blocks-sm-2" id="exampleList"
-                data-filterable="true">
-                <template v-for="(index,co) in items" track-by="$index">
-                    <li data-type="animal" @click="selected(co);">
+                <ul class="blocks blocks-100 blocks-xlg-4 blocks-md-2 blocks-sm-2" id="exampleList"
+                    data-filterable="true">
+                    <template v-for="(index,co) in items" track-by="$index">
+                        <li data-type="animal" @click="selected(co);">
 
-                        <div class="widget widget-shadow " style="margin:10px">
-                            <figure class="widget-header bg-white-600 padding-10 overlay-hover  ">
-                                <a v-if="co.pic!=null"
-                                   class="avatar   img-bordered bg-white pull-left margin-right-20"
-                                   href="javascript:void(0)">
-                                    <img :src="app.img+co.pic.url" class="avatar_img" width=100 height=100 alt="">
-                                </a>
-                                <div class="vertical-align height-100 text-truncate">
-                                    <div class="vertical-align-middle">
-                                        <div class="font-size-20 margin-bottom-5 text-truncate">{{co.title}}</div>
-                                        <div class="font-size-14 text-truncate">{{co.name}}</div>
+                            <div class="widget widget-shadow " style="margin:10px">
+                                <figure class="widget-header bg-white-600 padding-10 overlay-hover  ">
+                                    <a v-if="co.pic!=null"
+                                       class="avatar   img-bordered bg-white pull-left margin-right-20"
+                                       href="javascript:void(0)">
+                                        <img :src="app.img+co.pic.url" class="avatar_img" width=100 height=100 alt="">
+                                    </a>
+                                    <div class="vertical-align height-100 text-truncate">
+                                        <div class="vertical-align-middle">
+                                            <div class="font-size-20 margin-bottom-5 text-truncate">{{co.title}}</div>
+                                            <div class="font-size-14 text-truncate">{{co.name}}</div>
+                                        </div>
                                     </div>
-                                </div>
-                                <figcaption class="overlay-panel overlay-background overlay-fade  ">
-                                    简介: {{co.description}}
+                                    <figcaption class="overlay-panel overlay-background overlay-fade  ">
+                                        简介: {{co.description}}
 
-                                </figcaption>
-                            </figure>
-                        </div>
+                                    </figcaption>
+                                </figure>
+                            </div>
 
 
-                    </li>
-                </template>
+                        </li>
+                    </template>
 
-            </ul>
+                </ul>
             </div>
         </div>
     </div>
@@ -73,63 +73,63 @@
 
     <aside :show.sync="showRight" placement="right" header="编辑信息" :width="550" style="top:70px;">
         <form class="form_valid">
-        <div class="task-main-editor ">
+            <div class="task-main-editor ">
 
-            <div class="form-group">
+                <div class="form-group">
 
 
-                <div class="dropzone   vip_uppic"
-                     id="dropzone_0"
-                     style="margin:10px;"
+                    <div class="dropzone   vip_uppic"
+                         id="dropzone_0"
+                         style="margin:10px;"
 
-                     data-title="上传图片">
-                    <template v-if="item.pic!=null">afasdf
-                        <img dz-clickable
-                             class="image  " style="z-index:-10"
+                         data-title="上传图片">
+                        <template v-if="item.pic!=null">afasdf
+                            <img dz-clickable
+                                 class="image  " style="z-index:-10"
 
-                             :src="app.img+item.pic.url" height="120"
-                             alt="...">
-                               <span class="addMember-remove"
-                                     @click="reset()"><i
-                                       class="wb-minus-circle"></i></span>
-                    </template>
+                                 :src="app.img+item.pic.url" height="120"
+                                 alt="...">
+                            <span class="addMember-remove"
+                                  @click="reset()"><i
+                                    class="wb-minus-circle"></i></span>
+                        </template>
 
-                    <input type="hidden" name="context" value="{{context}}">
+                        <input type="hidden" name="context" value="{{context}}">
 
-                    <div class="fallback">
+                        <div class="fallback">
 
+                        </div>
                     </div>
+
+                </div>
+
+
+                <div class="form-group">
+                    <label class="control-label">
+                        嘉宾姓名</label>
+                    <input type="text" class="form-control" name='name' v-model="item.name"
+                           placeholder="" autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label class="control-label">嘉宾职位</label>
+                    <input type="text" class="form-control" name="title" v-model="item.title"
+                           placeholder="" autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label class="control-label">嘉宾介绍</label>
+                    <textarea class="maxlength-textarea form-control" data-plugin="maxlength"
+                              data-placement="bottom-right-inside" rows="3"
+                              placeholder="" v-model="item.description"></textarea>
+
+                </div>
+
+
+                <div class="form-group">
+                    <button class="btn btn-primary  " type="submit">保存</button>
+                    <button class="btn btn-primary  " type="button" @click="remove">删除</button>
                 </div>
 
             </div>
-
-
-            <div class="form-group">
-                <label class="control-label">
-                    嘉宾姓名</label>
-                <input type="text" class="form-control" name='name' v-model="item.name"
-                       placeholder="" autocomplete="off">
-            </div>
-            <div class="form-group">
-                <label class="control-label">嘉宾职位</label>
-                <input type="text" class="form-control" name="title" v-model="item.title"
-                       placeholder="" autocomplete="off">
-            </div>
-            <div class="form-group">
-                <label class="control-label">嘉宾介绍</label>
-                <textarea class="maxlength-textarea form-control" data-plugin="maxlength"
-                          data-placement="bottom-right-inside" rows="3"
-                          placeholder="" v-model="item.description"></textarea>
-
-            </div>
-
-
-            <div class="form-group">
-                <button class="btn btn-primary  " type="submit"  >保存</button>
-                <button class="btn btn-primary  " type="button" @click="remove">删除</button>
-            </div>
-
-        </div>
         </form>
     </aside>
 
@@ -140,21 +140,17 @@
         margin-right: 250px;
     }
 
-
     .vip .avatar {
 
-
-
-        width:150px
+        width: 150px
 
     }
-
 
     .vip .avatar_img {
 
         object-fit: cover;
         height: 150px;
-        width:150px
+        width: 150px
 
     }
 
@@ -195,7 +191,7 @@
 
     var infiniteScroll = require('vue-infinite-scroll').infiniteScroll;
 
-    import {whatever} from "../../utils/leven"
+    import {whatever, api} from "../../utils/leven"
     import {aside} from '../../lib/vue-strap'
 
     var uuid = require('node-uuid');
@@ -261,7 +257,7 @@
                         this.handleHeight(), this.handleResize()
                     }
                 }),
-                 AppNoteBook.run()
+                        AppNoteBook.run()
 
                 this.formValid();
 
@@ -280,9 +276,9 @@
 
 
             },
-            reset:function(){
+            reset: function () {
                 var _vm = this;
-                _vm.item.pic=null;
+                _vm.item.pic = null;
                 _vm.setup(".dropzone");
             },
             selected: function (item) {
@@ -331,25 +327,14 @@
                 //this.item.delete(index)
                 var _vm = this;
                 //this.items.splice(_vm.index, 1)
-                fetch(_vm.app.api + '/vipwall/vip/delete/' + _vm.item.id, {
-                    method: 'POST',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                        'Authorization': _vm.app.token
-                    }
-
-                }).then(function (response) {
-                    if (response.status >= 400) {
-                        throw new Error("Bad response from server");
-                    }
-
-                    return response.json();
-                }).then(function () {
+                api(_vm).post(_vm.app.api + '/vipwall/vip/delete/' + _vm.item.id
+                ).then(function () {
 
 
-                    _vm.items=_.filter(_vm.items, function(o) { return o.id !=_vm.item.id; });
-                    _vm.showRight=false;
+                    _vm.items = _.filter(_vm.items, function (o) {
+                        return o.id != _vm.item.id;
+                    });
+                    _vm.showRight = false;
                     toastr.info('删除成功')
 
                 });
@@ -360,49 +345,24 @@
 
                 var act = this.add ? "new" : "update"
                 var id = this.add ? _vm.app.aid : _vm.item.id;
-                fetch(_vm.app.api + '/vipwall/vip/' + act + '/' + id, {
-                    method: 'POST',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                        'Authorization': _vm.app.token
-                    },
-                    body: JSON.stringify(_vm.item)
-
-                }).then(function (response) {
-                    if (response.status >= 400) {
-                        throw new Error("Bad response from server");
-                    }
-
-                    return response.json();
-                }).then(function (item) {
+                api(_vm).post(_vm.app.api + '/vipwall/vip/' + act + '/' + id, JSON.stringify(_vm.item))
+                .then(function (item) {
                     _vm.add ? _vm.items.push(item.data) : ""
-                    _vm.item={}
+                    _vm.item = {}
                     toastr.info('保存成功')
                     _vm.showRight = false
+
+                    $('.form_valid').data('formValidation').resetForm();
+
 
                 });
             },
             getdata: function (callback) {
                 var _vm = this;
                 console.log(this.app)
-                fetch(_vm.app.api + '/vipwall/' + _vm.app.aid, {
-                    method: 'GET',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                        'Authorization': _vm.app.token
-                    }
+                api(_vm).get(_vm.app.api + '/vipwall/' + _vm.app.aid).then(function (data) {
+                    var items=data.data
 
-                }).then(function (response) {
-                    if (response.status >= 400) {
-                        throw new Error("Bad response from server");
-                    }
-
-                    return response.json();
-                }).then(function (items) {
-
-                    console.log(items);
                     _vm.items = items;
                     whatever(callback)
 
@@ -448,7 +408,6 @@
 
 
                                 _vm.item.pic = response
-                                 
 
 
                             });
@@ -468,7 +427,7 @@
 
                     });
                 } catch (e) {
-                     //alert(e)
+                    //alert(e)
                 }
             }
         },

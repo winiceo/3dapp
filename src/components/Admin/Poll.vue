@@ -424,7 +424,7 @@
     var infiniteScroll = require('vue-infinite-scroll').infiniteScroll;
     require("dropzone/dist/min/dropzone.min.css")
     var Dropzone = require("dropzone/dist/min/dropzone-amd-module.min")
-    import {whatever, checkStatus} from "../../utils/leven"
+    import {whatever, api} from "../../utils/leven"
 
 
     var uuid = require('node-uuid');
@@ -542,24 +542,11 @@
                 console.log(index, item)
                 //this.item.delete(index)
                 var _vm = this;
-                 fetch(_vm.app.api + '/pollwall/question/delete/' + item.id, {
-                    method: 'POST',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                        'Authorization': _vm.app.token
-                    }
-
-                }).then(checkStatus).then(function (response) {
-                    if (response.status >= 400) {
-                        throw new Error("Bad response from server");
-                    }
-
-                    return response.json();
-                }).then(function (item) {
+                 api(_vm).post(_vm.app.api + '/pollwall/question/delete/' + item.id).then(function (item) {
                     _vm.items = _.filter(_vm.items, function (o) {
                         return o.id != _vm.item.id;
                     });
+                     _vm.new_poll();
                     console.log(item);
                     toastr.info('删除成功')
 
@@ -626,15 +613,17 @@
                     multiple: 0
                 };
                 this.item.choices=[]
-                var choice = _.clone(this.choice);
-                $(".dz-preview").remove();
-                this.item.choices.push(choice);
-                var choice1 = _.clone(this.choice);
-                this.item.choices.push(choice1);
 
                 this.add = true;
                 this.dropzone();
 
+                $(".dz-preview").remove();
+
+
+                setTimeout(function(){
+                    _vm.add_choice();
+                    _vm.add_choice();
+                },300)
 
             },
             save_poll: function () {
@@ -645,28 +634,16 @@
 
                 var act = this.add ? "new" : "update"
                 var id = this.add ? _vm.app.aid : _vm.item.id;
-                fetch(_vm.app.api + '/pollwall/question/' + act + '/' + id, {
-                    method: 'POST',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                        'Authorization': _vm.app.token
-                    },
-                    body: JSON.stringify(_vm.item)
+                api(_vm).post(_vm.app.api + '/pollwall/question/' + act + '/' + id, JSON.stringify(_vm.item)
 
-                }).then(checkStatus).then(function (response) {
-                    if (response.status >= 400) {
-                        throw new Error("Bad response from server");
-                    }
-
-                    return response.json();
-                }).then(function (o) {
+                ).then(function (o) {
                     if (_vm.add) {
                         _vm.items.unshift(o.data)
                     }
                     _vm.item = {};
 
                     _vm.new_poll()
+                    $('.form_valid').data('formValidation').resetForm();
 
 
                     console.log(_vm.item);
@@ -677,24 +654,10 @@
             getdata: function (callback) {
                 var _vm = this;
                 console.log(this.app)
-                fetch(_vm.app.api + '/pollwall/' + _vm.app.aid, {
-                    method: 'GET',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                        'Authorization': _vm.app.token
-                    }
+                api(_vm).get(_vm.app.api + '/pollwall/' + _vm.app.aid).then(function (data) {
 
-                }).then(checkStatus).then(function (response) {
-                    if (response.status >= 400) {
-                        throw new Error("Bad response from server");
-                    }
 
-                    return response.json();
-                }).then(function (items) {
-
-                    console.log(items);
-                    _vm.items = items.data;
+                    _vm.items = data.data;
                     whatever(callback)
 
 

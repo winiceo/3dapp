@@ -378,7 +378,7 @@
     var Dropzone = require("dropzone/dist/min/dropzone-amd-module.min")
     import Navbar from './Navbar'
     import Sitebar from './Sitebar'
-    import {whatever, checkStatus} from "../../utils/leven"
+    import {whatever, api} from "../../utils/leven"
     import  vuestrapBase from  'vuestrap-base-components/dist/vuestrapBase.min'
     import lazyload from 'vue-lazyload'
 
@@ -400,12 +400,12 @@
                 items: [],
                 item: {},
                 acts: [
-                    {text: "屏幕设计", icon: "wb-pencil", url: "/app/logo.html", color: "bg-blue-600"},
                     {text: "活动功能", icon: "wb-extension", url: "/app/admin.html", color: "bg-red-600"},
-                    {text: "屏幕控制台", icon: "wb-hammer", url: "", color: "bg-purple-600"},
                     {text: "活动数据", icon: "wb-table", url: "/app/static.html", color: "bg-green-600"},
                     {text: "上墙地址", icon: "wb-map", url: "modal1", target: "modal", color: "bg-orange-600"},
-                    {text: "大屏幕", icon: "wb-grid-9", url: "/wallmain.html", color: "bg-indigo-600"},
+                    {text: "大屏幕", icon: "wb-grid-9", url: "/wall/index.html",target:"_blank", color: "bg-indigo-600"},
+                    {text: "屏幕控制台", icon: "wb-hammer", url: "", color: "bg-purple-600"},
+                    {text: "屏幕设计", icon: "wb-pencil", url: "", color: "bg-blue-600"}
 
 
                 ]
@@ -453,7 +453,15 @@
                     },10)
 
                 } else {
-                    window.location.href=(act.url + "?id=" + item.id)
+                    if(act.url){
+                        if(act.target=="_blank"){
+                            window.open(act.url + "?id=" + item.id)
+
+                        }else{
+                            window.location.href=(act.url + "?id=" + item.id)
+
+                        }
+                    }
                 }
             },
 
@@ -467,21 +475,7 @@
                 //this.item.delete(index)
                 var _vm = this;
                 //this.items.splice(item, 1)
-                fetch(_vm.app.api + '/activity/delete/' + item.id, {
-                    method: 'POST',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                        'Authorization': _vm.app.token
-                    }
-
-                }).then(checkStatus).then(function (response) {
-                    if (response.status >= 400) {
-                        throw new Error("Bad response from server");
-                    }
-
-                    return response.json();
-                }).then(function (item) {
+                api(_vm).post(_vm.app.api + '/activity/delete/' + item.id).then(function (item) {
                     _vm.items = _.filter(_vm.items, function (o) {
                         return o.id != _vm.removeItem.id;
                     });
@@ -516,22 +510,7 @@
                 if(_vm.app.api==""){
                     return ;
                 }
-                fetch(_vm.app.api + '/activities?' + u, {
-                    method: 'GET',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                        'Authorization': _vm.app.token
-                    }
-
-
-                }).then(checkStatus).then(function (response) {
-                    if (response.status >= 400) {
-                        throw new Error("Bad response from server");
-                    }
-
-                    return response.json();
-                }).then(function (docs) {
+                api(_vm).get(_vm.app.api + '/activities?' + u).then(function (docs) {
 
                     console.log(docs);
 

@@ -1,17 +1,16 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import validator from '../../utils/valid'
-import { sync } from 'vuex-router-sync'
+import { sync }  from 'vuex-router-sync'
 import store from '../../vuex/store'
 import configRouter from '../../router/admin'
 import filters from '../../utils/filters'
 import App from '../../components/Admin/App.vue'
 var vueSmoothScroll = require('vue-smoothscroll');
 
- 
 
 var Bootstrap = require('bootstrap');
-Bootstrap.$ = $ 
+Bootstrap.$ = $
 require('../../global/js/core.min');
 import '../../lib/site'
 
@@ -35,9 +34,9 @@ Vue.use(validator)
 Object.keys(filters).forEach(k => Vue.filter(k, filters[k]))
 
 const router = new VueRouter({
-  history: false,
-  saveScrollPosition: true,
-  suppressTransitionError: true
+    history: false,
+    saveScrollPosition: true,
+    suppressTransitionError: true
 })
 configRouter(router)
 sync(store, router)
@@ -51,6 +50,6 @@ sync(store, router)
 // router.afterEach(function (transition) {
 //   window.SmoothScroll.run();
 // })
- 
-router.start(Vue.extend(App), '#root') 
+
+router.start(Vue.extend(App), '#root')
 window.router = router

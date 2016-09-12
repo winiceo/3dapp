@@ -118,6 +118,7 @@
 <script>
     require("switchery/dist/switchery.css")
     var Switchery = require("switchery")
+    import {whatever, api} from "../../utils/leven"
 
 
     export default{
@@ -142,21 +143,8 @@
             },
             getdata:function(callback){
                 var _vm = this;
-                fetch(_vm.app.api + '/danmaku/' + _vm.app.aid, {
-                    method: 'GET',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                        'Authorization': _vm.app.token
-                    }
-
-                }).then(function (response) {
-                    if (response.status >= 400) {
-                        throw new Error("Bad response from server");
-                    }
-
-                    return response.json();
-                }).then(function (item) {
+                api(_vm).get(_vm.app.api + '/danmaku/' + _vm.app.aid).then(function (data) {
+                    var item=data.data
                     item.position = $.parseJSON(item.position)
                     console.log(item);
                     _vm.item = item;
@@ -173,22 +161,11 @@
                 var _vm = this;
                 //_vm.item.style=parseInt(_vm.item.style);
 
-                fetch(_vm.app.api + '/danmaku/update/' + _vm.app.aid, {
-                    method: 'POST',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                        'Authorization': _vm.app.token
-                    },
-                    body: JSON.stringify(_vm.item)
+                api(_vm).post(_vm.app.api + '/danmaku/update/' + _vm.app.aid,
 
-                }).then(function (response) {
-                    if (response.status >= 400) {
-                        throw new Error("Bad response from server");
-                    }
+                      JSON.stringify(_vm.item)
 
-                    return response.json();
-                }).then(function (item) {
+                 ).then(function (item) {
 
                     console.log(item);
                     toastr.info('保存成功')

@@ -183,7 +183,7 @@
 
     var infiniteScroll = require('vue-infinite-scroll').infiniteScroll;
 
-    import {whatever} from "../../utils/leven"
+
     import {aside,upload} from '../../lib/vue-strap'
     require('../../lib/flatpickr')
     //    import flatpickr from "flatpickr";
@@ -198,6 +198,7 @@
     var uuid = require('node-uuid');
     var Dropzone = require("dropzone/dist/min/dropzone-amd-module.min")
     Dropzone.autoDiscover = false;
+    import {whatever, api} from "../../utils/leven"
 
     export default{
         directives: {infiniteScroll},
@@ -298,21 +299,7 @@
                 //this.item.delete(index)
                 var _vm = this;
                 this.items.splice(_vm.index, 1)
-                fetch(_vm.app.api + '/vipwall/vip/delete/' + _vm.item.id, {
-                    method: 'POST',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                        'Authorization': _vm.app.token
-                    }
-
-                }).then(function (response) {
-                    if (response.status >= 400) {
-                        throw new Error("Bad response from server");
-                    }
-
-                    return response.json();
-                }).then(function () {
+                api(_vm).post(_vm.app.api + '/vipwall/vip/delete/' + _vm.item.id).then(function () {
 
 
                     _vm.items = _.filter(_vm.items, function (o) {
@@ -329,22 +316,9 @@
 
                 var act = "update"
                 var id = this.add ? _vm.app.aid : _vm.item.id;
-                fetch(_vm.app.api + '/activity/' + act + '/' + id, {
-                    method: 'POST',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                        'Authorization': _vm.app.token
-                    },
-                    body: JSON.stringify(_vm.item)
+                api(_vm).post(_vm.app.api + '/activity/' + act + '/' + id,  JSON.stringify(_vm.item)
 
-                }).then(function (response) {
-                    if (response.status >= 400) {
-                        throw new Error("Bad response from server");
-                    }
-
-                    return response.json();
-                }).then(function (item) {
+                ).then(function (item) {
                     //_vm.add ? _vm.items.push(item.data) : ""
 
                     toastr.info('保存成功')
@@ -354,24 +328,10 @@
             getdata: function (callback) {
                 var _vm = this;
                 console.log(this.app)
-                fetch(_vm.app.api + '/activity/' + _vm.app.aid, {
-                    method: 'GET',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                        'Authorization': _vm.app.token
-                    }
-
-                }).then(function (response) {
-                    if (response.status >= 400) {
-                        throw new Error("Bad response from server");
-                    }
-
-                    return response.json();
-                }).then(function (item) {
+                api(_vm).get(_vm.app.api + '/activity/' + _vm.app.aid).then(function (data) {
 
                     //console.log(items);
-                    _vm.item = item.data;
+                    _vm.item = data.data;
                     setTimeout(function () {
                         if (_vm.item.bg_audio) {
                             plyr.setup();

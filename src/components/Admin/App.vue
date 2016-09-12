@@ -28,9 +28,9 @@
     Vue.mixin({
         methods: {
             init: function () {
-                var Parse = require("parse");
-                Parse.initialize("71an.com", "71an.com");
-                Parse.serverURL = ("http://baas.71an.com:8043/parse");
+//                var Parse = require("parse");
+//                Parse.initialize("71an.com", "71an.com");
+//                Parse.serverURL = ("http://baas.71an.com:8043/parse");
                 Dropzone.autoDiscover = false;
             },
             _init: function (callback) {

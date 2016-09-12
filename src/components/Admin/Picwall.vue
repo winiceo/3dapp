@@ -88,7 +88,7 @@
     var infiniteScroll = require('vue-infinite-scroll').infiniteScroll;
     require("dropzone/dist/min/dropzone.min.css")
     var Dropzone = require("dropzone/dist/min/dropzone-amd-module.min")
-    import {whatever} from "../../utils/leven"
+    import {whatever,api} from "../../utils/leven"
 
 
     var uuid = require('node-uuid');
@@ -143,21 +143,8 @@
                 //this.item.delete(index)
                 var _vm = this;
 
-                fetch(_vm.app.api + '/picwall/pic/delete/' + item.id, {
-                    method: 'POST',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                        'Authorization': _vm.app.token
-                    }
-
-                }).then(function (response) {
-                    if (response.status >= 400) {
-                        throw new Error("Bad response from server");
-                    }
-
-                    return response.json();
-                }).then(function () {
+                api(_vm).post(_vm.app.api + '/picwall/pic/delete/' + item.id)
+                 .then(function () {
                     _vm.items=_.filter(_vm.items, function(o) { return o.id !=item.id; });
 
 
@@ -169,22 +156,9 @@
             getdata: function (callback) {
                 var _vm = this;
                 console.log(this.app)
-                fetch(_vm.app.api + '/picwall/' + _vm.app.aid, {
-                    method: 'GET',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                        'Authorization': _vm.app.token
-                    }
-
-                }).then(function (response) {
-                    if (response.status >= 400) {
-                        throw new Error("Bad response from server");
-                    }
-
-                    return response.json();
-                }).then(function (items) {
-
+                api(_vm).get(_vm.app.api + '/picwall/' + _vm.app.aid)
+                .then(function (data) {
+                    var items=data.data
                     console.log(items);
                     _vm.items = items;
                     whatever(callback)

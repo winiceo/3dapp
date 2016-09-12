@@ -1,13 +1,13 @@
 export const API_ROOT = (process.env.NODE_ENV === 'production')
-			? 'http://wall-dev.71an.com'
-			:'http://wall-dev.71an.com'
+			? 'http://pmker.com'
+			:'http://pmker.com'
 
 export const CookieDomain = (process.env.NODE_ENV === 'production')
-			? '.71an.com'
+			? '.pmker.com'
 			:''
 
 export const User_Center=(process.env.NODE_ENV === 'production')
-	? 'http://wall-dev.71an.com'
+	? 'http://pmker.com/wechat'
 	:''
 
 

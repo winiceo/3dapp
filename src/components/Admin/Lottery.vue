@@ -84,66 +84,66 @@
 
     <aside :show.sync="showRight" placement="right" header="编辑信息" :width="250" style="top:70px;">
         <form class="form_valid">
-        <div class="task-main-editor">
+            <div class="task-main-editor">
 
-            <div class="form-group">
+                <div class="form-group">
 
 
-                <div class="dropzone   award_uppic"
-                     id="dropzone_0"
-                     style="margin:10px;"
+                    <div class="dropzone   award_uppic"
+                         id="dropzone_0"
+                         style="margin:10px;"
 
-                     data-title="上传图片">
-                    <template v-if="item.pic">
-                        <img dz-clickable
-                             class="image  " style="z-index:-10"
+                         data-title="上传图片">
+                        <template v-if="item.pic">
+                            <img dz-clickable
+                                 class="image  " style="z-index:-10"
 
-                             :src="app.img+item.pic.url" height="120"
-                             alt="...">
-                               <span class="addMember-remove"
-                                     @click="reset()"><i
-                                       class="wb-minus-circle"></i></span>
-                    </template>
+                                 :src="app.img+item.pic.url" height="120"
+                                 alt="...">
+                            <span class="addMember-remove"
+                                  @click="reset()"><i
+                                    class="wb-minus-circle"></i></span>
+                        </template>
 
-                    <input type="hidden" name="context" value="{{context}}">
+                        <input type="hidden" name="context" value="{{context}}">
 
-                    <div class="fallback">
+                        <div class="fallback">
 
+                        </div>
                     </div>
+
+                </div>
+
+
+                <div class="form-group">
+                    <label class="control-label">奖项名称</label>
+                    <input type="text" class="form-control" name="award_name" v-model="item.award_name"
+                           placeholder="" autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label class="control-label">奖品名称</label>
+                    <input type="text" class="form-control" name="prize_name" v-model="item.prize_name"
+                           placeholder="" autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label class="control-label">奖品数量</label>
+                    <input type="number" class="form-control" name="prize_num" v-model="item.prize_num"
+                           placeholder="" autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label class="control-label">每次抽取数量</label>
+                    <input type="number" class="form-control" v-model="item.single_num"
+                           placeholder="" autocomplete="off">
+                </div>
+
+
+                <div class="form-group">
+                    <button class="btn btn-primary task-main-editor-save" type="submit">保存</button>
+                    <button class="btn btn-primary task-main-editor-save" type="button" @click="remove">删除</button>
                 </div>
 
             </div>
-
-
-            <div class="form-group">
-                <label class="control-label">奖项名称</label>
-                <input type="text" class="form-control" name="award_name" v-model="item.award_name"
-                       placeholder="" autocomplete="off">
-            </div>
-            <div class="form-group">
-                <label class="control-label">奖品名称</label>
-                <input type="text" class="form-control" name="prize_name" v-model="item.prize_name"
-                       placeholder="" autocomplete="off">
-            </div>
-            <div class="form-group">
-                <label class="control-label">奖品数量</label>
-                <input type="text" class="form-control" name="prize_num" v-model="item.prize_num"
-                       placeholder="" autocomplete="off">
-            </div>
-            <div class="form-group">
-                <label class="control-label">每次抽取数量</label>
-                <input type="text" class="form-control" v-model="item.single_num"
-                       placeholder="" autocomplete="off">
-            </div>
-
-
-            <div class="form-group">
-                <button class="btn btn-primary task-main-editor-save" type="submit"  >保存</button>
-                <button class="btn btn-primary task-main-editor-save" type="button" @click="remove">删除</button>
-            </div>
-
-        </div>
-            </form>
+        </form>
     </aside>
 
 
@@ -207,7 +207,7 @@
 
     var infiniteScroll = require('vue-infinite-scroll').infiniteScroll;
 
-    import {whatever} from "../../utils/leven"
+    import {whatever, api} from "../../utils/leven"
     import {aside} from '../../lib/vue-strap'
 
     var uuid = require('node-uuid');
@@ -298,7 +298,7 @@
             selected: function (item) {
                 this.item = item;
                 this.add = false;
-                showRight = true;
+                this.showRight = true;
                 this.setup(".dropzone");
 
             },
@@ -307,25 +307,13 @@
                 //this.item.delete(index)
                 var _vm = this;
                 //this.items.splice(_vm.index, 1)
-                fetch(_vm.app.api + '/awardwall/award/delete/' + _vm.item.id, {
-                    method: 'POST',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                        'Authorization': _vm.app.token
-                    }
-
-                }).then(function (response) {
-                    if (response.status >= 400) {
-                        throw new Error("Bad response from server");
-                    }
-
-                    return response.json();
-                }).then(function (item) {
+                api(_vm).post(_vm.app.api + '/awardwall/award/delete/' + _vm.item.id).then(function (item) {
 
                     console.log(item);
-                    _vm.items=_.filter(_vm.items, function(o) { return o.id !=_vm.item.id; });
-
+                    _vm.items = _.filter(_vm.items, function (o) {
+                        return o.id != _vm.item.id;
+                    });
+                    _vm.new_item()
                     toastr.info('删除成功')
 
                 });
@@ -388,48 +376,23 @@
 
                 var act = this.add ? "new" : "update"
                 var id = this.add ? _vm.app.aid : _vm.item.id;
-                fetch(_vm.app.api + '/awardwall/award/' + act + '/' + id, {
-                    method: 'POST',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                        'Authorization': _vm.app.token
-                    },
-                    body: JSON.stringify(_vm.item)
-
-                }).then(function (response) {
-                    if (response.status >= 400) {
-                        throw new Error("Bad response from server");
-                    }
-
-                    return response.json();
-                }).then(function (item) {
+                api(_vm).post(_vm.app.api + '/awardwall/award/' + act + '/' + id, JSON.stringify(_vm.item))
+                 .then(function (item) {
                     _vm.add ? _vm.items.push(item.data) : ""
-                    _vm.item={}
-                    _vm.showRight=false;
-                    toastr.info('保存成功')
+                    _vm.item = {}
+                    _vm.showRight = false;
+                     $('.form_valid').data('formValidation').resetForm();
+
+                     toastr.info('保存成功')
 
                 });
             },
             getdata: function (callback) {
                 var _vm = this;
                 console.log(this.app)
-                fetch(_vm.app.api + '/awardwall/' + _vm.app.aid, {
-                    method: 'GET',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                        'Authorization': _vm.app.token
-                    }
-
-                }).then(function (response) {
-                    if (response.status >= 400) {
-                        throw new Error("Bad response from server");
-                    }
-
-                    return response.json();
-                }).then(function (items) {
-
+                api(_vm).get(_vm.app.api + '/awardwall/' + _vm.app.aid)
+                .then(function (data) {
+                    var items=data.data
                     console.log(items);
                     _vm.items = items;
                     whatever(callback)
@@ -476,7 +439,7 @@
 
 
                                 _vm.item.pic = response
-                               // alert(_vm.item.pic)
+                                // alert(_vm.item.pic)
 
 
                             });
@@ -500,7 +463,7 @@
 
                     });
                 } catch (e) {
-                   // alert(e)
+                    // alert(e)
                 }
             }
         },

@@ -18,7 +18,7 @@
 
                                     <li class="list-group-item    " @click="selected(item)">
                                         <h4 class="list-group-item-heading">{{item.title}}</h4>
-
+                                        <p style='font-size:9px;color:gray'>({{item.attend_count}}人参与)</p>
 
 
 

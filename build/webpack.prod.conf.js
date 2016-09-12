@@ -145,11 +145,8 @@ module.exports.plugins.push(
     new CopyWebpackPlugin([
         { from: '../front/**/*', to: './dist/' },
 
-    ]),
-    new CopyWebpackPlugin([
-        { from: '../web/**/*', to: './dist/' },
-
     ])
+
 
 
 

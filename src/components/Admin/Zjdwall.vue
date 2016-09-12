@@ -119,7 +119,7 @@
 
 
             <div class="form-group">
-                <button class="btn btn-primary task-main-editor-save"  type="submit" @click="save">保存</button>
+                <button class="btn btn-primary task-main-editor-save"  type="submit"  >保存</button>
                 <button class="btn btn-primary task-main-editor-save" type="button" @click="remove">删除</button>
             </div>
 
@@ -189,7 +189,7 @@
 
     var infiniteScroll = require('vue-infinite-scroll').infiniteScroll;
 
-    import {whatever} from "../../utils/leven"
+    import {whatever,api} from "../../utils/leven"
     import {aside} from '../../lib/vue-strap'
 
     var uuid = require('node-uuid');
@@ -292,21 +292,7 @@
                 //this.item.delete(index)
                 var _vm = this;
                 //this.items.splice(_vm.index, 1)
-                fetch(_vm.app.api + '/sgewall/award/delete/' + _vm.item.id, {
-                    method: 'POST',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                        'Authorization': _vm.app.token
-                    }
-
-                }).then(function (response) {
-                    if (response.status >= 400) {
-                        throw new Error("Bad response from server");
-                    }
-
-                    return response.json();
-                }).then(function () {
+                api(_vm).post(_vm.app.api + '/sgewall/award/delete/' + _vm.item.id).then(function () {
 
 
                     _vm.items=_.filter(_vm.items, function(o) { return o.id !=_vm.item.id; });
@@ -373,47 +359,21 @@
 
                 var act = this.add ? "new" : "update"
                 var id = this.add ? _vm.app.aid : _vm.item.id;
-                fetch(_vm.app.api + '/sgewall/award/' + act + '/' + id, {
-                    method: 'POST',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                        'Authorization': _vm.app.token
-                    },
-                    body: JSON.stringify(_vm.item)
-
-                }).then(function (response) {
-                    if (response.status >= 400) {
-                        throw new Error("Bad response from server");
-                    }
-
-                    return response.json();
-                }).then(function (item) {
+                api(_vm).post(_vm.app.api + '/sgewall/award/' + act + '/' + id, JSON.stringify(_vm.item))
+               .then(function (item) {
                     _vm.add ? _vm.items.push(item.data) : ""
                     _vm.item={}
-                    toastr.info('保存成功')
-                    _vm.showRight = false
+                    toastr.info('保存成功');
+                   $('.form_valid').data('formValidation').resetForm();
+
+                   _vm.showRight = false
 
                 });
             },
             getdata: function (callback) {
                 var _vm = this;
                 console.log(this.app)
-                fetch(_vm.app.api + '/sgewall/' + _vm.app.aid, {
-                    method: 'GET',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                        'Authorization': _vm.app.token
-                    }
-
-                }).then(function (response) {
-                    if (response.status >= 400) {
-                        throw new Error("Bad response from server");
-                    }
-
-                    return response.json();
-                }).then(function (items) {
+                api(_vm).get(_vm.app.api + '/sgewall/' + _vm.app.aid).then(function (items) {
 
                     console.log(items.data);
                     _vm.items = items.data;

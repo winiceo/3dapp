@@ -417,7 +417,7 @@
     var infiniteScroll = require('vue-infinite-scroll').infiniteScroll;
     require("dropzone/dist/min/dropzone.min.css")
     var Dropzone = require("dropzone/dist/min/dropzone-amd-module.min")
-    import {whatever, checkStatus} from "../../utils/leven"
+    import {whatever, api} from "../../utils/leven"
 
 
     var uuid = require('node-uuid');
@@ -456,7 +456,8 @@
                     prize_num: "" ,
                     wishing:"恭喜你中了一个红包"
 
-                }
+                },
+                drop:[]
             }
         },
 
@@ -578,21 +579,7 @@
                 //this.item.delete(index)
                 var _vm = this;
                 //this.items.splice(item, 1)
-                fetch(_vm.app.api + '/shakeprizewall/shakeprize/delete/' + item.id, {
-                    method: 'POST',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                        'Authorization': _vm.app.token
-                    }
-
-                }).then(checkStatus).then(function (response) {
-                    if (response.status >= 400) {
-                        throw new Error("Bad response from server");
-                    }
-
-                    return response.json();
-                }).then(function (item) {
+                api(_vm).post(_vm.app.api + '/shakeprizewall/shakeprize/delete/' + item.id).then(function (item) {
                     _vm.items = _.filter(_vm.items, function (o) {
                         return o.id != _vm.item.id;
                     });
@@ -655,13 +642,13 @@
                                     $(that).find("a")[0].click();
                                 }
                                 $(that).click();
-                            }, 100)
+                            }, 10)
 
                         })
                     });
                     _vm.setNames()
                     //_vm.setup("#dropzone_" + (_vm.item.awards.length - 1));
-                }, 100)
+                }, 500)
 
             },
             new_snake: function () {
@@ -674,11 +661,37 @@
 
                 var choice = _.clone(this.award);
 
-                this.item.awards.push(choice);
-                $(".dz-preview").remove();
+
+
 
                 this.add = true;
-                this.dropzone();
+                 this.dropzone();
+                $(".dz-preview").remove();
+                _.each(_vm.drop,function(n,that){
+                    console.log(n)
+                    console.log(that)
+                    n.reset();
+
+                    _vm.setup(that);
+                    console.log(that)
+
+                    $(that).find("img").click(function (e) {
+                        ///$(this).hide();
+                        //_vm.tempPic= _vm.item.awards[$(that).data("index")].pic = null
+                        setTimeout(function () {
+                            if ($(that).find("a")[0]) {
+                                $(that).find("a")[0].click();
+                            }
+                            $(that).click();
+                        }, 10)
+
+                    })
+                })
+                setTimeout(function(){
+//                    _vm.dropzone();
+                    _vm.item.awards.push(choice);
+//                    _vm.setup("#dropzone_0")
+                },300)
 
 
             },
@@ -690,29 +703,17 @@
 
                 var act = this.add ? "new" : "update"
                 var id = this.add ? _vm.app.aid : _vm.item.id;
-                fetch(_vm.app.api + '/shakeprizewall/shakeprize/' + act + '/' + id, {
-                    method: 'POST',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                        'Authorization': _vm.app.token
-                    },
-                    body: JSON.stringify(_vm.item)
+                api(_vm).post(_vm.app.api + '/shakeprizewall/shakeprize/' + act + '/' + id,JSON.stringify(_vm.item)
 
-                }).then(checkStatus).then(function (response) {
-                    if (response.status >= 400) {
-                        throw new Error("Bad response from server");
-                    }
-
-                    return response.json();
-                }).then(function (o) {
+                ).then(function (o) {
                     if (_vm.add) {
                         _vm.items.unshift(o.data)
                     }
-                    _vm.item = {};
+                    //_vm.item = {};
 
                     _vm.new_snake()
 
+                    $('.form_valid').data('formValidation').resetForm();
 
                     console.log(_vm.item);
                     toastr.info('保存成功')
@@ -721,25 +722,14 @@
             },
             getdata: function (callback) {
                 var _vm = this;
-                console.log(this.app)
-                fetch(_vm.app.api + '/shakeprizewall/' + _vm.app.aid, {
-                    method: 'GET',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                        'Authorization': _vm.app.token
-                    }
+               if(_vm.app.aid==0){
+                   this.getdata();
+                   return;
+               }
+                api(_vm).get(_vm.app.api + '/shakeprizewall/' + _vm.app.aid).then(function (data) {
 
-                }).then(checkStatus).then(function (response) {
-                    if (response.status >= 400) {
-                        throw new Error("Bad response from server");
-                    }
 
-                    return response.json();
-                }).then(function (items) {
-
-                    console.log(items);
-                    _vm.items = items.data;
+                    _vm.items = data.data;
                     whatever(callback)
 
 
@@ -763,8 +753,8 @@
                 try {
                     var _vm = this;
 
-
-                    $(that).dropzone({
+                    console.log(that)
+                      _vm.drop[that]=$(that).dropzone({
 
                         dictDefaultMessage: $(that).data("title"),
                         maxFiles: 1,
@@ -811,6 +801,7 @@
                             });
 
                             this.on("error", function (file) {
+                                _vm.drop[that].reset()
 
                                 toastr.warning('上传失败请重试')
                             });

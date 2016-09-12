@@ -65,13 +65,13 @@
     </div>
 
     <aside :show.sync="showRight" placement="right" header="编辑信息" :width="250" style="top:70px;">
-
+        <form class="form_valid">
         <div class="task-main-editor">
 
 
             <div class="form-group">
                 <label class="control-label">摇一摇标题</label>
-                <input type="text" class="form-control" v-model="item.title"
+                <input type="text" name='title' class="form-control" v-model="item.title"
                        placeholder="" autocomplete="off">
             </div>
             <div class="form-group">
@@ -87,11 +87,11 @@
 
 
             <div class="form-group">
-                <button class="btn btn-primary task-main-editor-save" type="button" @click="save">保存</button>
+                <button class="btn btn-primary task-main-editor-save" type="submit" >保存</button>
                 <button class="btn btn-primary task-main-editor-save" type="button" @click="remove">删除</button>
             </div>
 
-        </div>
+        </div></form>
     </aside>
 
 
@@ -155,7 +155,7 @@
 
     var infiniteScroll = require('vue-infinite-scroll').infiniteScroll;
 
-    import {whatever} from "../../utils/leven"
+    import {whatever,api} from "../../utils/leven"
     import {aside} from '../../lib/vue-strap'
 
     var uuid = require('node-uuid');
@@ -222,7 +222,7 @@
                     }
                 }),
                         AppNoteBook.run()
-
+                this.formValid();
 
             },
 
@@ -231,10 +231,8 @@
                 this.item = {duration: 30,number:1}
                 this.add = true;
                 var _vm = this;
-//                setTimeout(function () {
-//                    _vm.setup(".dropzone");
-//
-//                }, 200)
+
+
 
 
             },
@@ -254,21 +252,7 @@
                 //this.item.delete(index)
                 var _vm = this;
                 //this.items.splice(_vm.index, 1)
-                fetch(_vm.app.api + '/shakewall/shake/delete/' + _vm.item.id, {
-                    method: 'POST',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                        'Authorization': _vm.app.token
-                    }
-
-                }).then(function (response) {
-                    if (response.status >= 400) {
-                        throw new Error("Bad response from server");
-                    }
-
-                    return response.json();
-                }).then(function (item) {
+                api(_vm).post(_vm.app.api + '/shakewall/shake/delete/' + _vm.item.id).then(function (item) {
 
                     console.log(item);
                     _vm.items = _.filter(_vm.items, function (o) {
@@ -279,53 +263,57 @@
 
                 });
             },
+            formValid: function () {
+
+                var _vm = this;
+
+                $(".form_valid").formValidation({
+                    framework: "bootstrap",
+                    button: {selector: '[type="submit"]:not([formnovalidate])', disabled: "disabled"},
+                    icon: null,
+                    fields: {
+                        title: {validators: {notEmpty: {message: "题目不能为空"}}},
+                        'title': {
+                            validators: {
+                                notEmpty: {
+                                    message: '选项不能为空'
+                                },
+                                stringLength: {
+                                    max: 50,
+                                    message: '选项不能超过100个字'
+                                }
+                            }
+                        }
+
+                    }
+                }).on('success.form.fv', function (e) {
+
+                    _vm.save();
+                    return false;
+                })
+
+            },
             save: function () {
                 var _vm = this;
                 //_vm.item.style=parseInt(_vm.item.style);
 
                 var act = this.add ? "new" : "update"
                 var id = this.add ? _vm.app.aid : _vm.item.id;
-                fetch(_vm.app.api + '/shakewall/shake/' + act + '/' + id, {
-                    method: 'POST',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                        'Authorization': _vm.app.token
-                    },
-                    body: JSON.stringify(_vm.item)
+                api(_vm).post(_vm.app.api + '/shakewall/shake/' + act + '/' + id,JSON.stringify(_vm.item)
 
-                }).then(function (response) {
-                    if (response.status >= 400) {
-                        throw new Error("Bad response from server");
-                    }
-
-                    return response.json();
-                }).then(function (item) {
+               ).then(function (item) {
                     _vm.add ? _vm.items.push(item.data) : ""
                     _vm.item = {}
                     _vm.showRight = false;
                     toastr.info('保存成功')
+                    $('.form_valid').data('formValidation').resetForm();
 
                 });
             },
             getdata: function (callback) {
                 var _vm = this;
                 console.log(this.app)
-                fetch(_vm.app.api + '/shakewall/' + _vm.app.aid, {
-                    method: 'GET',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                        'Authorization': _vm.app.token
-                    }
-
-                }).then(function (response) {
-                    if (response.status >= 400) {
-                        throw new Error("Bad response from server");
-                    }
-
-                    return response.json();
-                }).then(function (data) {
+                api(_vm).get(_vm.app.api + '/shakewall/' + _vm.app.aid).then(function (data) {
 
 
                     _vm.items = data.data;
