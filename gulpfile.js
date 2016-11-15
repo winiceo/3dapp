@@ -23,6 +23,30 @@ gulp.task('deploy', function() {
 })
 
 
+gulp.task('dev', function() {
+
+
+    return gulp.src(['./dist/**'])
+        .pipe(sftp({
+            host: 'mm.71an.com',
+            remotePath: '/data/app/kphd-server/web/',
+            user: 'leven',
+            pass: '56os.com'
+        }))
+})
+
+gulp.task('web', function() {
+
+
+    return gulp.src(['./pmker.com/**'])
+        .pipe(sftp({
+            host: 'mm.71an.com',
+            remotePath: '/data/app/kphd-server/web/',
+            user: 'leven',
+            pass: '56os.com'
+        }))
+})
+
 var cleanTask = function(cb) {
   del(['./dist']).then(function(paths) {
     cb()

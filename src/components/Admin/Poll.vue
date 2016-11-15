@@ -83,7 +83,7 @@
                                             最多选
                                         </div>
                                         <div class="form-group col-sm-4">
-                                            <input type="number" class="form-control"
+                                            <input type="number" min=1 class="form-control"
                                                    v-model="item.max_choices" placeholder="最多选">
                                         </div>
                                         <div class="form-group col-sm-4">
@@ -96,7 +96,7 @@
                                             最少选
                                         </div>
                                         <div class="form-group col-sm-4">
-                                            <input type="number" class="form-control"
+                                            <input type="number" min=1 class="form-control"
                                                    v-model="item.min_choices" placeholder="最少选">
                                         </div>
                                         <div class="form-group col-sm-4">

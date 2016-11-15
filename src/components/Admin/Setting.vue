@@ -35,16 +35,18 @@
                                                 开始时间:
                                             </label>
                                             <div class="col-sm-3">
-                                                <input v-datepicker="item.start_at" data-enabletime=true data-time_24hr=true
-                                                       data-timeFormat="H:i"  v-model="item.start_at">
+                                                <input v-datepicker="item.start_at" data-enabletime=true
+                                                       data-time_24hr=true
+                                                       data-timeFormat="H:i" v-model="item.start_at">
 
                                             </div>
                                             <label class="col-sm-3 control-label">
                                                 结束时间:
                                             </label>
                                             <div class="col-sm-3">
-                                                <input v-datepicker="item.end_at" data-enabletime=true data-time_24hr=true
-                                                       data-timeFormat="H:i"  v-model="item.end_at">
+                                                <input v-datepicker="item.end_at" data-enabletime=true
+                                                       data-time_24hr=true
+                                                       data-timeFormat="H:i" v-model="item.end_at">
 
                                             </div>
                                         </div>
@@ -81,7 +83,6 @@
                                         </template>
 
 
-
                                         <div class="row">
                                             <div class="col-md-6 col-xs-12 masonry-item">
                                                 <div class="form-group">
@@ -89,10 +90,10 @@
 
 
                                                     <!--<div id="image-upload" class="styleguide-section">-->
-                                                        <!--<header class="styleguide-header">-->
-                                                            <!--<h1>Image Upload Preview (Drag &amp; Drop)</h1>-->
-                                                        <!--</header>-->
-                                                        <!--<upload-image info="Minimum width 700px, will be cropped to 16:9"></upload-image>-->
+                                                    <!--<header class="styleguide-header">-->
+                                                    <!--<h1>Image Upload Preview (Drag &amp; Drop)</h1>-->
+                                                    <!--</header>-->
+                                                    <!--<upload-image info="Minimum width 700px, will be cropped to 16:9"></upload-image>-->
                                                     <!--</div>-->
                                                     <div class="dropzone   vip_uppic"
                                                          id="dropzone_0"
@@ -106,9 +107,9 @@
                                                                  v-lazy="app.img+item.bg_image.url" height="120"
                                                                  alt="...">
 
-                                            <span class="addMember-remove"
-                                                  @click="reset('dropzone_0')"><i
-                                                    class="wb-minus-circle"></i></span>
+                                                            <span class="addMember-remove"
+                                                                  @click="reset('dropzone_0')"><i
+                                                                    class="wb-minus-circle"></i></span>
                                                         </template>
 
                                                         <input type="hidden" name="context" value="{{context}}">
@@ -142,12 +143,81 @@
 
                                                             </div>
 
-                                            <span class="addMember-remove"
-                                                  @click="reset('dropzone_1')"><i
-                                                    class="wb-minus-circle"></i></span>
+                                                            <span class="addMember-remove"
+                                                                  @click="reset('dropzone_1')"><i
+                                                                    class="wb-minus-circle"></i></span>
                                                         </template>
 
                                                         <input type="hidden" name="context" value="audio">
+
+                                                        <div class="fallback">
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-6 col-xs-12 masonry-item">
+                                                <div class="form-group">
+                                                    <label class="control-label"> 上传logo</label>
+
+
+                                                    <!--<div id="image-upload" class="styleguide-section">-->
+                                                    <!--<header class="styleguide-header">-->
+                                                    <!--<h1>Image Upload Preview (Drag &amp; Drop)</h1>-->
+                                                    <!--</header>-->
+                                                    <!--<upload-image info="Minimum width 700px, will be cropped to 16:9"></upload-image>-->
+                                                    <!--</div>-->
+                                                    <div class="dropzone   vip_uppic"
+                                                         id="dropzone_2"
+                                                         style="margin:10px;"
+
+                                                         data-title="上传logo" data-url="logo">
+                                                        <template v-if="item.logo">
+                                                            <img dz-clickable
+                                                                 class="image  " style="z-index:-10"
+
+                                                                 v-lazy="app.img+item.logo.url" height="120"
+                                                                 alt="...">
+
+                                                            <span class="addMember-remove"
+                                                                  @click="reset('dropzone_2')"><i
+                                                                    class="wb-minus-circle"></i></span>
+                                                        </template>
+
+                                                        <input type="hidden" name="context" value="{{context}}">
+
+                                                        <div class="fallback">
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-xs-12 masonry-item">
+                                                <div class="form-group">
+                                                    <label class="control-label">上传侧边二维码</label>
+
+
+                                                    <div class="dropzone   vip_uppic"
+                                                         id="dropzone_3"
+                                                         style="margin:10px;"
+
+                                                         data-title="上传侧边二维码" data-url="qrcode">
+                                                        <template v-if="item.qrcode">
+                                                            <img dz-clickable
+                                                                 class="image  " style="z-index:-10"
+
+                                                                 v-lazy="app.img+item.qrcode.url" height="120"
+                                                                 alt="...">
+
+                                                            <span class="addMember-remove"
+                                                                  @click="reset('dropzone_3')"><i
+                                                                    class="wb-minus-circle"></i></span>
+                                                        </template>
+
+                                                        <input type="hidden" name="context" value="qrcode">
 
                                                         <div class="fallback">
 
@@ -163,7 +233,6 @@
                                     </div>
 
                                 </div>
-
 
 
                             </div>
@@ -240,6 +309,8 @@
                 this.getdata(function () {
                     _vm.setup("#dropzone_0");
                     _vm.setup("#dropzone_1");
+                    _vm.setup("#dropzone_2");
+                    _vm.setup("#dropzone_3");
 
                 });
 //                flatpickr.init.prototype.l10n.weekdays.longhand = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'];
@@ -285,6 +356,12 @@
                     _vm.item.bg_image = null;
                 }else if(a=="dropzone_1"){
                     _vm.item.bg_audio=null;
+                }else if(a=="dropzone_2"){
+                _vm.item.logo=null;
+
+                }else if(a=="dropzone_3"){
+                _vm.item.qrcode=null;
+
                 }
                 _vm.setup(a);
             },
@@ -316,6 +393,31 @@
 
                 var act = "update"
                 var id = this.add ? _vm.app.aid : _vm.item.id;
+
+
+                if(!_vm.item.title||_vm.item.title==""){
+                    toastr.warning("会议名称不能为空！");
+                    return false;
+                }
+
+
+                if(!_vm.item.start_at||!_vm.item.end_at){
+                    toastr.warning("会议时间不能为空！");
+                    return false;
+                }
+
+                console.log(_vm.item.start_at)
+                if(_vm.item.start_at=="undefined"||_vm.item.end_at=="undefined"){
+                    toastr.warning("会议时间不能为空！");
+                    return false;
+                }
+                var d1 = new Date(_vm.item.start_at.replace(/\-/g, "\/"));
+                var d2 = new Date(_vm.item.end_at.replace(/\-/g, "\/"));
+                if(d1 >=d2)
+                {
+                    toastr.warning("开始时间不能大于结束时间！");
+                    return false;
+                }
                 api(_vm).post(_vm.app.api + '/activity/' + act + '/' + id,  JSON.stringify(_vm.item)
 
                 ).then(function (item) {
@@ -361,8 +463,10 @@
 
             setup: function (that) {
                 var _vm = this;
-                var url = _vm.app.api + "/activity/" + $(that).data("url") + "/new"
-
+                var url = _vm.app.api + "/activity/" + $(that).data("url") + "/new";
+                if(that=="#dropzone_2" ||that=='#dropzone_3'){
+                    url=_vm.app.upload;
+                }
                 try {
                     $(that).dropzone({
 
@@ -382,7 +486,7 @@
                                 $('.dz-size').hide();
                                 $('.dz-error-mark').hide();
                                 //$('.dz-message').remove();
-                                console.log(response.data)
+
                                 //_vm.$set(_vm.item,$(that).data("url"),response.data)
 
                                 if ($(that).data("url") == "bgImage") {
@@ -395,6 +499,19 @@
                                     setTimeout(function(){
                                         plyr.setup();
                                     },100)
+                                    $(that).remove(".dz-message");
+
+                                }
+
+
+                                if ($(that).data("url") == "logo") {
+                                     _vm.$set('item.logo', response)
+                                    $(that).remove(".dz-message");
+
+                                }
+
+                                 if ($(that).data("url") == "qrcode") {
+                                    _vm.$set('item.qrcode', response)
                                     $(that).remove(".dz-message");
 
                                 }
@@ -429,4 +546,5 @@
         }
 
     }
+
 </script>

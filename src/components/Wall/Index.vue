@@ -26,7 +26,7 @@
         <div v-show="items.length>0" class="page-content container-fluid lt-body bg-primary-100 text-center padding-20 "
              v-infinite-scroll="loadMore()" infinite-scroll-disabled="busy"
              infinite-scroll-distance="100">
-            <div class="col-xlg-4 col-md-12">
+            <div class="col-md-12 col-lg-12">
                 <div id="recentActivityWidget" class="widget widget-shadow padding-bottom-20">
 
                     <ul class="timeline timeline-icon">
@@ -84,7 +84,7 @@
                                                                                         <i class="icon "
                                                                                            :class="act.icon"
                                                                                            aria-hidden="true"></i></div>
-                                                                                    <span class="counter-number">{{act.text}}</span>
+                                                                                    <span class="counter-number"  >{{act.text}}</span>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -153,6 +153,46 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade modal-super-scaled" id="control_activty" aria-hidden="true"
+         aria-labelledby="exampleModalTitle" role="dialog" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title">控制台地址</h4>
+                </div>
+                <div class="modal-body" style="text-align:center">
+                    <p>
+                    <a class="" href="javascript:void(0)">
+
+                        <img    v-lazy="item.control_url" width=200>
+                    </a>
+                    </p>
+
+                        <div class="form-group vertical-align-middle" style='text-align:center'>
+                            <input type="text" class="form-control" style="    width: 400px;" value="{{item.control_url_web}}"  >
+                        </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default margin-0" data-dismiss="modal" @click="remove">确定
+                    </button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">取消</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
     <div class="modal fade modal-super-scaled" id="copy_activty" aria-hidden="true"
          aria-labelledby="exampleModalTitle" role="dialog" tabindex="-1">
         <div class="modal-dialog">
@@ -186,42 +226,49 @@
             </div>
         </div>
     </div>
-    <vs-modal id="modal1" size="md" :fade="false">
-        <div slot="modal-header">
-            <h3>上墙地址</h3>
-        </div>
-        <div slot="modal-body" style='padding: 0'>
-            <div id="personalCompletedWidget" class="widget widget-shadow padding-bottom-20">
-                <div class="widget-header cover overlay">
 
-                    <div class="overlay-panel overlay-background vertical-align">
-                        <div class="vertical-align-middle">
-                            <a class="" href="javascript:void(0)">
+    <div class="modal fade modal-super-scaled" id="wall_activty" aria-hidden="true"
+         aria-labelledby="exampleModalTitle" role="dialog" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title">上墙地址</h4>
+                </div>
+                <div class="modal-body" style="text-align:center">
+                    <div class="widget-header ">
 
-                                <img    v-lazy="item.wx_address" width=200>
-                            </a>
-                            <div class="font-size-20 margin-top-10">
-                                <div class="form-group">
-                                    <input type="text" class="form-control" style="    width: 400px;" value="{{item.wx_url}}"  >
+                        <div class="   vertical-align">
+                            <div class="vertical-align-middle">
+                                <a class="" href="javascript:void(0)">
+
+                                    <img    v-lazy="item.wx_address" width=200>
+                                </a>
+                                <div class="font-size-20 margin-top-10">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" style="    width: 400px;" value="{{item.wx_url}}"  >
+                                    </div>
                                 </div>
                             </div>
-                         </div>
+                        </div>
+                    </div>
+                    <div class="widget-content">
+
+                        登录微信公众平台，把“上墙地址”设置到“自动回复”或“自定义菜单”，这样可使参与活动的人员必须先关注您的微信公众号哦！
+
                     </div>
                 </div>
-                <div class="widget-content">
-
-                    登录微信公众平台，把“上墙地址”设置到“自动回复”或“自定义菜单”，这样可使参与活动的人员必须先关注您的微信公众号哦！
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default margin-0" data-dismiss="modal" @click="remove">确定
+                    </button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">取消</button>
 
                 </div>
-
+            </div>
         </div>
-        <div slot="modal-footer" style="text-align:center">
-            <button class="btn btn-primary" @click="$broadcast('hide::modal', 'modal1')">
-                确定
-            </button>
-        </div>
-    </vs-modal>
-
+    </div>
 
 
 </template>
@@ -381,6 +428,7 @@
     import {whatever, api} from "../../utils/leven"
     import  vuestrapBase from  'vuestrap-base-components/dist/vuestrapBase.min'
     import lazyload from 'vue-lazyload'
+    import {WallUrl} from '../../config.js'
 
     import Vue from "vue";
     Vue.use(lazyload)
@@ -399,13 +447,14 @@
                 busy: false,
                 items: [],
                 item: {},
+                nomore:false,
                 acts: [
-                    {text: "活动功能", icon: "wb-extension", url: "/app/admin.html", color: "bg-red-600"},
-                    {text: "活动数据", icon: "wb-table", url: "/app/static.html", color: "bg-green-600"},
-                    {text: "上墙地址", icon: "wb-map", url: "modal1", target: "modal", color: "bg-orange-600"},
-                    {text: "大屏幕", icon: "wb-grid-9", url: "/wall/index.html",target:"_blank", color: "bg-indigo-600"},
-                    {text: "屏幕控制台", icon: "wb-hammer", url: "", color: "bg-purple-600"},
-                    {text: "屏幕设计", icon: "wb-pencil", url: "", color: "bg-blue-600"}
+                    {text: "活动功能", icon: "wb-extension", url: "/app/admin.html", color: "bg-red-600",case:''},
+                    {text: "活动数据", icon: "wb-table", url: "/app/static.html", color: "bg-green-600",case:''},
+                    {text: "上墙地址", icon: "wb-map", url: "modal1", target: "modal", color: "bg-orange-600",case:"wechatwall"},
+                    {text: "大屏幕", icon: "wb-grid-9", url: WallUrl,target:"_blank", color: "bg-indigo-600",case:"wall"},
+                    {text: "屏幕控制台", icon: "wb-hammer", url: "", color: "bg-purple-600",case:"control" },
+                    {text: "屏幕设计", icon: "wb-pencil", url: "", color: "bg-blue-600",case:''}
 
 
                 ]
@@ -444,25 +493,60 @@
 
             openurl: function (item, act) {
                 var self=this;
-                if (act.target == "modal") {
+                this.item=item;
+                if(act.case=="wechatwall"){
+                    $('#wall_activty').modal()
+                    return;
+                }
+                if(act.case=="control"){
+                    this.item=item;
+                    $('#control_activty').modal()
 
-                    this.item = item;
-                    setTimeout(function(){
+                    return;
+                }
 
-                        self.$broadcast('show::modal', act.url)
-                    },10)
+                if(act.url){
+                    if(act.target=="_blank"){
+                       console.log(act.url + "?id=" + item.id+"&token="+self.app.token)
+                        window.open(act.url + "?id=" + item.id+"&token="+self.app.token)
 
-                } else {
-                    if(act.url){
-                        if(act.target=="_blank"){
-                            window.open(act.url + "?id=" + item.id)
+                    }else{
+                        window.location.href=(act.url + "?id=" + item.id)
 
-                        }else{
-                            window.location.href=(act.url + "?id=" + item.id)
-
-                        }
                     }
                 }
+//                if (act.target == "modal") {
+//
+//                    this.item = item;
+//                    setTimeout(function(){
+//
+//                        self.$broadcast('show::modal', act.url)
+//                    },10)
+//
+//                } else {
+//
+//                    if(act.case=="control1"){
+//                        this.item=item;
+//                        $('#control_activty').modal()
+////                        this.item = item;
+////                        setTimeout(function(){
+////
+////                            self.$broadcast('show::modal', act.url)
+////                        },10)
+////
+////                        window.open(item.control_url +"&token="+self.app.token)
+//                        return;
+//                    }
+//                    if(act.url){
+//                        if(act.target=="_blank"){
+//                            window.open(act.url + "?id=" + item.id+"&token="+self.app.token)
+//
+//                        }else{
+//                            window.location.href=(act.url + "?id=" + item.id)
+//
+//                        }
+//                    }
+//                }
             },
 
             selected: function (item) {
@@ -511,9 +595,13 @@
                     return ;
                 }
                 api(_vm).get(_vm.app.api + '/activities?' + u).then(function (docs) {
-
-                    console.log(docs);
-
+                    _vm.$parent.hideLoading();
+                    console.log(docs)
+                    if(docs.length==0||!docs){
+                        _vm.nomore=true;
+                        console.log(3333)
+                        return false;
+                    }
                     _.forEach(docs, function (o) {
 
                         _vm.items.push(o)
@@ -524,6 +612,7 @@
                     _vm.busy = false;
                     if (_vm.items.length == 0) {
                         _vm.busy = true;
+                        _vm.nomore=true;
                         _vm.$set("nodata", true);
                     } else {
                         _vm.$set("nodata", false);
@@ -536,10 +625,10 @@
 
             },
             loadMore: function () {
-
+                if(this.nomore){return}
                 this.busy = true;
                 this.next += 1;
-                console.log(this.next)
+                //console.log(this.next)
                 this.getdata();
 
             }

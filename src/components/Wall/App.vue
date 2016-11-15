@@ -11,7 +11,7 @@
 
 
     import Vue from "vue"
-    import {API_ROOT,User_Center} from '../../config.js'
+    import {API_ROOT,User_Center,WallUrl} from '../../config.js'
     import {loading} from '../../lib/vue-strap'
     Vue.mixin({
         data:function(){
@@ -42,8 +42,6 @@
                     headers: {
                         'Accept': 'application/json',
                         'Content-Type': 'application/json'
-
-
                     }
 
                 }).then(function (response) {
@@ -100,6 +98,7 @@
 
 
                     _vm.$set("app.api", API_ROOT + "/api/v1")
+                    _vm.$set("app.wallurl", WallUrl)
                     _vm.$set("app.img", API_ROOT)
                     _vm.$set("app.upload", API_ROOT + "/common/image/new")
                     console.log(_vm.app)

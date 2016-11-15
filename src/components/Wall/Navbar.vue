@@ -43,8 +43,9 @@
                         </a>
                     </li>
 
+
                     <li v-show="showScreen">
-                        <a href="/wall/index.html?id={{aid}}" target="_blank" id="screenUrl">
+                        <a href="{{WallUrl}}?id={{aid}}&token={{app.token}}" target="_blank" id="screenUrl">
                             <i class="icon wb-grid-4" aria-hidden="true">进入大屏</i>
                         </a>
                     </li>
@@ -345,11 +346,12 @@
     import {ModalAlert, FormInput} from "../../lib/components"
     //require('../../global/js/components/toastr.min');
     //import { vsFormInput } from 'vuestrap-base-components/src/components'
-    import {User_Center} from "../../config"
+    import {User_Center,WallUrl} from "../../config"
 
     export default{
         data(){
             return {
+                WallUrl:WallUrl,
                 userinfo: {},
                 error: false,
                 aid:0,

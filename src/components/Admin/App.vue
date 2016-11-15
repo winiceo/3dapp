@@ -14,6 +14,21 @@
     .dropzone .dz-message{
         position: relative;
     }
+    .modal-body p{
+        text-align: center;
+        font-size:20px;
+
+    }
+    .modal-header{
+        background-color:#526069
+    }
+
+    .modal-title{
+       
+        font-style: 12px;
+        color:white;
+
+    }
 </style>
 <script>
     import Navbar from '../wall/Navbar'

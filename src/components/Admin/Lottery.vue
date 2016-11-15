@@ -127,12 +127,12 @@
                 </div>
                 <div class="form-group">
                     <label class="control-label">奖品数量</label>
-                    <input type="number" class="form-control" name="prize_num" v-model="item.prize_num"
+                    <input type="number" min=1 class="form-control" name="prize_num" v-model="item.prize_num"
                            placeholder="" autocomplete="off">
                 </div>
                 <div class="form-group">
                     <label class="control-label">每次抽取数量</label>
-                    <input type="number" class="form-control" v-model="item.single_num"
+                    <input type="number" min=1 class="form-control" v-model="item.single_num"
                            placeholder="" autocomplete="off">
                 </div>
 

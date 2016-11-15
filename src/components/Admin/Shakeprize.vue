@@ -65,7 +65,7 @@
 
                                 <div class="form-group">
                                     <label class="control-label">摇大奖时间</label>
-                                    <input type="number" name="duration" id="duration" class="form-control" v-model="item.duration">
+                                    <input type="number" min=1 name="duration" id="duration" class="form-control" v-model="item.duration">
 
 
                                 </div>
@@ -153,7 +153,7 @@
                                                         <div class="form-group"  >
                                                             <label class="control-label">发放数量</label>
 
-                                                            <input type="number" class="oo_name form-control" name="prize_num[]" placeholder="发放数量" v-model="co.prize_num">
+                                                            <input type="number" min=1 class="oo_name form-control" name="prize_num[]" placeholder="发放数量" v-model="co.prize_num">
 
 
                                                         </div>
@@ -168,7 +168,7 @@
                                                         <div class="form-group" v-if="co.type==1">
                                                             <label class="control-label">红包金额(分),不能小于100</label>
 
-                                                            <input type="number" class="oo_name form-control" name="amount[]" placeholder="红包金额" v-model="co.amount">
+                                                            <input type="number" min=1 class="oo_name form-control" name="amount[]" placeholder="红包金额" v-model="co.amount">
 
                                                         </div>
                                                         <div class="form-group" v-if="co.type==1">
@@ -655,7 +655,7 @@
                 var _vm = this;
 
                 this.item = {
-
+                      duration:30,      
                     awards:[]
                 };
 

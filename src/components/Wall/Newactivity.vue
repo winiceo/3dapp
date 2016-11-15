@@ -154,7 +154,30 @@
 
             save: function () {
                 var _vm = this;
-                console.log(_vm.item)
+
+                if(!_vm.item.title||_vm.item.title==""){
+                    toastr.warning("会议名称不能为空！");
+                    return false;
+                }
+
+
+                if(!_vm.item.start_at||!_vm.item.end_at){
+                    toastr.warning("会议时间不能为空！");
+                    return false;
+                }
+
+                console.log(_vm.item.start_at)
+                if(_vm.item.start_at=="undefined"||_vm.item.end_at=="undefined"){
+                    toastr.warning("会议时间不能为空！");
+                    return false;
+                }
+                var d1 = new Date(_vm.item.start_at.replace(/\-/g, "\/"));
+                var d2 = new Date(_vm.item.end_at.replace(/\-/g, "\/"));
+                if(d1 >=d2)
+                {
+                    toastr.warning("开始时间不能大于结束时间！");
+                    return false;
+                }
                 fetch(_vm.app.api + '/activity/new', {
                     method: 'POST',
                     headers: {
