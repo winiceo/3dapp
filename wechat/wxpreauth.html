@@ -1,0 +1,10 @@
+<script>
+    var url=window.location.href;
+    var splitUrl = url.split("?");
+    if(splitUrl){
+
+        window.location.href="http://api.pmker.com/wechat/open/wxpreauth?"+splitUrl[1];
+
+    }
+
+</script>

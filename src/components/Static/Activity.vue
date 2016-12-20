@@ -240,7 +240,7 @@
             getdata: function (callback) {
                 var _vm = this;
                 console.log(this.app)
-                fetch(_vm.app.api + '/activity/' + _vm.app.aid, {
+                fetch(_vm.app.api + '/statics/activity/signinwall/' + _vm.app.aid, {
                     method: 'GET',
                     headers: {
                         'Accept': 'application/json',
@@ -256,7 +256,7 @@
                     return response.json();
                 }).then(function (items) {
 
-                    var data=_(items.data.signin_wall.wechat_users).forEach(function(n){
+                    var data=_(items.data.wxusers).forEach(function(n){
                         n.avatar="<img src='"+n.avatar+"' width='100' height='100'>";
                         n.sex=n.sex==1?"男":'女';
                     })

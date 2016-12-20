@@ -83,7 +83,7 @@
                          style="margin:10px;"
 
                          data-title="上传图片">
-                        <template v-if="item.pic!=null">afasdf
+                        <template v-if="item.pic!=null">
                             <img dz-clickable
                                  class="image  " style="z-index:-10"
 

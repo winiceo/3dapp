@@ -52,15 +52,15 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr v-for="o in item.awards ">
+                                    <tr v-for="o in item.awardUsers ">
 
-                                        <td>{{o.award_name}}</td>
+                                        <td>{{o.award.award_name}}</td>
                                         <td >
-                                            <div v-for="user in o.wechat_users">
 
-                                                <img :src="user.avatar" width=100 height=100>
-                                                {{user.nickname}}
-                                            </div>
+
+                                                <img :src="o.wxuser.avatar" width=100 height=100>
+                                                {{o.wxuser.nickname}}
+
                                         </td>
                                     </tr>
 
@@ -264,7 +264,7 @@
     var infiniteScroll = require('vue-infinite-scroll').infiniteScroll;
     require("dropzone/dist/min/dropzone.min.css")
     var Dropzone = require("dropzone/dist/min/dropzone-amd-module.min")
-    import {whatever, checkStatus} from "../../utils/leven"
+    import {whatever, checkStatus,api} from "../../utils/leven"
 
 
     var uuid = require('node-uuid');
@@ -327,35 +327,24 @@
             },
 
             getdata: function (callback) {
-                var _vm = this;
-                console.log(this.app)
-                fetch(_vm.app.api + '/shakeprizewall/result/' + _vm.app.aid, {
-                    method: 'GET',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                        'Authorization': _vm.app.token
-                    }
 
-                }).then(checkStatus).then(function (response) {
-                    if (response.status >= 400) {
-                        throw new Error("Bad response from server");
-                    }
+                 var _vm = this;
 
-                    return response.json();
-                }).then(function (items) {
+                 api(_vm).get(_vm.app.api + '/statics/activity/shakeprizewall/' + _vm.app.aid).then(function (items) {
 
-
-                    _vm.items = items.data;
+                   _vm.items = items.data;
                     _vm.item=items.data[0];
                     whatever(callback)
 
 
-                }).catch(function (ex) {
+                }).catch(function(ex) {
                     console.log('parsing failed', ex)
-                    whatever(callback)
-
+                    callback()
                 });
+
+
+
+
 
             },
             loadMore: function () {

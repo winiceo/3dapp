@@ -3,33 +3,47 @@
         <div class="page-header page-header-bordered page-header-tabs">
             <h3>图片墙</h3>
             <div class="page-header-actions">
-                <button type="button" class="btn btn-dark"   data-animation="scale-up" data-target="#exampleNiftyFadeScale"
-                        data-toggle="modal"><i class="icon wb-upload" aria-hidden="true"></i>上传图片</button>
+                <button type="button" class="btn btn-dark" data-animation="scale-up"
+                        data-target="#exampleNiftyFadeScale"
+                        data-toggle="modal"><i class="icon wb-upload" aria-hidden="true"></i>上传图片
+                </button>
             </div>
 
 
         </div>
 
-        <div class="page-content" v-infinite-scroll="loadMore()" infinite-scroll-disabled="busy"
-             infinite-scroll-distance="100">
+        <div class="page-content" >
+            <div v-infinite-scroll="loadMore()" infinite-scroll-disabled="busy"
+                 infinite-scroll-distance="100"  >
             <ul class="blocks blocks-100 blocks-xlg-4 blocks-md-4 blocks-sm-2" id="exampleList"
-                data-filterable="true" >
-                <template v-for="(index,co) in items"  track-by="$index">
-                <li data-type="animal">
-                    <div class="widget widget-shadow">
-                        <figure class="widget-header overlay-hover overlay">
+                data-filterable="true">
+                <template v-for="(index,co) in items" track-by="$index">
+                    <li data-type="animal">
+                        <div class="widget widget-shadow">
+                            <figure class="widget-header overlay-hover overlay">
 
-                            <img  :src="app.img+co.pic.url" height="200" class="overlay-figure overlay-scale" alt="">
-                            <figcaption class="overlay-panel overlay-background overlay-fade overlay-icon">
-                                <a class="icon wb-close" @click="remove(co)"></a>
-                            </figcaption>
-                        </figure>
-                        <h4 class="widget-title pic-title">{{co.pic.name}}</h4>
-                    </div>
-                </li>
-               </template>
+                                <img :src="app.img+co.pic.url_small" height="200" class="overlay-figure overlay-scale" alt="">
+                                <figcaption class="overlay-panel overlay-background overlay-fade overlay-icon">
+                                    <a class="icon wb-close" @click="remove(co)"></a>
+                                </figcaption>
+                            </figure>
+                            <h4 class="widget-title pic-title">{{co.pic.name}}</h4>
+                        </div>
+                    </li>
+                </template>
 
             </ul>
+                </div>
+        </div>
+        <div class="page-content container-fluid lt-body bg-primary-100 text-center padding-20" v-show="nodata">
+
+            <div class="widget">
+
+
+                暂时没有更多数据
+
+
+            </div>
         </div>
     </div>
 
@@ -44,7 +58,7 @@
                     <h4 class="modal-title">上传</h4>
                 </div>
                 <div class="modal-body">
-                    <form   class="dropzone thumbnail uppic"
+                    <form class="dropzone thumbnail uppic"
                           style="margin:10px;"
                           id="picupload" enctype="multipart/form-data" data-title="拖动或点击上传图片">
 
@@ -53,7 +67,7 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default margin-0" data-dismiss="modal"  >取消
+                    <button type="button" class="btn btn-default margin-0" data-dismiss="modal">取消
                     </button>
 
                 </div>
@@ -74,6 +88,10 @@
 
 
 }
+
+
+
+
 
 </style>
 
@@ -100,8 +118,9 @@
                 add: true,
                 context: "picwall",
                 count: 0,
-                next: 1,
+                next: 0,
                 busy: false,
+                nodata:false,
                 items: [],
                 item: {
 
@@ -113,7 +132,9 @@
             init: function () {
                 // this.uploadUrl = "http://localhost:9999/upload",
 
-                this.getdata();
+                if(this.app.api!=""){
+                    this.calldata(-1);
+                }
                 window.Site.cc();
                 window.AppNoteBook = Site.extend({
                     handleHeight: function () {
@@ -138,6 +159,15 @@
 
             },
 
+             calldata: function (status) {
+                this.status = status;
+                this.next = 1;
+                this.$set("nodata", false);
+                this.items = [];
+                this.getdata();
+            },
+
+
             remove: function (item) {
 
                 //this.item.delete(index)
@@ -155,13 +185,51 @@
 
             getdata: function (callback) {
                 var _vm = this;
-                console.log(this.app)
-                api(_vm).get(_vm.app.api + '/picwall/' + _vm.app.aid)
-                .then(function (data) {
-                    var items=data.data
+
+                //_vm.$parent.showLoading();
+
+                 var u = new URLSearchParams();
+
+                 u.append('next', this.next);
+                //u.append('status', this.status);
+
+                if(_vm.app.api==""||_vm.nomore){
+                    return ;
+                }
+
+
+                api(_vm).get(_vm.app.api + '/picwall/' + _vm.app.aid+'?' + u)
+                .then(function (docs) {
+
+                 //_vm.$parent.hideLoading();
+
+                    console.log(docs)
+                    if(docs.data.length==0||!docs.data){
+                        _vm.nomore=true;
+                        console.log(3333)
+                        return false;
+                    }
+                     var items=docs.data
                     console.log(items);
-                    _vm.items = items;
-                    whatever(callback)
+
+                     _.forEach(docs.data, function (o) {
+
+                        _vm.items.push(o)
+
+                    });
+                    //_vm.items = items;
+                    //whatever(callback)
+
+
+                    _vm.busy = false;
+                    if (_vm.items.length == 0) {
+                        _vm.busy = true;
+                        _vm.nomore=true;
+                        _vm.$set("nodata", true);
+                    } else {
+                        _vm.$set("nodata", false);
+                    }
+                    //_vm.$parent.hideLoading();
 
 
                 }).catch(function (ex) {
@@ -172,6 +240,7 @@
 
             },
             loadMore: function () {
+
                 this.busy = true;
                 this.next += 1;
                 console.log("leven"+this.next)
@@ -186,7 +255,7 @@
                     $(that).dropzone({
 
                         dictDefaultMessage: $(that).data("title"),
-                        maxFiles: 10,
+                        maxFiles: 5,
                         paramName: "file",
                         url:_vm.app.api+"/picwall/pic/new/"+_vm.app.aid,
                         headers: {
@@ -231,4 +300,8 @@
         }
 
     }
+
+
+
+
 </script>

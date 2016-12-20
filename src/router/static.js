@@ -14,11 +14,11 @@ export default function(router) {
             component: require('../components/Static/Lottery.vue')
         },
         '/shakeprize': {
-            name: 'lottery',
+            name: 'shakeprize',
             component: require('../components/Static/Shakeprize.vue')
         },
         '/shake': {
-            name: 'lottery',
+            name: 'shake',
             component: require('../components/Static/Shake.vue')
         },
         

@@ -16,7 +16,6 @@
     Vue.mixin({
         data:function(){
             return {
-
                 loading:true,
                 nodata:false,
             }

@@ -25,6 +25,16 @@
                         <!--</a>-->
                         <!--</li>-->
                         <li class="site-menu-item">
+                            <a class="animsition-link" v-link="'/sign'">
+                                <i class="site-menu-icon wb-volume-high" aria-hidden="true"></i>
+                                <span class="site-menu-title">签到配置</span>
+                                <div class="site-menu-label">
+
+                                </div>
+                            </a>
+                        </li>
+
+                        <li class="site-menu-item">
                             <a class="animsition-link" v-link="'/danmu'">
                                 <i class="site-menu-icon wb-volume-high" aria-hidden="true"></i>
                                 <span class="site-menu-title">弹幕</span>
@@ -33,6 +43,7 @@
                                 </div>
                             </a>
                         </li>
+
 
                         <li class="site-menu-item">
                             <a class="animsition-link" v-link="'/vipwall'">

@@ -41,6 +41,17 @@
 
         <div class="page-main">
             <div class="page-content">
+                <div class='row row-lg'>
+                    <div class='col-sm-12 alert   alert-success alert-dismissible'>
+
+                        <div class="checkbox-custom checkbox-primary">
+                            <input type="checkbox" id="inputChecked"  v-model="config.repeat_awarded" @change='set_repeat'>
+                            <label for="inputChecked">是否允许重复中奖</label>
+                        </div>
+
+
+                    </div>
+                </div>
 
                 <div class="row row-lg ">
                 <form class="form_valid">
@@ -228,7 +239,7 @@
          aria-labelledby="exampleModalTitle" role="dialog" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header">
+                <div class="modal-header" style='background-color: #f96868;'>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
@@ -240,6 +251,33 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default margin-0" data-dismiss="modal" @click="remove">确定
                     </button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade modal-fade-in-scale-up modal-super-scaled " id="pay_code" aria-hidden="true"
+         aria-labelledby="exampleModalTitle" role="dialog" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style='background-color: #f96868;'>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title">余额不足请充值</h4>
+                </div>
+                <div class="modal-body">
+                    <p>{{message}}<br>
+
+                    <button type="button" class="btn btn-animate btn-animate-side btn-success" @click='usercenter'>
+                        <span> 红包立即充值</span>
+                    </button>
+                    </p>
+                </div>
+                <div class="modal-footer">
+
                     <button type="button" class="btn btn-primary" data-dismiss="modal">取消</button>
                 </div>
             </div>
@@ -439,6 +477,7 @@
                 removeIndex: 0,
                 tempPic: '',
                 item: {},
+                message:'',
 
                 award: {
                     type:0,
@@ -457,7 +496,8 @@
                     wishing:"恭喜你中了一个红包"
 
                 },
-                drop:[]
+                drop:[],
+                config:{}
             }
         },
 
@@ -467,6 +507,8 @@
                         // this.uploadUrl = "http://localhost:9999/upload",
 
                         this.getdata();
+
+                        this.get_repeat();
 
                 window.Site.cc();
                 window.AppNoteBook = Site.extend({
@@ -706,17 +748,28 @@
                 api(_vm).post(_vm.app.api + '/shakeprizewall/shakeprize/' + act + '/' + id,JSON.stringify(_vm.item)
 
                 ).then(function (o) {
-                    if (_vm.add) {
-                        _vm.items.unshift(o.data)
+                    if(o.code==1000008){
+
+                        _vm.message=o.message
+                        $("#pay_code").modal();
+                    }else{
+
+                        if (_vm.add) {
+                            _vm.items.unshift(o.data)
+                        }
+                        //_vm.item = {};
+
+                        _vm.new_snake()
+
+                        $('.form_valid').data('formValidation').resetForm();
+
+                        console.log(_vm.item);
+                        toastr.info('保存成功')
+
                     }
-                    //_vm.item = {};
 
-                    _vm.new_snake()
 
-                    $('.form_valid').data('formValidation').resetForm();
 
-                    console.log(_vm.item);
-                    toastr.info('保存成功')
 
                 });
             },
@@ -745,6 +798,43 @@
                 this.skip += 10;
                 console.log(this.skip)
                 this.getdata();
+
+            },
+
+            usercenter:function(){
+              window.open("/app/wall.html#!/usercenter")
+            },
+            get_repeat:function(){
+             var _vm = this;
+                api(_vm).get(_vm.app.api + '/shakeprizewall/configs/' + _vm.app.aid).then(function (data) {
+
+                    _vm.config = data.data;
+                    callback()
+
+
+                }).catch(function(ex) {
+                    console.log('parsing failed', ex)
+                    callback()
+                });
+
+            },
+
+            set_repeat:function(){
+
+                var _vm = this;
+
+                //_vm.item.style=parseInt(_vm.item.style);
+
+                api(_vm).post(_vm.app.api + '/shakeprizewall/configs/update/' + _vm.app.aid,
+
+                      JSON.stringify(_vm.config)
+
+                 ).then(function (item) {
+
+                    console.log(item);
+                    toastr.info('保存成功')
+
+                });
 
             },
 

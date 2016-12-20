@@ -1,7 +1,7 @@
 <template>
 
-    <Navbar   ></Navbar>
-    <div class="site-menubar site-menubar-light">
+    <Navbar   v-if="!nochrome"></Navbar>
+    <div v-if="!nochrome" class="site-menubar site-menubar-light">
         <div class="site-menubar-body">
             <div>
                 <div>
@@ -11,7 +11,7 @@
                         <button type="button" class="btn btn-outline btn-default" @click="calldata(1)">进行中</button>
                         <button type="button" class="btn btn-outline btn-default" @click="calldata(2)">已结束</button>
 
-                        <button type="button" class="btn btn-default btn-outline pull-right" v-link="'new_activity'">
+                        <button type="button" class="btn btn-default btn-outline pull-right" v-link="'usercenter'">
                             创建新活动
                         </button>
                     </div>
@@ -20,10 +20,35 @@
             </div>
         </div>
     </div>
+
+    <div class="row" v-if="nochrome">
+        <div class="col-sm-2">
+
+        </div>
+        <div class="col-sm-8">
+            <div class="panel panel-bordered panel-danger">
+                <div class="panel-heading">
+                    <h3 class="panel-title">友情提醒</h3>
+                </div>
+                <div class="panel-body">
+                    <p>你当前不是使用的chrome浏览器，请切换至chrome浏览器。</p>
+
+                    <p class="chrm-tip2">如果你还没有安装，请前往<a target="_blank" class="browser-chrome" href="http://rj.baidu.com/soft/detail/14744.html?ald">下载chrome</a>谷歌浏览器</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-2">
+
+        </div>
+
+
+    </div>
+
     <div class="page animsition">
 
 
-        <div v-show="items.length>0" class="page-content container-fluid lt-body bg-primary-100 text-center padding-20 "
+
+        <div v-if="!nochrome" v-show="items.length>0" class="page-content container-fluid lt-body bg-primary-100 text-center padding-20 "
              v-infinite-scroll="loadMore()" infinite-scroll-disabled="busy"
              infinite-scroll-distance="100">
             <div class="col-md-12 col-lg-12">
@@ -34,7 +59,7 @@
 
                             <li class="timeline-reverse">
                                 <div class="timeline-content-wrap">
-                                    <div class="timeline-dot bg-green-600">
+                                    <div class="timeline-dot " :class="item.free? 'bg-gree-600':'bg-red-600'">
                                         <i class="icon wb-chat" aria-hidden="true"></i>
                                     </div>
                                     <div class="timeline-content">
@@ -42,8 +67,13 @@
                                             <div class="widget widget-shadow text-center">
                                                 <div class="widget-content">
                                                     <div class="row no-space">
+
                                                         <div class="col-xs-6">
+
                                                             <div class="bg-blue-grey-700 white vertical-align height-200">
+                                                                <span v-if="item.free==false" class="badge up badge-danger">已付费</span>
+                                                                <span v-if="item.free==true" class="badge up label-gree">免费</span>
+
                                                                 <div class="vertical-align-middle">
                                                                     <div class="font-size-40">
 
@@ -179,8 +209,7 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default margin-0" data-dismiss="modal" @click="remove">确定
-                    </button>
+
                     <button type="button" class="btn btn-primary" data-dismiss="modal">取消</button>
 
                 </div>
@@ -261,8 +290,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default margin-0" data-dismiss="modal" @click="remove">确定
-                    </button>
+
                     <button type="button" class="btn btn-primary" data-dismiss="modal">取消</button>
 
                 </div>
@@ -274,7 +302,11 @@
 </template>
 <style>
 
-
+    .badge.up {
+    position: absolute;
+    top: 5px;
+    left:10px;
+    }
     .modal-super-scaled .modal-header {
         background-color: #f96868;
         border-radius: 4px 4px 0 0;
@@ -307,7 +339,11 @@
     .hover15 figure {
         position: relative;
     }
+.label-gree{
+background-color: #62a8ea;
+color:white;
 
+}
     .hover15 figure::before {
         position: absolute;
         top: 50%;
@@ -428,15 +464,16 @@
     import {whatever, api} from "../../utils/leven"
     import  vuestrapBase from  'vuestrap-base-components/dist/vuestrapBase.min'
     import lazyload from 'vue-lazyload'
-    import {WallUrl} from '../../config.js'
+    import {WallUrl,NoticeUrl} from '../../config.js'
 
     import Vue from "vue";
     Vue.use(lazyload)
     export default{
         directives: {infiniteScroll},
-        components: {Navbar, Sitebar, 'vs-modal': vuestrapBase.modal},
+        components: {Navbar, Sitebar},
         data(){
             return {
+            nochrome:false,
                 showScreen:false,
                 token: '',
                 status: -1,
@@ -454,7 +491,7 @@
                     {text: "上墙地址", icon: "wb-map", url: "modal1", target: "modal", color: "bg-orange-600",case:"wechatwall"},
                     {text: "大屏幕", icon: "wb-grid-9", url: WallUrl,target:"_blank", color: "bg-indigo-600",case:"wall"},
                     {text: "屏幕控制台", icon: "wb-hammer", url: "", color: "bg-purple-600",case:"control" },
-                    {text: "屏幕设计", icon: "wb-pencil", url: "", color: "bg-blue-600",case:''}
+                    {text: "消息审核", icon: "wb-pencil", url: NoticeUrl,target:"_blank", color: "bg-blue-600",case:'notice'}
 
 
                 ]
@@ -634,14 +671,26 @@
             }
         }
         ,ready:function(){
-            console.log("child.index.ready")
-                $("body").css({"padding-top":"110px"})
+
+            if (navigator.userAgent.indexOf("Chrome") > -1){
+              $("body").css({"padding-top":"110px"})
                 if(this.$route.query.token){
 
                     this.gettoken(this.start);
                 }else{
                     this._init(this.start);
                 }
+
+
+
+            }else{
+                this.nochrome=true;
+                this.$parent.hideLoading();
+
+
+
+            }
+
 
 
         }

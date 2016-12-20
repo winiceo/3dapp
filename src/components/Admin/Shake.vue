@@ -3,41 +3,57 @@
     <div class="page animsition award">
         <div class="page-header page-header-bordered page-header-tabs">
             <h3>摇一摇</h3>
-            <div class="page-header-actions">
+
+            <div class="mypanel1">
+
+
+                <div style=" float:left;width:200px;">
+                    是否限制
+                    <input type="checkbox" value=1 class="js-switch"
+                           v-model="shakeset.filtered"/>
+
+                </div>
+                比赛结果的前 <input type="number" class='tt' v-model="shakeset.filtered_num" placeholder="3"> 名
+                ，不能参与之后<input type="number" class='tt' v-model="shakeset.filtered_round" placeholder="3">轮摇一摇
+
+                <button class="btn btn-primary " @click="shake_save">保存</button>
+                <br>
                 <button type="button" class="btn btn-dark" @click="new_item" data-animation="scale-up"><i
                         class="icon wb-plus" aria-hidden="true"></i>添加
                 </button>
+
             </div>
 
 
-        </div>
-
-        <div class="page-content ">
-
-                <ul class="blocks blocks-100 blocks-xlg-4 blocks-md-3 blocks-sm-2" id="exampleList"
-                    data-filterable="true">
-                    <template v-for="(index,co) in items" track-by="$index">
-                        <li data-type="animal" @click="showRight = true ,item=co,index=index,add=false">
-
-                            <div class="panel panel-bordered panel-warning">
-                                <div class="panel-heading">
-                                    <h3 class="panel-title">{{co.title}}</h3>
-                                </div>
-                                <div class="panel-body">
-                                    <p>摇一摇时间:{{co.duration}}秒</p>
-                                    <p> 最终显示前几名:{{co.number}}</p>
 
 
+    </div>
 
-                                </div>
-                            </div>
+    <div class="page-content ">
+
+        <ul class="blocks blocks-100 blocks-xlg-4 blocks-md-3 blocks-sm-2" id="exampleList"
+            data-filterable="true">
+            <template v-for="(index,co) in items" track-by="$index">
+                <li data-type="animal" @click="showRight = true ,item=co,index=index,add=false">
+
+                    <div class="panel panel-bordered panel-warning">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">{{co.title}}</h3>
+                        </div>
+                        <div class="panel-body">
+                            <p>摇一摇时间:{{co.duration}}秒</p>
+                            <p> 最终显示前几名:{{co.number}}</p>
 
 
-                        </li>
-                    </template>
+                        </div>
+                    </div>
 
-                </ul>
-            </div>
+
+                </li>
+            </template>
+
+        </ul>
+    </div>
 
     </div>
 
@@ -66,32 +82,33 @@
 
     <aside :show.sync="showRight" placement="right" header="编辑信息" :width="250" style="top:70px;">
         <form class="form_valid">
-        <div class="task-main-editor">
+            <div class="task-main-editor">
 
 
-            <div class="form-group">
-                <label class="control-label">摇一摇标题</label>
-                <input type="text" name='title' class="form-control" v-model="item.title"
-                       placeholder="" autocomplete="off">
+                <div class="form-group">
+                    <label class="control-label">摇一摇标题</label>
+                    <input type="text" name='title' class="form-control" v-model="item.title"
+                           placeholder="" autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label class="control-label">摇一摇时间(秒)</label>
+                    <input type="number" min=1 class="form-control" v-model="item.duration"
+                           placeholder="" autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label class="control-label">最终显示前几名</label>
+                    <input type="number" min=1 class="form-control" v-model="item.number"
+                           placeholder="" autocomplete="off">
+                </div>
+
+
+                <div class="form-group">
+                    <button class="btn btn-primary task-main-editor-save" type="submit">保存</button>
+                    <button class="btn btn-primary task-main-editor-save" type="button" @click="remove">删除</button>
+                </div>
+
             </div>
-            <div class="form-group">
-                <label class="control-label">摇一摇时间(秒)</label>
-                <input type="number" min=1 class="form-control" v-model="item.duration"
-                       placeholder="" autocomplete="off">
-            </div>
-            <div class="form-group">
-                <label class="control-label">最终显示前几名</label>
-                <input type="number" min=1 class="form-control" v-model="item.number"
-                       placeholder="" autocomplete="off">
-            </div>
-
-
-            <div class="form-group">
-                <button class="btn btn-primary task-main-editor-save" type="submit" >保存</button>
-                <button class="btn btn-primary task-main-editor-save" type="button" @click="remove">删除</button>
-            </div>
-
-        </div></form>
+        </form>
     </aside>
 
 
@@ -148,6 +165,28 @@
         display: block;
         z-index: 10;
     }
+    .mypanel1 {
+        border-radius: 3px;
+    padding: 10px;
+    margin: 5px;
+    background: white;
+
+    }
+    .mypanel1 .form-control{
+
+    width:100px;
+    }
+
+    .mypanel1 .tt{
+
+    width:50px;
+    }
+
+
+
+
+
+
 </style>
 
 <script>
@@ -161,6 +200,10 @@
     var uuid = require('node-uuid');
     var Dropzone = require("dropzone/dist/min/dropzone-amd-module.min")
     Dropzone.autoDiscover = false;
+  require("switchery/dist/switchery.css")
+    var Switchery = require("switchery")
+
+
 
     export default{
         directives: {infiniteScroll},
@@ -183,7 +226,8 @@
                     id: "",
                     award: "",
                     name: ""
-                }
+                },
+                shakeset:{}
             }
         },
         watch: {
@@ -310,16 +354,39 @@
 
                 });
             },
+
+            shake_save: function () {
+                var _vm = this;
+                //_vm.item.style=parseInt(_vm.item.style);
+
+
+                var id =   _vm.app.aid
+                _vm.shakeset.id= parseInt(id);
+                api(_vm).post(_vm.app.api + '/shakewall/update/' + id,JSON.stringify(_vm.shakeset)
+
+               ).then(function (item) {
+
+                    toastr.info('设置成功')
+
+
+                });
+            },
             getdata: function (callback) {
                 var _vm = this;
                 console.log(this.app)
                 api(_vm).get(_vm.app.api + '/shakewall/' + _vm.app.aid).then(function (data) {
 
-
-                    _vm.items = data.data;
+                    var sset=data.data
+                    _vm.shakeset={
+                        id: sset.id,
+                        filtered: sset.filtered,
+                        filtered_num: sset.filtered_num,
+                        filtered_round: sset.filtered_round
+                    }
+                    _vm.items = data.data.shakes;
                     whatever(callback)
 
-
+                    _vm.switchery();
                 }).catch(function (ex) {
                     console.log('parsing failed', ex)
                     whatever(callback)
@@ -382,10 +449,27 @@
                     // alert(e)
                 }
             }
+            ,switchery: function () {
+                var _vm = this;
+
+
+                var elems = (document.querySelectorAll('.js-switch'));
+
+                _.each(elems, function (n, i) {
+                    var switchery = new Switchery(n);
+                    $(switchery.switcher).click(function () {
+                        _vm.shakeset.filtered = $(n).prop("checked") ? 1 : 0
+                    })
+                    switchery.setPosition(_vm.shakeset.filtered)
+
+                })
+            }
         },
         ready: function () {
 
         }
 
     }
+
+
 </script>

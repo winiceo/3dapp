@@ -2,26 +2,14 @@
     <nav class="site-navbar navbar navbar-default navbar-fixed-top navbar-mega navbar-inverse"
          role="navigation">
         <div class="navbar-header">
-            <!--<button type="button" class="navbar-toggle hamburger hamburger-close navbar-toggle-left hided"-->
-                    <!--data-toggle="menubar">-->
-                <!--<span class="sr-only">Toggle navigation</span>-->
-                <!--<span class="hamburger-bar"></span>-->
-            <!--</button>-->
-            <!--<button type="button" class="navbar-toggle collapsed" data-target="#site-navbar-collapse"-->
-                    <!--data-toggle="collapse">-->
-                <!--<i class="icon wb-more-horizontal" aria-hidden="true"></i>-->
-            <!--</button>-->
+
             <a class="" href="../index.html">
 
                 <logo></logo>
 
             </a>
 
-             <!-- <button type="button" class="navbar-toggle collapsed" data-target="#site-navbar-search"
-                    data-toggle="collapse">
-                <span class="sr-only">Toggle Search</span>
-                <i class="icon wb-search" aria-hidden="true"></i>
-            </button> -->
+
         </div>
 
         <div class="navbar-container container-fluid">
@@ -29,14 +17,7 @@
             <div class="collapse navbar-collapse navbar-collapse-toolbar" id="site-navbar-collapse">
                 <!-- Navbar Toolbar -->
                 <ul class="nav navbar-toolbar">
-                    <!--<li class="hidden-float" id="toggleMenubar">-->
-                        <!--<a data-toggle="menubar" href="#" role="button">-->
-                            <!--<i class="icon hamburger hamburger-arrow-left">-->
-                                <!--<span class="sr-only">Toggle menubar</span>-->
-                                <!--<span class="hamburger-bar"></span>-->
-                            <!--</i>-->
-                        <!--</a>-->
-                    <!--</li>-->
+
                     <li>
                         <a href="/app/wall.html">
                             <i class="icon wb-grid-4" aria-hidden="true">活动列表</i>
@@ -45,7 +26,7 @@
 
 
                     <li v-show="showScreen">
-                        <a href="{{WallUrl}}?id={{aid}}&token={{app.token}}" target="_blank" id="screenUrl">
+                        <a href="{{WallUrl}}?id={{aid}}&token={{token}}" target="_blank" id="screenUrl">
                             <i class="icon wb-grid-4" aria-hidden="true">进入大屏</i>
                         </a>
                     </li>
@@ -65,11 +46,27 @@
                           </span>
                         </a>
                         <ul class="dropdown-menu" role="menu">
+                            <li role="presentation">
+                                <a href="javascript:void(0)"   @click="user_center"
+                                   ><i
+                                        class="icon wb-settings"
+                                        aria-hidden="true"></i> 个人中心</a>
+                            </li>
 
                             <li role="presentation">
-                                <a href="javascript:void(0)" @click="showModalAlert = true" role="menuitem"><i
+
+
+                                <a href="javascript:void(0)" data-animation="scale-up" data-target="#setting_passwd"
+                                   data-toggle="modal"  role="menuitem"><i
                                         class="icon wb-settings"
-                                        aria-hidden="true"></i> 设置</a>
+                                        aria-hidden="true"></i>修改资料</a>
+                            </li>
+
+                            <li role="presentation">
+                                <a href="javascript:void(0)" data-animation="scale-up"  @click="get_userinfo"
+                                   data-toggle="modal"  role="menuitem"  role="menuitem"><i
+                                        class="icon wb-settings"
+                                        aria-hidden="true"></i> 配置公众号</a>
                             </li>
                             <li class="divider" role="presentation"></li>
                             <li role="presentation">
@@ -79,190 +76,8 @@
                             </li>
                         </ul>
                     </li>
-                    <!--  <li class="dropdown">
-                         <a data-toggle="dropdown" href="javascript:void(0)" title="Notifications" aria-expanded="false"
-                            data-animation="scale-up" role="button">
-                             <i class="icon wb-bell" aria-hidden="true"></i>
-                             <span class="badge badge-danger up">5</span>
-                         </a>
-                         <ul class="dropdown-menu dropdown-menu-right dropdown-menu-media" role="menu">
-                             <li class="dropdown-menu-header" role="presentation">
-                                 <h5>NOTIFICATIONS</h5>
-                                 <span class="label label-round label-danger">New 5</span>
-                             </li>
 
-                             <li class="list-group" role="presentation">
-                                 <div data-role="container">
-                                     <div data-role="content">
-                                         <a class="list-group-item" href="javascript:void(0)" role="menuitem">
-                                             <div class="media">
-                                                 <div class="media-left padding-right-10">
-                                                     <i class="icon wb-order bg-red-600 white icon-circle" aria-hidden="true"></i>
-                                                 </div>
-                                                 <div class="media-body">
-                                                     <h6 class="media-heading">A new order has been placed</h6>
-                                                     <time class="media-meta" datetime="2016-06-12T20:50:48+08:00">5 hours ago</time>
-                                                 </div>
-                                             </div>
-                                         </a>
-                                         <a class="list-group-item" href="javascript:void(0)" role="menuitem">
-                                             <div class="media">
-                                                 <div class="media-left padding-right-10">
-                                                     <i class="icon wb-user bg-green-600 white icon-circle" aria-hidden="true"></i>
-                                                 </div>
-                                                 <div class="media-body">
-                                                     <h6 class="media-heading">Completed the task</h6>
-                                                     <time class="media-meta" datetime="2016-06-11T18:29:20+08:00">2 days ago</time>
-                                                 </div>
-                                             </div>
-                                         </a>
-                                         <a class="list-group-item" href="javascript:void(0)" role="menuitem">
-                                             <div class="media">
-                                                 <div class="media-left padding-right-10">
-                                                     <i class="icon wb-settings bg-red-600 white icon-circle" aria-hidden="true"></i>
-                                                 </div>
-                                                 <div class="media-body">
-                                                     <h6 class="media-heading">Settings updated</h6>
-                                                     <time class="media-meta" datetime="2016-06-11T14:05:00+08:00">2 days ago</time>
-                                                 </div>
-                                             </div>
-                                         </a>
-                                         <a class="list-group-item" href="javascript:void(0)" role="menuitem">
-                                             <div class="media">
-                                                 <div class="media-left padding-right-10">
-                                                     <i class="icon wb-calendar bg-blue-600 white icon-circle" aria-hidden="true"></i>
-                                                 </div>
-                                                 <div class="media-body">
-                                                     <h6 class="media-heading">Event started</h6>
-                                                     <time class="media-meta" datetime="2016-06-10T13:50:18+08:00">3 days ago</time>
-                                                 </div>
-                                             </div>
-                                         </a>
-                                         <a class="list-group-item" href="javascript:void(0)" role="menuitem">
-                                             <div class="media">
-                                                 <div class="media-left padding-right-10">
-                                                     <i class="icon wb-chat bg-orange-600 white icon-circle" aria-hidden="true"></i>
-                                                 </div>
-                                                 <div class="media-body">
-                                                     <h6 class="media-heading">Message received</h6>
-                                                     <time class="media-meta" datetime="2016-06-10T12:34:48+08:00">3 days ago</time>
-                                                 </div>
-                                             </div>
-                                         </a>
-                                     </div>
-                                 </div>
-                             </li>
-                             <li class="dropdown-menu-footer" role="presentation">
-                                 <a class="dropdown-menu-footer-btn" href="javascript:void(0)" role="button">
-                                     <i class="icon wb-settings" aria-hidden="true"></i>
-                                 </a>
-                                 <a href="javascript:void(0)" role="menuitem">
-                                     All notifications
-                                 </a>
-                             </li>
-                         </ul>
-                     </li>
-                     <li class="dropdown">
-                         <a data-toggle="dropdown" href="javascript:void(0)" title="Messages" aria-expanded="false"
-                            data-animation="scale-up" role="button">
-                             <i class="icon wb-envelope" aria-hidden="true"></i>
-                             <span class="badge badge-info up">3</span>
-                         </a>
-                         <ul class="dropdown-menu dropdown-menu-right dropdown-menu-media" role="menu">
-                             <li class="dropdown-menu-header" role="presentation">
-                                 <h5>MESSAGES</h5>
-                                 <span class="label label-round label-info">New 3</span>
-                             </li>
 
-                             <li class="list-group" role="presentation">
-                                 <div data-role="container">
-                                     <div data-role="content">
-                                         <a class="list-group-item" href="javascript:void(0)" role="menuitem">
-                                             <div class="media">
-                                                 <div class="media-left padding-right-10">
-                           <span class="avatar avatar-sm avatar-online">
-                             <img src="../../global/portraits/2.jpg" alt="..." />
-                             <i></i>
-                           </span>
-                                                 </div>
-                                                 <div class="media-body">
-                                                     <h6 class="media-heading">Mary Adams</h6>
-                                                     <div class="media-meta">
-                                                         <time datetime="2016-06-17T20:22:05+08:00">30 minutes ago</time>
-                                                     </div>
-                                                     <div class="media-detail">Anyways, i would like just do it</div>
-                                                 </div>
-                                             </div>
-                                         </a>
-                                         <a class="list-group-item" href="javascript:void(0)" role="menuitem">
-                                             <div class="media">
-                                                 <div class="media-left padding-right-10">
-                           <span class="avatar avatar-sm avatar-off">
-                             <img src="../../global/portraits/3.jpg" alt="..." />
-                             <i></i>
-                           </span>
-                                                 </div>
-                                                 <div class="media-body">
-                                                     <h6 class="media-heading">Caleb Richards</h6>
-                                                     <div class="media-meta">
-                                                         <time datetime="2016-06-17T12:30:30+08:00">12 hours ago</time>
-                                                     </div>
-                                                     <div class="media-detail">I checheck the document. But there seems</div>
-                                                 </div>
-                                             </div>
-                                         </a>
-                                         <a class="list-group-item" href="javascript:void(0)" role="menuitem">
-                                             <div class="media">
-                                                 <div class="media-left padding-right-10">
-                           <span class="avatar avatar-sm avatar-busy">
-                             <img src="../../global/portraits/4.jpg" alt="..." />
-                             <i></i>
-                           </span>
-                                                 </div>
-                                                 <div class="media-body">
-                                                     <h6 class="media-heading">June Lane</h6>
-                                                     <div class="media-meta">
-                                                         <time datetime="2016-06-16T18:38:40+08:00">2 days ago</time>
-                                                     </div>
-                                                     <div class="media-detail">Lorem ipsum Id consectetur et minim</div>
-                                                 </div>
-                                             </div>
-                                         </a>
-                                         <a class="list-group-item" href="javascript:void(0)" role="menuitem">
-                                             <div class="media">
-                                                 <div class="media-left padding-right-10">
-                           <span class="avatar avatar-sm avatar-away">
-                             <img src="../../global/portraits/5.jpg" alt="..." />
-                             <i></i>
-                           </span>
-                                                 </div>
-                                                 <div class="media-body">
-                                                     <h6 class="media-heading">Edward Fletcher</h6>
-                                                     <div class="media-meta">
-                                                         <time datetime="2016-06-15T20:34:48+08:00">3 days ago</time>
-                                                     </div>
-                                                     <div class="media-detail">Dolor et irure cupidatat commodo nostrud nostrud.</div>
-                                                 </div>
-                                             </div>
-                                         </a>
-                                     </div>
-                                 </div>
-                             </li>
-                             <li class="dropdown-menu-footer" role="presentation">
-                                 <a class="dropdown-menu-footer-btn" href="javascript:void(0)" role="button">
-                                     <i class="icon wb-settings" aria-hidden="true"></i>
-                                 </a>
-                                 <a href="javascript:void(0)" role="menuitem">
-                                     See all messages
-                                 </a>
-                             </li>
-                         </ul>
-                     </li>
-                     <li id="toggleChat">
-                         <a data-toggle="site-sidebar" href="javascript:void(0)" title="Chat" data-url="../site-sidebar.tpl">
-                             <i class="icon wb-chat" aria-hidden="true"></i>
-                         </a>
-                     </li> -->
                 </ul>
                 <!-- End Navbar Toolbar Right -->
             </div>
@@ -286,49 +101,135 @@
         </div>
     </nav>
 
-    <modal-alert :show.sync="showModalAlert" class='my3d' title="更新密码" ,foot="false">
-
-        <div slot="content" id="form" class="styleguide-section">
-
-            <div class="  cf password">
-                <div class="form-group">
-                <form-input
-                        :model.sync="userinfo.password"
-                        type="password"
-                        label="密码"
-                        :error="checkPasswd"
-
-
-                        message="密码不能小于6位数"
-                >
-
-                </form-input>
-                    </div>
-                <div class="form-group">
-                <form-input
-                        :model.sync="userinfo.repassword"
-                        type="password"
-                        label="重复密码"
-                        :error="error"
-
-
-                        message="重复密码输入不一致"
-                >
-                </form-input>
+    <div class="modal fade modal-super-scaled mybody1" id="setting_passwd" aria-hidden="true"
+         aria-labelledby="exampleModalTitle" role="dialog" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title">修改资料</h4>
                 </div>
-                <div class="form-group" style="text-align:center">
+                <div class="modal-body ">
+                    <div class="mybody">
+                    <div class="form-group">
+                        <form-input
+                                :model.sync="userinfo.password"
+                                type="password"
+                                label="密    码:"
+                                :error="checkPasswd"
 
-                <button class="button btn btn-default btn-outline" :class="{'button-disabled' : error}" @click="save">
-                    确定
-                </button>
+
+                                message="密码不能小于6位数"
+                        >
+
+                        </form-input>
                     </div>
+                    <div class="form-group">
+                        <form-input
+                                :model.sync="userinfo.repassword"
+                                type="password"
+                                label="重复密码:"
+                                :error="error"
+
+
+                                message="重复密码输入不一致"
+                        >
+                        </form-input>
+
+                        </div>
+                        <div style="text-align:center"><button type="button" class="btn btn-default margin-0" data-dismiss="modal" @click="save">确定
+                        </button>
+                            </div>
+                        </div>
+
+                    <hr>
+
+
+
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">取消</button>
+
+                </div>
             </div>
-
         </div>
+    </div>
 
 
-    </modal-alert>
-</template>
+
+    <div class="modal fade modal-super-scaled mybody" id="setting_wechat" aria-hidden="true"
+         aria-labelledby="exampleModalTitle" role="dialog" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title">配置公众号</h4>
+                </div>
+                <div class="modal-body ">
+                    <div class="" v-if="authorizer!=false">
+                        <div class="widget widget-shadow">
+                            <div class="widget-header bg-white-600 text-center  ">
+                                <div class="font-size-20 black">您的公众号授权成功</div>
+
+                                <div class="grey-300 font-size-14 margin-bottom-20">
+
+                                    <img :src="authorizer.head_img" width=150 height="150">
+                                    <br>
+                                    {{authorizer.nick_name}}
+
+                                </div>
+                                <a href="#"  @click='set_wechat'>改用手动配置公众号方式</a>
+                            </div>
+                        </div>
+
+                     </div>
+
+
+                    <div   v-if="authorizer==false">
+                        <div class="row"   data-plugin="matchHeight" data-by-row="true">
+
+
+                            <div class="col-lg-6 col-md-6" style="height: 190px;" @click="get_wechat">
+                                <div class="widget widget-shadow">
+                                    <div class="widget-header bg-green-600 text-center padding-30 padding-bottom-15">
+                                        <div class="font-size-20 white">安全模式(推荐)</div>
+                                        <div class="grey-300 font-size-14 margin-bottom-20">登录公众号，一键授权</div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 col-md-6" style="height: 190px;" @click='set_wechat'>
+                                <div class="widget widget-shadow">
+                                    <div class="widget-header bg-orange-700  text-center padding-30 padding-bottom-15">
+                                        <div class="font-size-20 white">常规模式</div>
+                                        <div class="grey-300 font-size-14 margin-bottom-20">手动设置微信号</div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default margin-0" data-dismiss="modal" @click="save">确定
+                    </button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">取消</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+ </template>
 <style>
     .password > div{
         width:100%;
@@ -337,6 +238,39 @@
        padding: 0;
         border-bottom: none;
     }
+    .my3d .modal-container
+    {
+        padding:0px;
+    }
+    .mybody1 .modal-header{
+        background-color: #f96868;
+        border-radius: 4px 4px 0 0;
+    }
+     .mybody1 .modal-body{
+     padding-left:10px;
+     padding-right:10px;
+     padding-bottom:5px;
+     }
+     .mybody {
+        padding:10px;
+     }
+     .mybody .form-input{
+     width:400px;
+     }
+     .mybody .form-label{
+     width:80px;
+     text-align:right;
+     font-size:14px;
+     }
+     .mybody .widget{
+     margin-bottom:5px;
+     }
+
+     .mybody .modal-body {
+            padding: 1rem 0 0rem 0;
+        }
+
+
 
 </style>
 <script>
@@ -347,6 +281,7 @@
     //require('../../global/js/components/toastr.min');
     //import { vsFormInput } from 'vuestrap-base-components/src/components'
     import {User_Center,WallUrl} from "../../config"
+    import {whatever, api} from "../../utils/leven"
 
     export default{
         data(){
@@ -355,8 +290,10 @@
                 userinfo: {},
                 error: false,
                 aid:0,
+                token:'',
                 showScreen:this.$parent.showScreen,
-                showModalAlert: false
+                showModalAlert: false,
+                authorizer:false
             }
         },
 
@@ -378,13 +315,74 @@
         components: {logo, ModalAlert, FormInput},
         methods: {
             init:function(){
-
+                this.token=this.app.token
                 this.aid =this.app.aid;
             },
             logout: function () {
                 this.$clearStorage();
                 window.location.href = User_Center + "/logout";//"/app/wall.html#!/login"
             },
+
+            get_userinfo: function () {
+
+            $('#setting_wechat').modal()
+                var _vm = this;
+
+                api(_vm).get(_vm.app.api + '/user/profile' ).then(function (res) {
+                    var data=res.data
+                    if(data.authorizer_info){
+
+
+                        if(data.authorizer_info.authorization_info){
+
+
+
+                        _vm.authorizer=data.authorizer_info.authorizer_info
+                        }
+
+
+
+                    }
+                    _vm.$parent.hideLoading();
+
+
+                });
+
+
+            },
+
+            get_wechat: function () {
+
+
+                var _vm = this;
+
+                api(_vm).get(_vm.app.api + '/common/wechat/open/preauth' ).then(function (data) {
+
+                    console.log(data)
+                    if(data.code=="0"){
+
+                       window.open(data.data)
+                    }else{
+                        alert("获取信息出错")
+                    }
+
+
+
+                });
+
+
+            },
+            set_wechat:function(){
+            window.open("/app/wall.html#!/setting2")
+
+            },
+
+
+            user_center:function(){
+            window.open("/app/wall.html#!/usercenter")
+
+            },
+
             getuser: function () {
                 var _vm = this;
                 fetch(_vm.app.api + '/user', {

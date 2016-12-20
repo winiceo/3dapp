@@ -23,20 +23,7 @@
                                     <div class="example">
                                         <!--<form autocomplete="off">-->
 
-                                        <!--<div class="form-group">-->
-                                            <!--<label class="control-label">会议类型</label>-->
-                                            <!--<div>-->
-                                                <!--<div class="radio-custom radio-default radio-inline">-->
-                                                    <!--<input type="radio" value=1 v-model="item.free">-->
-                                                    <!--<label>免费</label>-->
-                                                <!--</div>-->
-                                                <!--<div class="radio-custom radio-default radio-inline">-->
-                                                    <!--<input type="radio" value=0 v-model="item.free">-->
 
-                                                    <!--<label>付费</label>-->
-                                                <!--</div>-->
-                                            <!--</div>-->
-                                        <!--</div>-->
                                         <div class="form-group">
                                             <label class="control-label">会议名称</label>
                                             <input type="text" class="form-control"
@@ -135,7 +122,7 @@
                 token: "",
 
                 item: {
-                    free:1,
+                    free:0,
                     wxbound:0,
                 }
             }

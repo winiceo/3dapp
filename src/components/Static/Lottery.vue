@@ -18,8 +18,7 @@
                             <th>昵称</th>
                             <th>openID</th>
                             <th>奖项</th>
-                            <th>奖品名称</th>
-
+                            <th>奖品名称</th><th>状态</th><th>操作</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -28,9 +27,22 @@
 
                                 {{{entry[key]}}}
                             </td>
-                            <td v-for="key1 in activity_award">
-                                {{{entry['activity_award'][key1]}}}
+                            <td>
+                                <p v-if="entry.issued==true" >已领取</p>
+                                <p v-if="entry.issued==false" >未领取</p>
+
+
                             </td>
+
+
+                            <td>
+                                <button v-if="entry.issued==true" @click='cancelPrize(entry)' type="submit" class="btn btn-default save_snake">取消
+                                </button>
+
+                                <button v-if="entry.issued==false" @click='getPrize(entry)' type="submit" class="btn btn-primary save_snake">领取
+                                </button>
+                            </td>
+
                         </tr>
 
                         </tbody>
@@ -158,34 +170,11 @@
 
     var infiniteScroll = require('vue-infinite-scroll').infiniteScroll;
 
-    import {whatever} from "../../utils/leven"
+    import {whatever,api} from "../../utils/leven"
     import {aside} from '../../lib/vue-strap'
 
     var uuid = require('node-uuid');
-    //    Vue.component('demo-grid', {
-    //        template: '#grid-template',
-    //        props: {
-    //            data: Array,
-    //            columns: Array,
-    //            filterKey: String
-    //        },
-    //        data: function () {
-    //            var sortOrders = {}
-    //            this.columns.forEach(function (key) {
-    //                sortOrders[key] = 1
-    //            })
-    //            return {
-    //                sortKey: '',
-    //                sortOrders: sortOrders
-    //            }
-    //        },
-    //        methods: {
-    //            sortBy: function (key) {
-    //                this.sortKey = key
-    //                this.sortOrders[key] = this.sortOrders[key] * -1
-    //            }
-    //        }
-    //    })
+
 
 
     export default{
@@ -194,9 +183,10 @@
         data(){
             return {
                 items: [],
+                item:{},
 
-                columns: ['avatar','nickname',  'openid'],
-                activity_award:['award_name','prize_name']
+                columns: ['avatar','nickname',  'openid','award_name','prize_name'],
+
              }
         },
         watch: {
@@ -238,38 +228,79 @@
 
 
             },
+            cancelPrize:function(item){
+
+
+                 var _vm = this;
+                 var cc={
+                     openid:item.openid,
+                     issued:false,
+                     id:item.pid
+
+                 }
+
+
+
+                api(_vm).post(_vm.app.api + '/awardwall/user/award/update/' + cc.id
+                    ,JSON.stringify(cc)
+                     ).then(function (dd) {
+                    item.issued=false;
+                    console.log(item);
+                    toastr.info('保存成功')
+
+                });
+
+
+            },
+            getPrize:function(item){
+
+
+             var _vm = this;
+             var cc={
+             openid:item.openid,
+             issued:true,
+             id:item.pid
+
+             }
+
+
+                api(_vm).post(_vm.app.api + '/awardwall/user/award/update/' + cc.id
+                    ,JSON.stringify(cc)
+                     ).then(function (dd) {
+                        item.issued=true;
+                    console.log(item);
+                    toastr.info('保存成功')
+
+                });
+            },
 
             getdata: function (callback) {
                 var _vm = this;
                 console.log(this.app)
-                fetch(_vm.app.api + '/awardwall/result/' + _vm.app.aid, {
-                    method: 'GET',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                        'Authorization': _vm.app.token
-                    }
 
-                }).then(function (response) {
-                    if (response.status >= 400) {
-                        throw new Error("Bad response from server");
-                    }
 
-                    return response.json();
-                }).then(function (items) {
 
-                    var data=_(items.data).forEach(function(n){
-                        n.avatar="<img src='"+n.avatar+"' width='100' height='100'>";
+                api(_vm).get(_vm.app.api + '/statics/activity/awardwall/' + _vm.app.aid).then(function (items) {
+                   var data=_(items.data).forEach(function(n){
+                        n.avatar="<img src='"+n.wxuser.avatar+"' width='100' height='100'>";
+                        n.nickname=n.wxuser.nickname;
+                        n.openid=n.wxuser.openid
+                        n.award_name=n.award.award_name
+                        n.prize_name=n.award.prize_name;
+                        n.status=n.issued==true?"已领":"未领"
+                        n.pid=n.award.id;
+                        n.issued=n.issued;
+
                     })
                     _vm.items = data;
                     whatever(callback)
 
 
-                }).catch(function (ex) {
+                }).catch(function(ex) {
                     console.log('parsing failed', ex)
-                    whatever(callback)
-
+                    callback()
                 });
+
 
             },
             loadMore: function () {

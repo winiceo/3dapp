@@ -8,6 +8,11 @@ export default function(router) {
             name: 'danmu',
             component: require('../components/Admin/Danmu.vue')
         },
+
+        '/sign': {
+            name: 'sign',
+            component: require('../components/Admin/Sign.vue')
+        },
         // '/media': {
         //     name: 'media',
         //     component: require('../components/Admin/Media.vue')

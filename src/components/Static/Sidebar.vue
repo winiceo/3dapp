@@ -39,7 +39,7 @@
 
                         <li class="site-menu-item">
                             <a class="animsition-link" v-link="'/shakeprize'">
-                                <i class="site-menu-icon wb-thumb-up" aria-hidden="true"></i>
+                                <i class="site-menu-icon wb-payment " aria-hidden="true"></i>
                                 <span class="site-menu-title">摇奖品</span>
                                 <div class="site-menu-label">
 
@@ -48,7 +48,7 @@
                         </li>
                         <li class="site-menu-item">
                             <a class="animsition-link" v-link="'/shake'">
-                                <i class="site-menu-icon wb-thumb-up" aria-hidden="true"></i>
+                                <i class="site-menu-icon wb-random" aria-hidden="true"></i>
                                 <span class="site-menu-title">摇一摇</span>
                                 <div class="site-menu-label">
 

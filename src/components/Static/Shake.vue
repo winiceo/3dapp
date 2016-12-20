@@ -7,7 +7,7 @@
                 <i class="icon wb-chevron-right" aria-hidden="true"></i>
             </div>
             <div class="page-aside-inner">
-                <div class="well">摇奖品</div>
+                <div class="well">摇一摇</div>
 
                 <div class="app-notebook-list " data-plugin="pageAsideScroll">
                     <div data-role="container">
@@ -18,8 +18,7 @@
 
                                     <li class="list-group-item    " @click="selected(item)">
                                         <h4 class="list-group-item-heading">{{item.title}}</h4>
-                                        <p style='font-size:9px;color:gray'>({{item.attend_count}}人参与)</p>
-
+                                        <p style='font-size:9px;color:gray'>({{item.number}}人参与)</p>
 
 
                                     </li>
@@ -36,43 +35,46 @@
             <div class="page-content">
 
                 <div class="row row-lg ">
-                    <form class="form_valid">
-                        <div class="page-content ">
-                            <div class="panel">
-                                <div class="example table-responsive">
-                                    <table class="table table-bordered">
-                                        <thead>
 
-                                        <tr>
-                                            <th>用户头像</th>
-                                            <th>姓名</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr v-for="user in item.wechat_users ">
+                    <template v-for="(index,xx) in item.data" track-by="$index">
+                        第（{{index+1}}）轮
+                        <form class="form_valid">
+                            <div class="page-content ">
+                                <div class="panel">
+                                    <div class="example table-responsive">
+                                        <table class="table table-bordered">
+                                            <thead>
 
-                                            <td><img :src="user.avatar" width=100 height=100></td>
-                                            <td >
+                                            <tr>
+                                                <th>用户头像</th>
+                                                <th>姓名</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr v-for="user in xx.wxusers ">
+
+                                                <td><img :src="user.avatar" width=100 height=100></td>
+                                                <td>
                                                     {{user.nickname}}
 
-                                            </td>
-                                        </tr>
+                                                </td>
+                                            </tr>
 
-                                        </tbody>
-                                    </table>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
 
-                    </form>
+                        </form>
+                    </template>
                 </div>
 
 
             </div>
 
         </div>
-
 
 
         <!-- End Site Action -->
@@ -84,7 +86,6 @@
         <!--contextMenu END-->
 
     </div>
-
 
 
 </template>
@@ -246,6 +247,7 @@
         background-color: #fff;
         border-radius: 50%;
     }
+
 </style>
 <script>
 
@@ -258,7 +260,7 @@
     var infiniteScroll = require('vue-infinite-scroll').infiniteScroll;
     require("dropzone/dist/min/dropzone.min.css")
     var Dropzone = require("dropzone/dist/min/dropzone-amd-module.min")
-    import {whatever, checkStatus} from "../../utils/leven"
+    import {whatever, checkStatus,api} from "../../utils/leven"
 
 
     var uuid = require('node-uuid');
@@ -322,34 +324,21 @@
 
             getdata: function (callback) {
                 var _vm = this;
-                console.log(this.app)
-                fetch(_vm.app.api + '/shakewall/result/' + _vm.app.aid, {
-                    method: 'GET',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                        'Authorization': _vm.app.token
-                    }
 
-                }).then(checkStatus).then(function (response) {
-                    if (response.status >= 400) {
-                        throw new Error("Bad response from server");
-                    }
-
-                    return response.json();
-                }).then(function (items) {
-
-
-                    _vm.items = items.data;
+                 api(_vm).get(_vm.app.api + '/statics/activity/shakewall/' + _vm.app.aid).then(function (items) {
+                   _vm.items = items.data;
                     _vm.item=items.data[0];
                     whatever(callback)
 
 
-                }).catch(function (ex) {
+                }).catch(function(ex) {
                     console.log('parsing failed', ex)
-                    whatever(callback)
-
+                    callback()
                 });
+
+
+
+
 
             },
             loadMore: function () {
@@ -361,4 +350,5 @@
             }
         }
     }
+
 </script>
