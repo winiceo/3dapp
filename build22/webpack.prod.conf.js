@@ -92,7 +92,7 @@ for (var pathname in pages) {
         // filename: pathname + '.html',
         filename: pathname + '.html',
         template: pages[pathname], // 模板路径
-        
+
         // minify: {
         //     removeComments: true,
         //     collapseWhitespace: true,
@@ -110,7 +110,7 @@ for (var pathname in pages) {
         conf.hash = false;
     }
 
-   //if(/b|c/.test(pathname)) conf.chunks.splice(2, 0, 'common-b-c')
+    //if(/b|c/.test(pathname)) conf.chunks.splice(2, 0, 'common-b-c')
     // 需要生成几个html文件，就配置几个HtmlWebpackPlugin对象
     module.exports.plugins.push(new HtmlWebpackPlugin(conf));
 }
