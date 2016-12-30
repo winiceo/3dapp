@@ -38,7 +38,12 @@
                                             <!--</div>-->
                                         <!--</div>-->
                                         <div class="form-group">
-                                            <label class="control-label">会议名称</label>
+                                            <label class="control-label">会议名称(必填)</label>
+                                            <input type="text" class="form-control"
+                                                   v-model="item.name" placeholder="" autocomplete="off">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label">会议标题</label>
                                             <input type="text" class="form-control"
                                                    v-model="item.title" placeholder="" autocomplete="off">
                                         </div>
@@ -171,7 +176,7 @@
             save: function () {
                 var _vm = this;
 
-                if(!_vm.item.title||_vm.item.title==""){
+                if(!_vm.item.name||_vm.item.name==""){
                     toastr.warning("会议名称不能为空！");
                     return false;
                 }

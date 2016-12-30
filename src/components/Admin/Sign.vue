@@ -1,10 +1,10 @@
 <template>
     <div class="page animsition">
-        <div class="page-header page-header-bordered page-header-tabs">
-            <h3>签到配置</h3>
+        <Row class='pagehead'>
+            <i-col span="24"> <h3>签到配置</h3></i-col>
 
+        </Row>
 
-        </div>
 
         <div class="page-content">
             <div class="panel">
@@ -24,8 +24,9 @@
                                         <div class="form-group">
                                             <label class="col-sm-3 control-label">3D文字: </label>
                                             <div class="col-sm-9">
-                                                <input id="fontsize" type="text" v-model="item.text3d"  >
-                                            </div>
+                                                <i-input :value.sync="item.text3d" placeholder="请输入..." style="width: 300px"></i-input>
+
+                                             </div>
                                         </div>
 
 

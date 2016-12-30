@@ -53,7 +53,7 @@
                                             <tbody>
                                             <tr v-for="user in xx.wxusers ">
 
-                                                <td><img :src="user.avatar" width=100 height=100></td>
+                                                <td><img :src="user.avatar.dealAvatar()" width=100 height=100></td>
                                                 <td>
                                                     {{user.nickname}}
 
@@ -324,7 +324,9 @@
 
             getdata: function (callback) {
                 var _vm = this;
-
+                if(_vm.app.aid==0){
+                    return ;
+                  }
                  api(_vm).get(_vm.app.api + '/statics/activity/shakewall/' + _vm.app.aid).then(function (items) {
                    _vm.items = items.data;
                     _vm.item=items.data[0];
@@ -333,7 +335,7 @@
 
                 }).catch(function(ex) {
                     console.log('parsing failed', ex)
-                    callback()
+
                 });
 
 

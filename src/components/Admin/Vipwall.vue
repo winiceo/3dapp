@@ -1,50 +1,59 @@
 <template>
 
     <div class="page animsition vip">
-        <div class="page-header page-header-bordered page-header-tabs">
-            <h3>嘉宾墙</h3>
-            <div class="page-header-actions">
-                <button type="button" class="btn btn-dark" @click="new_item" data-animation="scale-up"><i
-                        class="icon wb-plus" aria-hidden="true"></i>添加
-                </button>
-            </div>
 
+        <Row class='pagehead'>
+            <i-col span="12"> <h3>嘉宾墙</h3></i-col>
+            <i-col span="12" class='action'>  <button type="button" class="btn btn-dark" @click="new_item" data-animation="scale-up"><i
+                    class="icon wb-plus" aria-hidden="true"></i>添加
+            </button></i-col>
 
-        </div>
+        </Row>
+
 
         <div class="page-content ">
-            <div class="panel">
+
                 <ul class="blocks blocks-100 blocks-xlg-4 blocks-md-2 blocks-sm-2" id="exampleList"
                     data-filterable="true">
                     <template v-for="(index,co) in items" track-by="$index">
                         <li data-type="animal" @click="selected(co);">
 
-                            <div class="widget widget-shadow " style="margin:10px">
-                                <figure class="widget-header bg-white-600 padding-10 overlay-hover  ">
-                                    <a v-if="co.pic!=null"
-                                       class="avatar   img-bordered bg-white pull-left margin-right-20"
-                                       href="javascript:void(0)">
-                                        <img :src="app.img+co.pic.url" class="avatar_img" width=100 height=100 alt="">
-                                    </a>
-                                    <div class="vertical-align height-100 text-truncate">
-                                        <div class="vertical-align-middle">
-                                            <div class="font-size-20 margin-bottom-5 text-truncate">{{co.title}}</div>
-                                            <div class="font-size-14 text-truncate">{{co.name}}</div>
-                                        </div>
-                                    </div>
-                                    <figcaption class="overlay-panel overlay-background overlay-fade  ">
-                                        简介: {{co.description}}
+                            <Card  style='margin:5px;height:250px'>
+                                <p slot="title">
+                                    <Icon type="ios-navigate-outline"></Icon>
+                                    {{co.name}}
+                                </p>
 
-                                    </figcaption>
-                                </figure>
-                            </div>
+                                <p>
+                                    <figure class="widget-header bg-white-600 padding-10 overlay-hover  ">
+                                        <a v-if="co.pic!=null"
+                                           class="avatar   img-bordered bg-white pull-left margin-right-20"
+                                           href="javascript:void(0)">
+                                            <img :src="app.img+co.pic.url" class="avatar_img" width=100 height=100 alt="">
+                                        </a>
+                                        <div class="vertical-align height-100 text-truncate">
+                                            <div class="vertical-align-middle">
+                                                <div class="font-size-20 margin-bottom-5 text-truncate">{{co.title}}</div>
+                                                <div class="font-size-14 text-truncate">{{co.name}}</div>
+                                            </div>
+                                        </div>
+                                        <figcaption class="overlay-panel overlay-background overlay-fade  ">
+                                            简介: {{co.description}}
+
+                                        </figcaption>
+                                    </figure>
+                                </p>
+
+
+                            </Card>
+
 
 
                         </li>
                     </template>
 
                 </ul>
-            </div>
+
         </div>
     </div>
 

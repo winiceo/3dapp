@@ -13,12 +13,12 @@
                 <div class="example table-responsive">
                     <table class="table table-bordered">
                         <thead>
-                         <tr>
-                            <th>头像</th>
-                            <th>昵称</th>
-                            <th>openID</th>
-                            <th>奖项</th>
-                            <th>奖品名称</th><th>状态</th><th>操作</th>
+                        <tr>
+                            <th>图像</th>
+
+                            <th>奖品名称</th>
+                            <th>奖品数量</th>
+                            <th>剩余数量</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -27,21 +27,10 @@
 
                                 {{{entry[key]}}}
                             </td>
-                            <td>
-                                <p v-if="entry.issued==true" >已领取</p>
-                                <p v-if="entry.issued==false" >未领取</p>
 
 
-                            </td>
 
 
-                            <td>
-                                <button v-if="entry.issued==true" @click='cancelPrize(entry)' type="submit" class="btn btn-default save_snake">取消
-                                </button>
-
-                                <button v-if="entry.issued==false" @click='getPrize(entry)' type="submit" class="btn btn-primary save_snake">领取
-                                </button>
-                            </td>
 
                         </tr>
 
@@ -185,7 +174,7 @@
                 items: [],
                 item:{},
 
-                columns: ['avatar','nickname',  'openid','award_name','prize_name'],
+                columns: ['avatar','award_name',  'prize_num','prize_left'],
 
              }
         },
@@ -282,17 +271,16 @@
 
 
 
-                api(_vm).get(_vm.app.api + '/statics/activity/awardwall/' + _vm.app.aid).then(function (items) {
+                api(_vm).get(_vm.app.api + '/statics/activity/sgewall/' + _vm.app.aid).then(function (items) {
                    var data=_(items.data).forEach(function(n){
+                        if(n.pic){
+                            n.avatar="<img src='"+_vm.app.img+n.pic.url_small+"' width='100' height='100'>";
 
-                        n.avatar="<img src='"+n.wxuser.avatar.dealAvatar()+"' width='100' height='100'>";
-                        n.nickname=n.wxuser.nickname;
-                        n.openid=n.wxuser.openid
-                        n.award_name=n.award.award_name
-                        n.prize_name=n.award.prize_name;
-                        n.status=n.issued==true?"已领":"未领"
-                        n.pid=n.award.id;
-                        n.issued=n.issued;
+                        }else{
+                            n.avatar=""
+                        }
+
+
 
                     })
                     _vm.items = data;

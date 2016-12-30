@@ -21,6 +21,10 @@ export default function(router) {
             name: 'shake',
             component: require('../components/Static/Shake.vue')
         },
+        '/zjd': {
+            name: 'zjd',
+            component: require('../components/Static/Zjd.vue')
+        },
         
         '*': {
             component: require('../components/Common/NotFound.vue')

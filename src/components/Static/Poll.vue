@@ -52,11 +52,13 @@
                                     </tr>
                                     </thead>
                                     <tbody>
+                                    <template v-if="item">
                                     <tr v-for="entry in item.choices ">
                                         <td v-for="key in columns">
                                             {{{entry[key]}}}
                                         </td>
                                     </tr>
+                                        </template>
 
                                     </tbody>
                                 </table>
@@ -286,7 +288,7 @@
                 this.uploadUrl = this.app.api + "/common/image/new",
                         // this.uploadUrl = "http://localhost:9999/upload",
 
-                        this.getdata();
+                 this.getdata();
                 window.Site.cc();
                 window.AppNoteBook = Site.extend({
                     handleHeight: function () {
@@ -322,9 +324,11 @@
 
             getdata: function (callback) {
 
+                  var _vm = this;
+                  if(_vm.app.aid==0){
+                    return ;
+                  }
 
-
-              var _vm = this;
 
                  api(_vm).get(_vm.app.api + '/statics/activity/pollwall/' + _vm.app.aid).then(function (items) {
 
@@ -335,7 +339,7 @@
 
                 }).catch(function(ex) {
                     console.log('parsing failed', ex)
-                    callback()
+
                 });
 
 

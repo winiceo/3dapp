@@ -16,11 +16,11 @@
 
         <div class="page-content ">
 
-            <ul class="blocks blocks-100 blocks-xlg-12" id="exampleList"
-                data-filterable="true">
-                <template v-for="(index,co) in items" track-by="$index">
-                    <li data-type="animal">
-                        <Card>
+                <ul class="blocks blocks-100 blocks-xlg-12" id="exampleList"
+                    data-filterable="true">
+                    <template v-for="(index,co) in items" track-by="$index">
+                        <li data-type="animal">
+                            <Card>
                             <Row class=''>
                                 <i-col span="12" @click="selected(co)">
                                     <Card :bordered="false">
@@ -67,6 +67,10 @@
 
 
                                         </p>
+                                        <a href="#" slot="extra" @click.prevent="save">
+                                            <Icon type="checkmark"></Icon>
+                                            保存
+                                        </a>
 
                                         <ul class='viplist'>
                                             <li v-for="(index,u) in co.vips" style='margin:1px' v-on:remove="co.vips.splice(index, 1)">
@@ -81,14 +85,14 @@
 
                                 </i-col>
                             </Row>
-                        </Card>
+                            </Card>
 
 
-                    </li>
-                </template>
+                        </li>
+                    </template>
 
-            </ul>
-        </div>
+                </ul>
+            </div>
 
     </div>
 
@@ -159,12 +163,13 @@
                 </div>
                 <div class="form-group">
                     <label class="control-label">奖品数量</label>
-                    <input type="number" min=1  class="form-control" name="prize_num" v-model="item.prize_num"   />
+
+                    <Input-number   :min="1" :value="item.prize_num"></Input-number>
 
                 </div>
                 <div class="form-group">
                     <label class="control-label">每次抽取数量</label>
-                     <input type="number"   class="form-control" name="single_num" v-model="item.single_num" min="1" max="200" />
+                    <Input-number :max="200" :min="1" :value="item.single_num"></Input-number>
 
 
                 </div>
@@ -340,7 +345,7 @@
                 vipUsers:[],
                 vipselect:'',
 
-                tempitem:{},
+
                 model1: ''
 
             }
@@ -369,14 +374,8 @@
 
                   return chr.id == item.id;
                 });
-                var _vm=this;
+
                 isExist==-1?this.item.vips.push(item):""
-                this.add=false;
-                this.tempitem=this.item;
-                isExist==-1?this.save(function(){
-                     console.log(_vm.tempitem)
-                    _vm.item=_vm.tempitem
-                }):""
             },
             removeVip(co,index){
                 this.item=co;
@@ -516,7 +515,7 @@
                 })
 
             },
-            save: function (callback) {
+            save: function () {
                 var _vm = this;
                 //_vm.item.style=parseInt(_vm.item.style);
 
@@ -525,15 +524,11 @@
                 api(_vm).post(_vm.app.api + '/awardwall/award/' + act + '/' + id, JSON.stringify(_vm.item))
                  .then(function (item) {
                     _vm.add ? _vm.items.push(item.data) : ""
-
                     _vm.item = {}
-
                     _vm.showRight = false;
                      $('.form_valid').data('formValidation').resetForm();
 
                      toastr.info('保存成功')
-
-                     whatever(callback)
 
                 });
             },

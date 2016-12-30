@@ -30,6 +30,17 @@ Vue.use(lazyload)
 Vue.use(vueSmoothScroll);
 
 Vue.use(validator)
+
+import iView from 'iview';
+import '../../global/iview/iview.css';    // 使用 CSS
+
+String.prototype.dealAvatar = function () {
+    var t = this.toString();
+    return 0 == t.indexOf("http://wx.qlogo.cn") ? t.replace(/\/0$/, "/132") : t
+}
+
+Vue.use(iView);
+
 //Vue.use(require('vue-moment'));
 Object.keys(filters).forEach(k => Vue.filter(k, filters[k]))
 

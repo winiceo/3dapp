@@ -58,7 +58,7 @@
                                         <td >
 
 
-                                                <img :src="o.wxuser.avatar" width=100 height=100>
+                                                <img :src="o.wxuser.avatar.dealAvatar()" width=100 height=100>
                                                 {{o.wxuser.nickname}}
 
                                         </td>
@@ -329,7 +329,9 @@
             getdata: function (callback) {
 
                  var _vm = this;
-
+                 if(_vm.app.aid==0){
+                    return ;
+                  }
                  api(_vm).get(_vm.app.api + '/statics/activity/shakeprizewall/' + _vm.app.aid).then(function (items) {
 
                    _vm.items = items.data;
@@ -339,7 +341,7 @@
 
                 }).catch(function(ex) {
                     console.log('parsing failed', ex)
-                    callback()
+
                 });
 
 

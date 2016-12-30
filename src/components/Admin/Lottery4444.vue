@@ -13,50 +13,58 @@
 
         </Row>
 
-
         <div class="page-content ">
 
-            <ul class="blocks blocks-100 blocks-xlg-12" id="exampleList"
-                data-filterable="true">
-                <template v-for="(index,co) in items" track-by="$index">
-                    <li data-type="animal">
-                        <Card>
-                            <Row class=''>
-                                <i-col span="12" @click="selected(co)">
-                                    <Card :bordered="false">
-                                        <div style="text-align:center">
-                                            <img :src="app.img+co.pic.url" class="cover-image" height=150 alt="">
+                <ul class="blocks blocks-100 blocks-xlg-4" id="exampleList"
+                    data-filterable="true">
+                    <template v-for="(index,co) in items" track-by="$index">
+                        <li data-type="animal">
+                            <Card>
 
 
-                                            <ul>
-                                                <li class="list-group-item">
+                            <Tabs >
+                                <Tab-pane label="奖品编辑" icon="social-apple">
+                                    <div style="text-align:center">
+                                        <img :src="app.img+co.pic.url" class="cover-image" height=150 alt="">
 
-                                                    <i class="icon wb-inbox" aria-hidden="true" draggable="true"></i>
-                                                    奖项名称: {{co.award_name}}
-                                                </li>
-                                                <li class="list-group-item">
+                                        <div style='width: 246px; height: 146px'>
+                                            <v-upload :name='name' :action='action' type='drag' :on-change='addFileAction'
 
-                                                    <i class="icon wb-user" aria-hidden="true" draggable="true"></i>
-                                                    奖品名称:{{co.prize_name}}
-                                                </li>
-                                                <li class="list-group-item">
-                                                    <i class="icon wb-bell" aria-hidden="true" draggable="true"></i>
-                                                    奖品数量:{{co.prize_num}}
-                                                </li>
-                                                <li class="list-group-item">
-                                                    <i class="icon wb-info-circle" aria-hidden="true"
-                                                       draggable="true"></i>
-                                                    每次抽取数:{{co.single_num}}
-                                                </li>
-
-                                            </ul>
-
+                                                      :on-progress="_onProgress"
+                                                      :on-success="_onSuccess"
+                                                      :on-error="_onError"
+                                                      :before-upload="beforeUpload">
+                                                <v-icon type='plus'></v-icon>
+                                            </v-upload>
                                         </div>
+                                        <ul>
+                                            <li  >
 
-                                    </Card>
+                                                <i class="icon wb-inbox" aria-hidden="true" draggable="true"></i>
+                                                奖项名称: {{co.award_name}}
+                                            </li>
+                                            <li  >
 
-                                </i-col>
-                                <i-col span="12"  >
+                                                <i class="icon wb-user" aria-hidden="true" draggable="true"></i>
+                                                奖品名称:{{co.prize_name}}
+                                            </li>
+                                            <li  >
+                                                <i class="icon wb-bell" aria-hidden="true" draggable="true"></i>
+                                                奖品数量:{{co.prize_num}}
+                                            </li>
+                                            <li  >
+                                                <i class="icon wb-info-circle" aria-hidden="true"
+                                                   draggable="true"></i>
+                                                每次抽取数:{{co.single_num}}
+                                            </li>
+
+                                        </ul>
+
+                                    </div>
+
+                                 </Tab-pane>
+                                <Tab-pane label="Vip管理" icon="social-windows">
+
                                     <Card :bordered="false">
                                         <p slot="title">
 
@@ -67,6 +75,10 @@
 
 
                                         </p>
+                                        <a href="#" slot="extra" @click.prevent="save">
+                                            <Icon type="checkmark"></Icon>
+                                            保存
+                                        </a>
 
                                         <ul class='viplist'>
                                             <li v-for="(index,u) in co.vips" style='margin:1px' v-on:remove="co.vips.splice(index, 1)">
@@ -77,18 +89,18 @@
                                             </li>
                                         </ul>
                                     </Card>
+                                </Tab-pane>
+
+                            </Tabs>
+
+                                </Card>
 
 
-                                </i-col>
-                            </Row>
-                        </Card>
+                        </li>
+                    </template>
 
-
-                    </li>
-                </template>
-
-            </ul>
-        </div>
+                </ul>
+            </div>
 
     </div>
 
@@ -159,12 +171,13 @@
                 </div>
                 <div class="form-group">
                     <label class="control-label">奖品数量</label>
-                    <input type="number" min=1  class="form-control" name="prize_num" v-model="item.prize_num"   />
+
+                    <Input-number   :min="1" :value="item.prize_num"></Input-number>
 
                 </div>
                 <div class="form-group">
                     <label class="control-label">每次抽取数量</label>
-                     <input type="number"   class="form-control" name="single_num" v-model="item.single_num" min="1" max="200" />
+                    <Input-number :max="200" :min="1" :value="item.single_num"></Input-number>
 
 
                 </div>
@@ -340,7 +353,7 @@
                 vipUsers:[],
                 vipselect:'',
 
-                tempitem:{},
+
                 model1: ''
 
             }
@@ -369,14 +382,8 @@
 
                   return chr.id == item.id;
                 });
-                var _vm=this;
+
                 isExist==-1?this.item.vips.push(item):""
-                this.add=false;
-                this.tempitem=this.item;
-                isExist==-1?this.save(function(){
-                     console.log(_vm.tempitem)
-                    _vm.item=_vm.tempitem
-                }):""
             },
             removeVip(co,index){
                 this.item=co;
@@ -516,7 +523,7 @@
                 })
 
             },
-            save: function (callback) {
+            save: function () {
                 var _vm = this;
                 //_vm.item.style=parseInt(_vm.item.style);
 
@@ -525,15 +532,11 @@
                 api(_vm).post(_vm.app.api + '/awardwall/award/' + act + '/' + id, JSON.stringify(_vm.item))
                  .then(function (item) {
                     _vm.add ? _vm.items.push(item.data) : ""
-
                     _vm.item = {}
-
                     _vm.showRight = false;
                      $('.form_valid').data('formValidation').resetForm();
 
                      toastr.info('保存成功')
-
-                     whatever(callback)
 
                 });
             },
@@ -584,6 +587,12 @@
                 this.getdata();
 
             },
+            onUpload:function(file){
+                //console.error(file)
+
+            },
+            beforeUpload:function(file){
+             },
 
 
             setup: function (that) {

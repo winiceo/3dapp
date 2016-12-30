@@ -47,8 +47,8 @@
                         </a>
                         <ul class="dropdown-menu" role="menu">
                             <li role="presentation">
-                                <a href="javascript:void(0)"   @click="user_center"
-                                   ><i
+                                <a href="javascript:void(0)" @click="user_center"
+                                ><i
                                         class="icon wb-settings"
                                         aria-hidden="true"></i> 个人中心</a>
                             </li>
@@ -56,15 +56,15 @@
                             <li role="presentation">
 
 
-                                <a href="javascript:void(0)" data-animation="scale-up" data-target="#setting_passwd"
-                                   data-toggle="modal"  role="menuitem"><i
+                                <a href="#" data-animation="scale-up" data-target="#setting_passwd"
+                                   data-toggle="modal" role="menuitem"  ><i
                                         class="icon wb-settings"
                                         aria-hidden="true"></i>修改资料</a>
                             </li>
 
                             <li role="presentation">
-                                <a href="javascript:void(0)" data-animation="scale-up"  @click="get_userinfo"
-                                   data-toggle="modal"  role="menuitem"  role="menuitem"><i
+                                <a href="#" data-animation="scale-up" data-target="#setting_wechat"
+                                   data-toggle="modal" role="menuitem" role="menuitem"><i
                                         class="icon wb-settings"
                                         aria-hidden="true"></i> 配置公众号</a>
                             </li>
@@ -101,63 +101,95 @@
         </div>
     </nav>
 
-    <div class="modal fade modal-super-scaled mybody1" id="setting_passwd" aria-hidden="true"
+    <div class="modal fade modal-super-scaled mybody" id="setting_passwd"
          aria-labelledby="exampleModalTitle" role="dialog" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                    <h4 class="modal-title">修改资料</h4>
-                </div>
-                <div class="modal-body ">
-                    <div class="mybody">
-                    <div class="form-group">
-                        <form-input
-                                :model.sync="userinfo.password"
-                                type="password"
-                                label="密    码:"
-                                :error="checkPasswd"
 
+                <div class="example-wrap">
+                    <div class="nav-tabs-horizontal">
+                        <ul class="nav nav-tabs" data-plugin="nav-tabs" role="tablist">
+                            <li class="active" role="presentation"><a data-toggle="tab" href="#base"
+                                                                      aria-controls="exampleTabsOne" role="tab"
+                                                                      aria-expanded="true">基本信息</a></li>
+                            <li role="presentation" class=""><a data-toggle="tab" href="#pwd"
+                                                                aria-controls="exampleTabsTwo" role="tab"
+                                                                aria-expanded="false">更新密码</a></li>
 
-                                message="密码不能小于6位数"
-                        >
+                        </ul>
+                        <div class="tab-content padding-top-20">
+                            <div class="tab-pane active" id="base" role="tabpanel">
+                                <div class="form-group">
+                                    <form-input
+                                            :model.sync="userinfo.username"
+                                            type="text"
+                                            label="名称:"
+                                            :error="checkName"
+                                            message="名称不能为空"
+                                    >
 
-                        </form-input>
-                    </div>
-                    <div class="form-group">
-                        <form-input
-                                :model.sync="userinfo.repassword"
-                                type="password"
-                                label="重复密码:"
-                                :error="error"
+                                    </form-input>
+                                </div>
+                                <div class="form-group">
+                                    <form-input
+                                            :model.sync="userinfo.email"
+                                            type="email"
+                                            label="邮箱:"
+                                            :error="checkEmail"
+                                            message="邮箱不能为空"
+                                    >
+                                    </form-input>
 
+                                </div>
+                                <div style="text-align:center">
+                                    <button type="button" class="btn btn-default margin-0" @click="save">确定
+                                    </button>
+                                    <button type="button" class="btn btn-primary" data-dismiss="modal">取消</button>
 
-                                message="重复密码输入不一致"
-                        >
-                        </form-input>
-
-                        </div>
-                        <div style="text-align:center"><button type="button" class="btn btn-default margin-0" data-dismiss="modal" @click="save">确定
-                        </button>
+                                </div>
                             </div>
+
+                            <div class="tab-pane" id="pwd" role="tabpanel">
+                                <div class="form-group">
+                                    <form-input
+                                            :model.sync="userinfo.password"
+                                            type="password"
+                                            label="密    码:"
+                                            :error="checkPasswd"
+
+
+                                            message="密码不能小于6位数"
+                                    >
+
+                                    </form-input>
+                                </div>
+                                <div class="form-group">
+                                    <form-input
+                                            :model.sync="userinfo.repassword"
+                                            type="password"
+                                            label="重复密码:"
+                                            :error="error"
+
+
+                                            message="重复密码输入不一致"
+                                    >
+                                    </form-input>
+
+                                </div>
+                                <div style="text-align:center"><a class="btn btn-default margin-0" @click="save">确定
+                                </a>                    <button type="button" class="btn btn-primary" data-dismiss="modal">取消</button>
+
+                                </div>
+
+
+                            </div>
+
                         </div>
-
-                    <hr>
-
-
-
-                </div>
-                <div class="modal-footer">
-
-                    <button type="button" class="btn btn-primary" data-dismiss="modal">取消</button>
-
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-
 
 
     <div class="modal fade modal-super-scaled mybody" id="setting_wechat" aria-hidden="true"
@@ -183,15 +215,15 @@
                                     {{authorizer.nick_name}}
 
                                 </div>
-                                <a href="#"  @click='set_wechat'>改用手动配置公众号方式</a>
+                                <a href="#" @click='set_wechat'>改用手动配置公众号方式</a>
                             </div>
                         </div>
 
-                     </div>
+                    </div>
 
 
-                    <div   v-if="authorizer==false">
-                        <div class="row"   data-plugin="matchHeight" data-by-row="true">
+                    <div v-if="authorizer==false">
+                        <div class="row" data-plugin="matchHeight" data-by-row="true">
 
 
                             <div class="col-lg-6 col-md-6" style="height: 190px;" @click="get_wechat">
@@ -229,7 +261,7 @@
     </div>
 
 
- </template>
+</template>
 <style>
     .password > div{
         width:100%;
@@ -269,6 +301,10 @@
      .mybody .modal-body {
             padding: 1rem 0 0rem 0;
         }
+    .example-wrap{
+     padding:10px;
+    }
+
 
 
 
@@ -287,7 +323,10 @@
         data(){
             return {
                 WallUrl:WallUrl,
-                userinfo: {},
+                userinfo: {
+                    username:'',
+                    email:''
+                },
                 error: false,
                 aid:0,
                 token:'',
@@ -299,7 +338,11 @@
 
 
         computed: {
-            error: function () {
+
+        },
+        components: {logo, ModalAlert, FormInput},
+        methods: {
+         error: function () {
                 return this.userinfo.password == this.userinfo.repassword ? false : true
             },
             checkPasswd: function () {
@@ -310,26 +353,67 @@
                 }
 
                 //this.error=this.userinfo.password==this.userinfo.repassword?false:true;
-            }
-        },
-        components: {logo, ModalAlert, FormInput},
-        methods: {
+            },
+            checkName:function(){
+                if(this.userinfo.username==""||this.uerinfo.usernmae.length<2){
+
+                    return false;
+                }
+
+            },
+            checkEmail:function(){
+                if(this.userinfo.email==""||this.uerinfo.usernmae.email<2){
+
+                    return false;
+                }
+
+            },
+
             init:function(){
                 this.token=this.app.token
                 this.aid =this.app.aid;
+                this.get_userinfo( );
+
+
             },
             logout: function () {
                 this.$clearStorage();
                 window.location.href = User_Center + "/logout";//"/app/wall.html#!/login"
             },
+            changeBase:function(){
 
-            get_userinfo: function () {
 
-            $('#setting_wechat').modal()
+                 $('#setting_passwd').modal('show')
+
+            },
+            openWe:function(){
+                 this.get_userinfo( );
+
+                 $('#setting_wechat').modal()
+
+            },
+
+            get_userinfo: function ( ) {
+
                 var _vm = this;
-
-                api(_vm).get(_vm.app.api + '/user/profile' ).then(function (res) {
+                fetch(_vm.app.api + '/user/profile', {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'Authorization': _vm.app.token
+                    }
+                }).then(function (response) {
+                    if (response.status >= 400) {
+                        throw new Error("Bad response from server");
+                    }
+                    return response.json();
+                }).then(function (res) {
                     var data=res.data
+                     console.log("======");
+                     console.log(res.data);
+                     console.log("========")
+                    _vm.userinfo = data;
                     if(data.authorizer_info){
 
 
@@ -383,56 +467,28 @@
 
             },
 
-            getuser: function () {
-                var _vm = this;
-                fetch(_vm.app.api + '/user', {
-                    method: 'POST',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                        'Authorization': _vm.app.token
-                    },
-                    body: JSON.stringify(_vm.userinfo)
 
-                }).then(function (response) {
-                    if (response.status >= 400) {
-                        throw new Error("Bad response from server");
-                    }
-
-                    return response.json();
-                }).then(function (item) {
-                    //_vm.add ? _vm.items.push(item.data) : ""
-                    console.log(item)
-                    _vm.userinfo = item;
-
-                });
-            },
             save: function () {
 
-                var _vm = this;
-                fetch(_vm.app.api + '/user/update', {
-                    method: 'POST',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                        'Authorization': _vm.app.token
-                    },
-                    body: JSON.stringify(_vm.userinfo)
-
-                }).then(function (response) {
-                    if (response.status >= 400) {
-                        throw new Error("Bad response from server");
-                    }
-
-                    return response.json();
-                }).then(function (item) {
+              var _vm = this;
+              api(_vm).post(_vm.app.api + '/user/update' , JSON.stringify(_vm.userinfo))
+             .then(function (item) {
+                     if(item.code==0){
+                        toastr.info('更新成功');
+                        $("#setting_passwd").modal('hide')
+                         window.location.href = User_Center+"/login"
+                     }else{
+                        toastr.error(item.message);
+                     }
                     //_vm.add ? _vm.items.push(item.data) : ""
 
                     //toastr.info('更新成功');
-                    _vm.showModalAlert = false;
+
 
                 });
             }
         }
     }
+
+
 </script>

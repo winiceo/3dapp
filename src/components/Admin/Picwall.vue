@@ -1,16 +1,16 @@
 <template>
     <div class="page animsition">
-        <div class="page-header page-header-bordered page-header-tabs">
-            <h3>图片墙</h3>
-            <div class="page-header-actions">
+
+        <Row class='pagehead'>
+            <i-col span="12"> <h3>图片墙</h3></i-col>
+            <i-col span="12" class='action'>
                 <button type="button" class="btn btn-dark" data-animation="scale-up"
                         data-target="#exampleNiftyFadeScale"
                         data-toggle="modal"><i class="icon wb-upload" aria-hidden="true"></i>上传图片
                 </button>
-            </div>
+            </i-col>
 
-
-        </div>
+        </Row>
 
         <div class="page-content" >
             <div v-infinite-scroll="loadMore()" infinite-scroll-disabled="busy"
@@ -19,7 +19,11 @@
                 data-filterable="true">
                 <template v-for="(index,co) in items" track-by="$index">
                     <li data-type="animal">
-                        <div class="widget widget-shadow">
+                        <Card  style='margin:5px;height:300px'>
+                            <p slot="title">
+                                <Icon type="ios-navigate-outline"></Icon>
+                                {{co.created_at}}
+                            </p>
                             <figure class="widget-header overlay-hover overlay">
 
                                 <img :src="app.img+co.pic.url_small" height="200" class="overlay-figure overlay-scale" alt="">
@@ -28,7 +32,8 @@
                                 </figcaption>
                             </figure>
                             <h4 class="widget-title pic-title">{{co.pic.name}}</h4>
-                        </div>
+                        </Card>
+
                     </li>
                 </template>
 

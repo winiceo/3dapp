@@ -3,7 +3,9 @@
     <div class="page animsition  ">
         <div class="page-header page-header-bordered page-header-tabs">
             <h3>活动数据</h3>
-            <p v-if="count">签到总人数({{count}})
+            <p v-if="count">签到总人数({{count}})<button type="button" class="btn btn-dark" @click="csv" data-animation="scale-up"><i
+                    class="icon wb-plus" aria-hidden="true"></i>导出数据
+            </button></p>
 
 
         </div>
@@ -236,10 +238,19 @@
 
 
             },
+            csv:function(){
+             var _vm=this;
+             var url=_vm.app.api + '/open/statics/activity/signinwall/csv/' + _vm.app.aid
+             window.open(url)
+
+
+            },
 
             getdata: function (callback) {
                 var _vm = this;
-                console.log(this.app)
+                if(_vm.app.aid==0){
+                    return ;
+                  }
                 fetch(_vm.app.api + '/statics/activity/signinwall/' + _vm.app.aid, {
                     method: 'GET',
                     headers: {
@@ -257,7 +268,7 @@
                 }).then(function (items) {
 
                     var data=_(items.data.wxusers).forEach(function(n){
-                        n.avatar="<img src='"+n.avatar+"' width='100' height='100'>";
+                        n.avatar="<img src='"+n.avatar.dealAvatar()+"' width='100' height='100'>";
                         n.sex=n.sex==1?"男":'女';
                     })
                     console.log(data)

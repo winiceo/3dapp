@@ -36,7 +36,19 @@
     var Dropzone = require("dropzone/dist/min/dropzone-amd-module.min")
 
     Vue.mixin({
+        data:function(){
+            return {
+                loading:true,
+                nodata:false,
+            }
+        },
         methods: {
+         hideLoading:function(){
+              this.loading=false
+            },
+            showLoading:function(){
+                this.loading=true
+            },
             init: function () {
 //                var Parse = require("parse");
 //                Parse.initialize("71an.com", "71an.com");

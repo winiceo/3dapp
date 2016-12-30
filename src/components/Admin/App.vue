@@ -1,13 +1,29 @@
 <template>
     <div class="top-box">
-        <Navbar  ></Navbar>
+        <Navbar></Navbar>
         <Sidebar></Sidebar>
 
         <router-view></router-view>
 
     </div>
 </template>
-<style>
+<style type="stylesheet">
+    body{
+    background-color:#eceff1
+    }
+    .page{
+        padding-top:80px;
+        margin-bottom:10px;
+    }
+    .pagehead{
+       padding-left:20px;
+
+    }
+    .pagehead .action{
+       text-align:right;
+       padding-right:20px;
+
+    }
     .dropzone img{
         float:left;
     }
@@ -29,6 +45,7 @@
         color:white;
 
     }
+
 </style>
 <script>
     import Navbar from '../wall/Navbar'
@@ -41,7 +58,19 @@
     var Dropzone = require("dropzone/dist/min/dropzone-amd-module.min")
 
     Vue.mixin({
+        data:function(){
+            return {
+                loading:true,
+                nodata:false,
+            }
+        },
         methods: {
+         hideLoading:function(){
+              this.loading=false
+            },
+            showLoading:function(){
+                this.loading=true
+            },
             init: function () {
 //                var Parse = require("parse");
 //                Parse.initialize("71an.com", "71an.com");
@@ -94,4 +123,5 @@
 
         }
     }
+
 </script>

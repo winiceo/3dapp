@@ -1,13 +1,7 @@
 <template>
     <div class="page animsition">
         <!-- Notebook Sidebar -->
-        <Row class='pagehead'>
-            <i-col span="24"> <h3>投票</h3></i-col>
-
-
-        </Row>
-        <div class="page-content ">
-        <div class="page-aside" style="top:120px">
+        <div class="page-aside">
             <div class="page-aside-switch">
                 <i class="icon wb-chevron-left" aria-hidden="true"></i>
                 <i class="icon wb-chevron-right" aria-hidden="true"></i>
@@ -49,174 +43,174 @@
             <div class="page-content">
 
                 <div class="row row-lg ">
-                    <form class="form_valid">
-                        <div class="col-sm-6">
+                <form class="form_valid">
+                    <div class="col-sm-6">
 
-                            <div class="panel panel-bordered panel-dark"
-                                 style="animation-fill-mode: backwards; animation-duration: 250ms; animation-delay: 0ms;">
-                                <div class="panel-heading">
-                                    <h3 class="panel-title">投票设置</h3>
-
-                                </div>
-
-                                <div class="panel-body">
-
-
-                                    <div class="form-group">
-                                        <label class="control-label">题目</label>
-                                        <input type="text" name="title" id="title" class="form-control" v-model="item.title">
-
-
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="control-label">是否多选</label>
-                                        <div>
-                                            <div class="radio-custom radio-default radio-inline">
-                                                <input type="radio" value=0 v-model="item.multiple">
-                                                <label>单选</label>
-                                            </div>
-                                            <div class="radio-custom radio-default radio-inline">
-                                                <input type="radio" value=1 v-model="item.multiple">
-
-                                                <label>多选</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <template v-if="item.multiple==1">
-                                        <div class="row row-lg">
-
-                                            <div class="form-group col-sm-4">
-                                                最多选
-                                            </div>
-                                            <div class="form-group col-sm-4">
-                                                <input type="number" min=1 class="form-control"
-                                                       v-model="item.max_choices" placeholder="最多选">
-                                            </div>
-                                            <div class="form-group col-sm-4">
-                                                (0表示不限)
-                                            </div>
-
-                                        </div>
-                                        <div class="row row-lg">
-                                            <div class="form-group col-sm-4">
-                                                最少选
-                                            </div>
-                                            <div class="form-group col-sm-4">
-                                                <input type="number" min=1 class="form-control"
-                                                       v-model="item.min_choices" placeholder="最少选">
-                                            </div>
-                                            <div class="form-group col-sm-4">
-                                                (0表示不限)
-                                            </div>
-                                        </div>
-
-
-                                    </template>
-
-
-
-
-                                    <div class="form-group">
-                                        <div class="col-sm-9 col-sm-offset-3">
-                                            <button type="submit"
-                                                    class="btn btn-primary save_poll">保存
-                                            </button>
-
-                                        </div>
-                                    </div>
-
-
-                                </div>
+                        <div class="panel panel-bordered panel-dark"
+                             style="animation-fill-mode: backwards; animation-duration: 250ms; animation-delay: 0ms;">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">投票设置</h3>
 
                             </div>
 
+                            <div class="panel-body">
+
+
+                                <div class="form-group">
+                                    <label class="control-label">题目</label>
+                                    <input type="text" name="title" id="title" class="form-control" v-model="item.title">
+
+
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label">是否多选</label>
+                                    <div>
+                                        <div class="radio-custom radio-default radio-inline">
+                                            <input type="radio" value=0 v-model="item.multiple">
+                                            <label>单选</label>
+                                        </div>
+                                        <div class="radio-custom radio-default radio-inline">
+                                            <input type="radio" value=1 v-model="item.multiple">
+
+                                            <label>多选</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <template v-if="item.multiple==1">
+                                    <div class="row row-lg">
+
+                                        <div class="form-group col-sm-4">
+                                            最多选
+                                        </div>
+                                        <div class="form-group col-sm-4">
+                                            <input type="number" min=1 class="form-control"
+                                                   v-model="item.max_choices" placeholder="最多选">
+                                        </div>
+                                        <div class="form-group col-sm-4">
+                                            (0表示不限)
+                                        </div>
+
+                                    </div>
+                                    <div class="row row-lg">
+                                        <div class="form-group col-sm-4">
+                                            最少选
+                                        </div>
+                                        <div class="form-group col-sm-4">
+                                            <input type="number" min=1 class="form-control"
+                                                   v-model="item.min_choices" placeholder="最少选">
+                                        </div>
+                                        <div class="form-group col-sm-4">
+                                            (0表示不限)
+                                        </div>
+                                    </div>
+
+
+                                </template>
+
+
+
+
+                                <div class="form-group">
+                                    <div class="col-sm-9 col-sm-offset-3">
+                                        <button type="submit"
+                                                class="btn btn-primary save_poll">保存
+                                        </button>
+
+                                    </div>
+                                </div>
+
+
+                            </div>
 
                         </div>
 
-                        <div class="col-sm-6">
-                            <div class="panel panel-bordered panel-dark"
-                                 style="animation-fill-mode: backwards; animation-duration: 250ms; animation-delay: 0ms;">
-                                <div class="panel-heading">
-                                    <h3 class="panel-title">添加选项</h3>
-                                    <div class="panel-actions">
 
-                                        <a class="  icon wb-plus" @click="add_choice"></a>
-                                    </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="panel panel-bordered panel-dark"
+                             style="animation-fill-mode: backwards; animation-duration: 250ms; animation-delay: 0ms;">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">添加选项</h3>
+                                <div class="panel-actions">
+
+                                    <a class="  icon wb-plus" @click="add_choice"></a>
                                 </div>
-                                <div class="panel-body" style="padding-top: 0px; ">
+                            </div>
+                            <div class="panel-body" style="padding-top: 0px; ">
 
 
-                                    <ul class="list-group list-group-dividered list-group-full">
+                                <ul class="list-group list-group-dividered list-group-full">
 
-                                        <template v-for="(index,co) in item.choices" track-by="$index"
-                                                  class="validate-field">
+                                    <template v-for="(index,co) in item.choices" track-by="$index"
+                                              class="validate-field">
 
-                                            <li class="list-group-item" id="li_{{$index}}">
-                                                <div class="media">
-                                                    <div class="media-left">
+                                        <li class="list-group-item" id="li_{{$index}}">
+                                            <div class="media">
+                                                <div class="media-left">
 
-                                                        <div class="dropzone thumbnail poll"
-                                                             id="dropzone_{{$index}}"
-                                                             style="margin:10px;"
-                                                             data-index="{{$index}}"
-                                                             data-title="上传图片">
-                                                            <template v-if="co.pic">
-                                                                <img dz-clickable
-                                                                     class="image img-rounded overlay-figure overlay-scale"
-                                                                     style="height:75px;width:75px;"
-                                                                     :src="app.img+co.pic.url"
-                                                                     alt="...">
-                                                                <span class="addMember-remove"
-                                                                      @click="reset_dropzone($index)"><i
-                                                                        class="wb-minus-circle"></i></span>
-                                                            </template>
+                                                    <div class="dropzone thumbnail poll"
+                                                          id="dropzone_{{$index}}"
+                                                          style="margin:10px;"
+                                                            data-index="{{$index}}"
+                                                          data-title="上传图片">
+                                                        <template v-if="co.pic">
+                                                            <img dz-clickable
+                                                                 class="image img-rounded overlay-figure overlay-scale"
+                                                                 style="height:75px;width:75px;"
+                                                                 :src="app.img+co.pic.url"
+                                                                 alt="...">
+                                                            <span class="addMember-remove"
+                                                                  @click="reset_dropzone($index)"><i
+                                                                    class="wb-minus-circle"></i></span>
+                                                        </template>
 
-                                                            <input type="hidden" name="context" value="{{context}}">
+                                                        <input type="hidden" name="context" value="{{context}}">
 
-                                                            <div class="fallback">
-
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="media-body" style=" vertical-align: middle;">
-                                                        <div class="pull-right timeline-icon" v-if="$index>=2">
-                                                            <i class="icon wb-close"
-                                                               @click="item.choices.splice($index,1)"></i>
-                                                        </div>
-
-                                                        <div>
-                                                            <div class="form-group">
-                                                                <input type="hidden" name="id[]" v-model="co.id">
-                                                                <input type="text" class="oo_name" name="name[]" placeholder="选项内容" v-model="co.name">
-
-
-                                                            </div>
-
+                                                        <div class="fallback">
 
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </li>
-                                        </template>
+                                                <div class="media-body" style=" vertical-align: middle;">
+                                                    <div class="pull-right timeline-icon" v-if="$index>=2">
+                                                        <i class="icon wb-close"
+                                                           @click="item.choices.splice($index,1)"></i>
+                                                    </div>
 
-                                    </ul>
+                                                    <div>
+                                                        <div class="form-group">
+                                                             <input type="hidden" name="id[]" v-model="co.id">
+                                                            <input type="text" class="oo_name" name="name[]" placeholder="选项内容" v-model="co.name">
 
-                                </div>
+
+                                                        </div>
+
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </template>
+
+                                </ul>
+
                             </div>
-
-
-                            <!-- End Example Basic Form Without Label -->
                         </div>
 
 
-                    </form>
+                        <!-- End Example Basic Form Without Label -->
+                    </div>
+
+
+                </form>
                 </div>
 
 
             </div>
 
         </div>
-        </div>
+
 
         <!-- Site Action -->
         <div class="site-action">

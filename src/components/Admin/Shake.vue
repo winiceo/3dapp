@@ -1,59 +1,74 @@
 <template>
 
     <div class="page animsition award">
-        <div class="page-header page-header-bordered page-header-tabs">
-            <h3>摇一摇</h3>
+        <Row class='pagehead'>
+            <i-col span="11"><h3>摇一摇</h3></i-col>
 
-            <div class="mypanel1">
+            <i-col span="13" class='action'>
 
-
-                <div style=" float:left;width:200px;">
-                    是否限制
-                    <input type="checkbox" value=1 class="js-switch"
-                           v-model="shakeset.filtered"/>
-
-                </div>
-                比赛结果的前 <input type="number" class='tt' v-model="shakeset.filtered_num" placeholder="3"> 名
-                ，不能参与之后<input type="number" class='tt' v-model="shakeset.filtered_round" placeholder="3">轮摇一摇
-
-                <button class="btn btn-primary " @click="shake_save">保存</button>
-                <br>
                 <button type="button" class="btn btn-dark" @click="new_item" data-animation="scale-up"><i
                         class="icon wb-plus" aria-hidden="true"></i>添加
                 </button>
+            </i-col>
 
-            </div>
+        </Row>
+        <Row style="padding:15px;height:50px">
+            <i-col span="24">
+                <div class="ivu-card">
+
+                    <div class="ivu-card-body">
+                        <Row style="padding:15px;height:50px">
+                            <i-col span="24">
+
+                                <Switch @on-change="changeState" size="large" :checked="shakeset.filtered">
+                                    <span slot="open">限制</span>
+                                    <span slot="close">不限</span>
+                                </Switch>
+
+                                <span v-show="shakeset.filtered">
+                               比赛结果的前
+                                        <Input-number   :min="1" :value="shakeset.filtered_num"></Input-number>
+
+                                      名
+                ，不能参与之后
+                                                                        <Input-number   :min="1" :value="shakeset.filtered_round"></Input-number>
+ 轮摇一摇
+
+                                    </span>
+                                <button class="btn btn-primary " @click="shake_save">保存</button>
+
+                            </i-col>
+                        </Row>
 
 
+                    </div>
+                </div>
+            </i-col>
+
+        </Row>
 
 
-    </div>
+        <div class="page-content ">
 
-    <div class="page-content ">
+            <ul class="blocks blocks-100 blocks-xlg-4 blocks-md-3 blocks-sm-2" id="exampleList"
+                data-filterable="true">
+                <template v-for="(index,co) in items" track-by="$index">
+                    <li data-type="animal" @click="showRight = true ,item=co,index=index,add=false">
+                        <Card style='margin:5px;'>
+                            <p slot="title">
+                                <Icon type="ios-navigate-outline"></Icon>
+                                {{co.title}}
+                            </p>
 
-        <ul class="blocks blocks-100 blocks-xlg-4 blocks-md-3 blocks-sm-2" id="exampleList"
-            data-filterable="true">
-            <template v-for="(index,co) in items" track-by="$index">
-                <li data-type="animal" @click="showRight = true ,item=co,index=index,add=false">
 
-                    <div class="panel panel-bordered panel-warning">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">{{co.title}}</h3>
-                        </div>
-                        <div class="panel-body">
                             <p>摇一摇时间:{{co.duration}}秒</p>
                             <p> 最终显示前几名:{{co.number}}</p>
+                        </Card>
+                    </li>
+                </template>
 
-
-                        </div>
-                    </div>
-
-
-                </li>
-            </template>
-
-        </ul>
-    </div>
+            </ul>
+        </div>
 
     </div>
 
@@ -80,7 +95,7 @@
         </div>
     </div>
 
-    <aside :show.sync="showRight" placement="right" header="编辑信息" :width="250" style="top:70px;">
+    <aside :show.sync="showRight" placement="right" header="编辑信息" :width="450" style="top:70px;">
         <form class="form_valid">
             <div class="task-main-editor">
 
@@ -116,6 +131,7 @@
 <style>
     .award .page-content {
         margin-right: 250px;
+        padding:5px;
     }
 
     .award .avatar img {
@@ -167,9 +183,10 @@
     }
     .mypanel1 {
         border-radius: 3px;
-    padding: 10px;
-    margin: 5px;
-    background: white;
+        padding: 2px;
+        margin: 5px;
+        background: white;
+        height:40px;
 
     }
     .mypanel1 .form-control{
@@ -181,6 +198,12 @@
 
     width:50px;
     }
+
+
+
+
+
+
 
 
 
@@ -200,7 +223,7 @@
     var uuid = require('node-uuid');
     var Dropzone = require("dropzone/dist/min/dropzone-amd-module.min")
     Dropzone.autoDiscover = false;
-  require("switchery/dist/switchery.css")
+    require("switchery/dist/switchery.css")
     var Switchery = require("switchery")
 
 
@@ -240,6 +263,10 @@
             },
         },
         methods: {
+            changeState:function(a){
+                console.log(a)
+                this.shakeset.filtered=a
+            },
             init: function () {
                 // this.uploadUrl = "http://localhost:9999/upload",
                 var _vm = this;
@@ -291,7 +318,7 @@
                 //_vm.setup(".dropzone");
 
             },
-            remove: function () {
+            remove: function ( ) {
 
                 //this.item.delete(index)
                 var _vm = this;
@@ -383,6 +410,8 @@
                         filtered_num: sset.filtered_num,
                         filtered_round: sset.filtered_round
                     }
+
+
                     _vm.items = data.data.shakes;
                     whatever(callback)
 
@@ -470,6 +499,12 @@
         }
 
     }
+
+
+
+
+
+
 
 
 </script>

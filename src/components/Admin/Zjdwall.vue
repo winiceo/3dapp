@@ -1,47 +1,52 @@
 <template>
 
     <div class="page animsition vip">
-        <div class="page-header page-header-bordered page-header-tabs">
-            <h3>砸金蛋</h3>
-            <div class="page-header-actions">
+        <Row class='pagehead'>
+            <i-col span="11"  ><h3>砸金蛋</h3></i-col>
+
+            <i-col span="13" class='action' >
+
                 <button type="button" class="btn btn-dark" @click="new_item" data-animation="scale-up"><i
                         class="icon wb-plus" aria-hidden="true"></i>添加
                 </button>
-            </div>
+            </i-col>
 
+        </Row>
 
-        </div>
 
         <div class="page-content ">
-            <div class="panel">
+
             <ul class="blocks blocks-100 blocks-xlg-4 blocks-md-2 blocks-sm-2" id="exampleList"
                 data-filterable="true">
                 <template v-for="(index,co) in items" track-by="$index">
                     <li data-type="animal" @click="selected(co)">
 
-                        <div class="widget widget-shadow " style="margin:10px">
-                            <figure class="widget-header bg-white-600 padding-10 overlay-hover  ">
-                                <a v-if="co.pic"
-                                   class="avatar   img-bordered bg-white pull-left margin-right-20"
-                                   href="javascript:void(0)">
-                                    <img :src="app.img+co.pic.url" class="avatar_img" width=100 height=100 alt="">
-                                </a>
-                                <div class="vertical-align height-100 text-truncate">
-                                    <div class="vertical-align-middle">
-                                        <div class="font-size-20 margin-bottom-5 text-truncate">{{co.award_name}}</div>
-                                        <div class="font-size-14 text-truncate">{{co.prize_name}}</div>
-                                    </div>
-                                </div>
+                        <Card  style='margin:5px;height:250px'>
 
-                            </figure>
-                        </div>
+                            <p slot="title">
+                                <Icon type="ios-navigate-outline"></Icon>
+                                {{co.award_name}}
+                            </p>
+                            <Row>
+                                <i-col span="12">                            <p> <img :src="app.img+co.pic.url" v-if="co.pic" class="avatar_img" width=100 height=100 alt=""></p>
+                                </i-col>
+                                <i-col span="12"><p>奖品名称 {{co.prize_name}}</p>
+                                    <p>奖品数量 {{co.prize_num}}</p></i-col>
+                            </Row>
+
+
+
+
+                        </Card>
+
+
 
 
                     </li>
                 </template>
 
             </ul>
-            </div>
+
         </div>
     </div>
 
@@ -132,6 +137,8 @@
 <style>
     .vip .page-content {
         margin-right: 250px;
+        padding:20px;
+
     }
 
 

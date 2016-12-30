@@ -77,7 +77,7 @@
                                                                 <div class="vertical-align-middle">
                                                                     <div class="font-size-40">
 
-                                                                        <span class="font-size-30">{{item.title}}</span>
+                                                                        <span class="font-size-30">{{item.name}}</span>
                                                                     </div>
                                                                     <div class="font-size-10">
                                                                         {{item.start_at}}~{{item.end_at}}

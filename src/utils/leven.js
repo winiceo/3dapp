@@ -93,6 +93,18 @@ exports.api = function (_vm) {
                 },
                 body:postdata
             }).then(checkStatus).then(parseJSON)
+        },upload: function (url,str) {
+            var postdata=str||''
+
+            return fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+
+                    'Authorization': _vm.app.token
+                },
+                body:postdata
+            }).then(checkStatus).then(parseJSON)
         }
     }
 }
@@ -118,3 +130,4 @@ exports.checkStatus = function (response) {
     }
 
 }
+

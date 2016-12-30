@@ -1,7 +1,22 @@
 <template>
     <div class="page animsition">
+        <Row class='pagehead'>
+            <i-col span="11"><h3>摇奖品</h3></i-col>
+
+            <i-col span="13" class='action'>
+                <input type="checkbox" id="inputChecked"  v-model="config.repeat_awarded" @change='set_repeat'>
+                <label for="inputChecked">是否允许重复中奖</label>
+                <button type="button" class="btn btn-dark" @click="new_item" data-animation="scale-up"><i
+                        class="icon wb-plus" aria-hidden="true"></i>添加
+                </button>
+            </i-col>
+
+        </Row>
+
+
+
         <!-- Notebook Sidebar -->
-        <div class="page-aside">
+        <div class="page-aside" style="top:120px">
             <div class="page-aside-switch">
                 <i class="icon wb-chevron-left" aria-hidden="true"></i>
                 <i class="icon wb-chevron-right" aria-hidden="true"></i>
@@ -41,17 +56,6 @@
 
         <div class="page-main">
             <div class="page-content">
-                <div class='row row-lg'>
-                    <div class='col-sm-12 alert   alert-success alert-dismissible'>
-
-                        <div class="checkbox-custom checkbox-primary">
-                            <input type="checkbox" id="inputChecked"  v-model="config.repeat_awarded" @change='set_repeat'>
-                            <label for="inputChecked">是否允许重复中奖</label>
-                        </div>
-
-
-                    </div>
-                </div>
 
                 <div class="row row-lg ">
                 <form class="form_valid">

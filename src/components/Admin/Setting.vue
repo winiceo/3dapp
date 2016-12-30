@@ -1,5 +1,9 @@
 <template>
     <div class="page animsition" style="animation-duration: 800ms; opacity: 1;">
+        <Row class='pagehead'>
+            <i-col span="24"><h3>设置</h3></i-col>
+
+        </Row>
         <div class="page-content container-fluid">
             <div class="row">
 
@@ -24,7 +28,23 @@
 
 
                                         <div class="form-group">
-                                            <label class="control-label">会议名称</label>
+                                            <label class="control-label">会议名称(必填)</label>
+                                            <input type="text" class="form-control"
+                                                   v-model="item.name" placeholder="" autocomplete="off">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label">报名签到</label>
+
+                                            <Switch :checked="sign_type" @on-change="changeSign">
+                                                <span slot="open">开</span>
+                                                <span slot="close">关</span>
+                                            </Switch>
+
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label">会议标题</label>
                                             <input type="text" class="form-control"
                                                    v-model="item.title" placeholder="" autocomplete="off">
                                         </div>
@@ -66,18 +86,32 @@
                                             </div>
                                         </div>
                                         <template v-if="item.wxbound==1">
-                                            <div class="row row-lg">
+                                            <div>
+                                            <div class="row row-lg" style='background-color: #f7f7f7;width:99%;padding:10px;margin-left:10px' >
 
-                                                <div class="form-group col-sm-4">
+                                                <div class="form-group col-sm-3">
                                                     上墙关键字
                                                 </div>
-                                                <div class="form-group col-sm-8">
+                                                <div class="form-group col-sm-98">
                                                     <input type="text" class="form-control"
                                                            v-model="item.wxword" placeholder="我要上墙">
+                                                </div>
+                                                <hr>
+
+                                                <div class="form-group col-sm-3">
+                                                    关注后自动回复上墙消息
+                                                </div>
+                                                <div class="form-group col-sm-9">
+                                                    <Switch :checked="item.wechat_auto_reply" @on-change="changeReply">
+                                                        <span slot="open">开</span>
+                                                        <span slot="close">关</span>
+                                                    </Switch>
+
                                                 </div>
 
 
                                             </div>
+                                                </div>
 
 
                                         </template>
@@ -287,7 +321,7 @@
                 count: 0,
                 skip: 0,
                 busy: false,
-
+                sign_type:false,
                 item: {}
 
             }
@@ -336,6 +370,12 @@
                         AppNoteBook.run()
 
 
+            },
+            changeSign:function(status){
+                this.sign_type=status
+            },
+             changeReply:function(status){
+                this.item.wechat_auto_reply=status
             },
 
             new_item: function () {
@@ -395,7 +435,7 @@
                 var id = this.add ? _vm.app.aid : _vm.item.id;
 
 
-                if(!_vm.item.title||_vm.item.title==""){
+                if(!_vm.item.name||_vm.item.name==""){
                     toastr.warning("会议名称不能为空！");
                     return false;
                 }
@@ -418,6 +458,7 @@
                     toastr.warning("开始时间不能大于结束时间！");
                     return false;
                 }
+                this.item.sign_type=this.sign_type?1:0
                 api(_vm).post(_vm.app.api + '/activity/' + act + '/' + id,  JSON.stringify(_vm.item)
 
                 ).then(function (item) {
@@ -434,6 +475,8 @@
 
                     //console.log(items);
                     _vm.item = data.data;
+                    _vm.sign_type=_vm.item.sign_type==1?true:false
+
                     setTimeout(function () {
                         if (_vm.item.bg_audio) {
                             plyr.setup();
@@ -546,5 +589,6 @@
         }
 
     }
+
 
 </script>

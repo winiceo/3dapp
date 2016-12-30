@@ -1,10 +1,10 @@
 <template>
     <div class="page animsition">
-        <div class="page-header page-header-bordered page-header-tabs">
-            <h3>弹幕</h3>
 
+        <Row class='pagehead'>
+            <i-col span="24"> <h3>弹幕</h3></i-col>
 
-        </div>
+        </Row>
 
         <div class="page-content">
             <div class="panel">
