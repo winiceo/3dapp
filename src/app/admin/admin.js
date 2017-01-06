@@ -41,6 +41,15 @@ String.prototype.dealAvatar = function () {
 
 Vue.use(iView);
 
+
+
+import '../../assets/style/index.less'
+
+//import components
+import vue_beauty from 'vue-beauty'
+Vue.use(vue_beauty)
+
+
 //Vue.use(require('vue-moment'));
 Object.keys(filters).forEach(k => Vue.filter(k, filters[k]))
 

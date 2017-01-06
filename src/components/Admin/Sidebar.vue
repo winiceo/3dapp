@@ -104,6 +104,16 @@
                             </a>
                         </li>
 
+                        <!--<li class="site-menu-item">-->
+                            <!--<a class="animsition-link" v-link="'/shakeluckymoneywall'">-->
+                                <!--<i class="site-menu-icon wb-payment" aria-hidden="true"></i>-->
+                                <!--<span class="site-menu-title">摇红包</span>-->
+                                <!--<div class="site-menu-label">-->
+
+                                <!--</div>-->
+                            <!--</a>-->
+                        <!--</li>-->
+
                         <li class="site-menu-item">
                             <a class="animsition-link" v-link="'/shake'">
                                 <i class="site-menu-icon wb-random" aria-hidden="true"></i>

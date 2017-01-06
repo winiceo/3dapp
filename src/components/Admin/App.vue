@@ -8,8 +8,13 @@
     </div>
 </template>
 <style type="stylesheet">
+html{
+height:100%;
+}
     body{
-    background-color:#eceff1
+    background-color:#eceff1;
+    height:100%;
+
     }
     .page{
         padding-top:80px;
@@ -53,8 +58,8 @@
     import {API_ROOT,User_Center} from '../../config.js'
     import {req} from "../../utils/leven"
     import Vue from "vue"
-    require("dropzone/dist/min/basic.min.css")
-    require("dropzone/dist/min/dropzone.min.css")
+    //require("dropzone/dist/min/basic.min.css")
+    //require("dropzone/dist/min/dropzone.min.css")
     var Dropzone = require("dropzone/dist/min/dropzone-amd-module.min")
 
     Vue.mixin({
@@ -72,6 +77,10 @@
                 this.loading=true
             },
             init: function () {
+            this.$Notice.config({
+                top: 100,
+                duration: 3
+            });
 //                var Parse = require("parse");
 //                Parse.initialize("71an.com", "71an.com");
 //                Parse.serverURL = ("http://baas.71an.com:8043/parse");

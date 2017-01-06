@@ -46,6 +46,10 @@ export default function(router) {
             name: 'shakeprize',
             component: require('../components/Admin/Shakeprize.vue')
         },
+        '/shakeluckymoneywall': {
+            name: 'shakeluckymoneywall',
+            component: require('../components/Admin/Shakeluckymoneywall.vue')
+        },
         '/zjd': {
             name: 'zjd',
             component: require('../components/Admin/Zjdwall.vue')

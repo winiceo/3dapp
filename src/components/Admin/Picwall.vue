@@ -191,13 +191,8 @@
             getdata: function (callback) {
                 var _vm = this;
 
-                //_vm.$parent.showLoading();
 
-                 var u = new URLSearchParams();
-
-                 u.append('next', this.next);
-                //u.append('status', this.status);
-
+                var u="next="+this.next
                 if(_vm.app.api==""||_vm.nomore){
                     return ;
                 }
