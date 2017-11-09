@@ -6,6 +6,8 @@
             <i-col span="11"><h3>奖品管理</h3></i-col>
 
             <i-col span="13" class='action'>
+                <input type="checkbox" id="inputChecked"  v-model="config.repeat_awarded" @change='set_repeat'>
+                <label for="inputChecked">是否允许重复中奖</label>
                 <button type="button" class="btn btn-dark" @click="new_item" data-animation="scale-up"><i
                         class="icon wb-plus" aria-hidden="true"></i>添加
                 </button>
@@ -62,7 +64,7 @@
 
                                             <a href="#" slot="title" @click.prevent="vipShow(co)">
                                                 <Icon type="person-add"></Icon>
-                                                vip管理
+                                                vip管理,点此选择用户
                                             </a>
 
 
@@ -341,7 +343,8 @@
                 vipselect:'',
 
                 tempitem:{},
-                model1: ''
+                model1: '',
+                  config:{}
 
             }
         },
@@ -359,6 +362,41 @@
                 var img=n.avatar.dealAvatar()
 
                 return "<img src='"+img+"' width='40' height='40'>"
+            },
+
+            get_repeat:function(){
+             var _vm = this;
+
+                api(_vm).get(_vm.app.api + '/awardwall/configs/' + _vm.app.aid).then(function (data) {
+
+                    _vm.config = data.data;
+                    //callback()
+
+
+                }).catch(function(ex) {
+                    console.log('parsing failed', ex)
+                    //callback()
+                });
+
+            },
+
+            set_repeat:function(){
+
+                var _vm = this;
+
+                //_vm.item.style=parseInt(_vm.item.style);
+
+                api(_vm).post(_vm.app.api + '/awardwall/configs/update/' + _vm.app.aid,
+
+                      JSON.stringify(_vm.config)
+
+                 ).then(function (item) {
+
+                    console.log(item);
+                    toastr.info('保存成功')
+
+                });
+
             },
             gethide (item) {
 
@@ -392,6 +430,7 @@
 
 
                 });
+                 this.get_repeat();
                 _vm.getvips()
 
                 window.Site.cc();

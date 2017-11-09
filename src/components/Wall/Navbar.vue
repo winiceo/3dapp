@@ -31,6 +31,12 @@
                         </a>
                     </li>
 
+                    <li v-show="showScreen">
+                        <a href="/app/logo.html?id={{aid}}&token={{token}}" target="_blank" id="logoUrl">
+                            <i class="icon wb-grid-4" aria-hidden="true">logo墙设计</i>
+                        </a>
+                    </li>
+
                 </ul>
                 <!-- End Navbar Toolbar -->
 
@@ -62,12 +68,12 @@
                                         aria-hidden="true"></i>修改资料</a>
                             </li>
 
-                            <li role="presentation">
-                                <a href="#" data-animation="scale-up" data-target="#setting_wechat"
-                                   data-toggle="modal" role="menuitem" role="menuitem"><i
-                                        class="icon wb-settings"
-                                        aria-hidden="true"></i> 配置公众号</a>
-                            </li>
+                            <!--<li role="presentation">-->
+                                <!--<a href="#" data-animation="scale-up" data-target="#setting_wechat"-->
+                                   <!--data-toggle="modal" role="menuitem" role="menuitem"><i-->
+                                        <!--class="icon wb-settings"-->
+                                        <!--aria-hidden="true"></i> 配置公众号</a>-->
+                            <!--</li>-->
                             <li class="divider" role="presentation"></li>
                             <li role="presentation">
                                 <a href="javascript:void(0)" @click="logout" role="menuitem"><i class="icon wb-power"
@@ -123,9 +129,9 @@
                                     <form-input
                                             :model.sync="userinfo.username"
                                             type="text"
-                                            label="名称:"
+                                            label="用户名:"
                                             :error="checkName"
-                                            message="名称不能为空"
+                                            message="用户名不能为空"
                                     >
 
                                     </form-input>

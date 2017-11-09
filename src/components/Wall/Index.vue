@@ -1,6 +1,6 @@
 <template>
 
-    <Navbar   v-if="!nochrome"></Navbar>
+    <Navbar v-if="!nochrome"></Navbar>
     <div v-if="!nochrome" class="site-menubar site-menubar-light">
         <div class="site-menubar-body">
             <div>
@@ -33,7 +33,9 @@
                 <div class="panel-body">
                     <p>你当前不是使用的chrome浏览器，请切换至chrome浏览器。</p>
 
-                    <p class="chrm-tip2">如果你还没有安装，请前往<a target="_blank" class="browser-chrome" href="http://rj.baidu.com/soft/detail/14744.html?ald">下载chrome</a>谷歌浏览器</p>
+                    <p class="chrm-tip2">如果你还没有安装，请前往<a target="_blank" class="browser-chrome"
+                                                        href="http://rj.baidu.com/soft/detail/14744.html?ald">下载chrome</a>谷歌浏览器
+                    </p>
                 </div>
             </div>
         </div>
@@ -47,8 +49,8 @@
     <div class="page animsition">
 
 
-
-        <div v-if="!nochrome" v-show="items.length>0" class="page-content container-fluid lt-body bg-primary-100 text-center padding-20 "
+        <div v-if="!nochrome" v-show="items.length>0"
+             class="page-content container-fluid lt-body bg-primary-100 text-center padding-20 "
              v-infinite-scroll="loadMore()" infinite-scroll-disabled="busy"
              infinite-scroll-distance="100">
             <div class="col-md-12 col-lg-12">
@@ -71,8 +73,10 @@
                                                         <div class="col-xs-6">
 
                                                             <div class="bg-blue-grey-700 white vertical-align height-200">
-                                                                <span v-if="item.free==false" class="badge up badge-danger">已付费</span>
-                                                                <span v-if="item.free==true" class="badge up label-gree">免费</span>
+                                                                <span v-if="item.free==false"
+                                                                      class="badge up badge-danger">已付费</span>
+                                                                <span v-if="item.free==true"
+                                                                      class="badge up label-gree">免费</span>
 
                                                                 <div class="vertical-align-middle">
                                                                     <div class="font-size-40">
@@ -87,9 +91,24 @@
 
                                                                             <li>
 
-                                                                                <button class="btn btn-outline btn-danger btn-round" @click="removeItem=item;"
-                                                                                        data-animation="scale-up" data-target="#remove_activty"
-                                                                                        data-toggle="modal">删除</button>
+                                                                                <button class="btn btn-outline btn-danger btn-round"
+                                                                                        @click="removeItem=item;"
+                                                                                        data-animation="scale-up"
+                                                                                        data-target="#remove_activty"
+                                                                                        data-toggle="modal">删除
+                                                                                </button>
+                                                                            </li>
+
+                                                                            <li v-if="item.free==true">
+
+                                                                                <button class="btn   btn-success btn-round"
+                                                                                        style="font-color:white;"
+                                                                                        @click="upgradeItem=item;"
+                                                                                        data-animation="scale-up"
+                                                                                        data-target="#upgrade_activty"
+                                                                                        data-toggle="modal"
+                                                                                >升级成付费
+                                                                                </button>
                                                                             </li>
                                                                         </ul>
                                                                     </div>
@@ -114,7 +133,7 @@
                                                                                         <i class="icon "
                                                                                            :class="act.icon"
                                                                                            aria-hidden="true"></i></div>
-                                                                                    <span class="counter-number"  >{{act.text}}</span>
+                                                                                    <span class="counter-number">{{act.text}}</span>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -158,9 +177,34 @@
     </div>
 
 
-
-
     <!-- Modal -->
+
+
+    <div class="modal fade modal-super-scaled" id="upgrade_activty" aria-hidden="true"
+         aria-labelledby="exampleModalTitle" role="dialog" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title">升级成付费活动</h4>
+                </div>
+                <div class="modal-body">
+                    <p style="text-align:center;font-size:20px">会议名称:{{upgradeItem.name}}</p>
+                    <p style="text-align:center;font-size:30px">{{result}}</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default margin-0"   @click="upgrade">确定升级
+                    </button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">取消</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <div class="modal fade modal-super-scaled" id="remove_activty" aria-hidden="true"
          aria-labelledby="exampleModalTitle" role="dialog" tabindex="-1">
         <div class="modal-dialog">
@@ -196,15 +240,16 @@
                 </div>
                 <div class="modal-body" style="text-align:center">
                     <p>
-                    <a class="" href="javascript:void(0)">
+                        <a class="" href="javascript:void(0)">
 
-                        <img    v-lazy="item.control_url" width=200>
-                    </a>
+                            <img v-lazy="item.control_url" width=200>
+                        </a>
                     </p>
 
-                        <div class="form-group vertical-align-middle" style='text-align:center'>
-                            <input type="text" class="form-control" style="    width: 400px;" value="{{item.control_url_web}}"  >
-                        </div>
+                    <div class="form-group vertical-align-middle" style='text-align:center'>
+                        <input type="text" class="form-control" style="    width: 400px;"
+                               value="{{item.control_url_web}}">
+                    </div>
 
 
                 </div>
@@ -216,10 +261,6 @@
             </div>
         </div>
     </div>
-
-
-
-
 
 
     <div class="modal fade modal-super-scaled" id="copy_activty" aria-hidden="true"
@@ -247,7 +288,8 @@
                             <textarea class="form-control" rows="5" placeholder="Type your message"></textarea>
                         </div>
                         <div class="col-sm-12 pull-right">
-                            <button class="btn btn-primary btn-outline" data-dismiss="modal" type="button">Add Comment</button>
+                            <button class="btn btn-primary btn-outline" data-dismiss="modal" type="button">Add Comment
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -273,11 +315,12 @@
                             <div class="vertical-align-middle">
                                 <a class="" href="javascript:void(0)">
 
-                                    <img    v-lazy="item.wx_address" width=200>
+                                    <img v-lazy="item.wx_address" width=200>
                                 </a>
                                 <div class="font-size-20 margin-top-10">
                                     <div class="form-group">
-                                        <input type="text" class="form-control" style="    width: 400px;" value="{{item.wx_url}}"  >
+                                        <input type="text" class="form-control" style="    width: 400px;"
+                                               value="{{item.wx_url}}">
                                     </div>
                                 </div>
                             </div>
@@ -450,6 +493,7 @@ color:white;
             opacity: 0;
         }
     }
+
 </style>
 <script>
 
@@ -477,13 +521,16 @@ color:white;
                 showScreen:false,
                 token: '',
                 status: -1,
+                result:'',
                 removeItem:{},
+                upgradeItem:{},
                 copyItem:{},
                 count: 0,
                 next: 1,
                 busy: false,
                 items: [],
                 item: {},
+                userinfo:{},
                 nomore:false,
                 acts: [
                     {text: "活动功能", icon: "wb-extension", url: "/app/admin.html", color: "bg-red-600",case:''},
@@ -500,7 +547,13 @@ color:white;
         },
         methods: {
             start: function () {
+                var _vm=this;
 
+
+                _vm.getuserinfo(function(userinfo){
+                    _vm.userinfo=userinfo
+                    console.log(userinfo)
+                })
 
                 if(this.app.api!=""){
                     this.calldata(-1);
@@ -552,38 +605,7 @@ color:white;
 
                     }
                 }
-//                if (act.target == "modal") {
-//
-//                    this.item = item;
-//                    setTimeout(function(){
-//
-//                        self.$broadcast('show::modal', act.url)
-//                    },10)
-//
-//                } else {
-//
-//                    if(act.case=="control1"){
-//                        this.item=item;
-//                        $('#control_activty').modal()
-////                        this.item = item;
-////                        setTimeout(function(){
-////
-////                            self.$broadcast('show::modal', act.url)
-////                        },10)
-////
-////                        window.open(item.control_url +"&token="+self.app.token)
-//                        return;
-//                    }
-//                    if(act.url){
-//                        if(act.target=="_blank"){
-//                            window.open(act.url + "?id=" + item.id+"&token="+self.app.token)
-//
-//                        }else{
-//                            window.location.href=(act.url + "?id=" + item.id)
-//
-//                        }
-//                    }
-//                }
+
             },
 
             selected: function (item) {
@@ -608,12 +630,37 @@ color:white;
 
                 });
             },
+
+             upgrade: function (index, item) {
+                var   item = this.upgradeItem;
+
+                var _vm = this;
+                //this.items.splice(item, 1)
+                api(_vm).post(_vm.app.api + '/activity/update/charged/' + item.id).then(function (data) {
+
+                   if(data.code!=0){
+                   _vm.result=data.message
+
+                    toastr.info(data.message)
+
+
+                   }else{
+                    _vm.upgradeItem.free=false;
+                    _vm.result=data.message
+                    $("#upgrade_activity").modal("hide")
+                    toastr.info("升级成功")
+
+                   }
+
+
+                });
+            },
             calldata: function (status) {
                 this.status = status;
                 this.next = 1;
                 this.$set("nodata", false);
                 this.items = [];
-               
+
 
                 this.getdata();
             },
@@ -628,7 +675,7 @@ color:white;
                     status: this.status
                 }
 
-                var p="next="+this.next+"&status"+this.status
+                var p="next="+this.next+"&status="+this.status
                 if(_vm.app.api==""){
                     return ;
                 }
@@ -698,4 +745,5 @@ color:white;
 
         }
     }
+
 </script>

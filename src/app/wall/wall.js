@@ -19,6 +19,14 @@ import '../../lib/wall'
 import VueDb from '../../utils/vueDb'
 Vue.use(VueDb)
 
+
+import iView from 'iview';
+import '../../global/iview/iview.css';    // 使用 CSS
+
+
+
+Vue.use(iView);
+
 Vue.use(VueRouter)
 Vue.use(VueValidator)
 //Vue.use(require('vue-moment'));

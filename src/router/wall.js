@@ -28,6 +28,10 @@ export default function(router) {
             name: 'setting2',
             component: require('../components/Wall/Setting2.vue')
         },
+        '/wechat': {
+            name: 'wechat',
+            component: require('../components/Wall/Wechat.vue')
+        },
 
         '/usercenter': {
             name: 'usercenter',

@@ -1,7 +1,7 @@
 <template>
     <div class="top-box">
 
-        <loading :show.sync="loading"   ></loading>
+        <loading :show.sync="loading"></loading>
         <router-view></router-view>
 
     </div>
@@ -13,6 +13,10 @@
     import Vue from "vue"
     import {API_ROOT,User_Center,WallUrl} from '../../config.js'
     import {loading} from '../../lib/vue-strap'
+
+    import {whatever, api} from "../../utils/leven"
+
+
     Vue.mixin({
         data:function(){
             return {
@@ -71,6 +75,36 @@
                 });
 
             },
+            getuserinfo:function(callback){
+
+
+                var _vm = this;
+
+
+                    fetch(_vm.app.api + '/user/profile', {
+                        method: 'GET',
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json',
+                            'Authorization': _vm.app.token
+                        }
+                    }).then(function (response) {
+                        if (response.status >= 400) {
+                            throw new Error("Bad response from server");
+                        }
+                        return response.json();
+                    }).then(function (res) {
+                        var data=res.data
+
+                        _vm.$set("app.userinfo", data);
+                        callback(data)
+                        _vm.hideLoading();
+
+
+                    });
+
+
+            },
             _init: function (callback) {
 
                 this.app = {
@@ -83,6 +117,12 @@
                 var route=['/register','/login']
                 _vm.$getItem("token").then(function (token) {
 
+
+                    _vm.$set("app.api", API_ROOT + "/api/v1")
+                    _vm.$set("app.wallurl", WallUrl)
+                    _vm.$set("app.img", API_ROOT)
+                    _vm.$set("app.upload", API_ROOT + "/common/image/new")
+
                      if (!token&&_.indexOf(route,_vm.$route.path)==-1) {
 
                          if(_vm.$route.query.token){
@@ -92,27 +132,33 @@
                              window.location.href = User_Center+"/login"
                          }
                     }else{
+
                         _vm.$set("app.token", token);
+                         //_vm.getuserinfo()
                     }
 
 
-                    _vm.$set("app.api", API_ROOT + "/api/v1")
-                    _vm.$set("app.wallurl", WallUrl)
-                    _vm.$set("app.img", API_ROOT)
-                    _vm.$set("app.upload", API_ROOT + "/common/image/new")
-                    console.log(_vm.app)
+
+
+
                     callback(_vm.app)
                 })
             }
 
         },
         ready:function(){
-            console.log("parent.ready")
+
+
+
             this._init(this.init);
+
+
+
         }
 
 
     })
+
 
 
 </script>

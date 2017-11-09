@@ -1,4 +1,5 @@
 <template>
+
     <div class="top-box">
         <Navbar></Navbar>
         <Sidebar></Sidebar>
@@ -75,6 +76,36 @@ height:100%;
             },
             showLoading:function(){
                 this.loading=true
+            },
+             getuserinfo:function(callback){
+
+
+                var _vm = this;
+
+
+                    fetch(_vm.app.api + '/user/profile', {
+                        method: 'GET',
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json',
+                            'Authorization': _vm.app.token
+                        }
+                    }).then(function (response) {
+                        if (response.status >= 400) {
+                            throw new Error("Bad response from server");
+                        }
+                        return response.json();
+                    }).then(function (res) {
+                        var data=res.data
+
+                        _vm.$set("app.userinfo", data);
+                        callback(data)
+                        _vm.hideLoading();
+
+
+                    });
+
+
             },
             init: function () {
             this.$Notice.config({

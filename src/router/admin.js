@@ -13,6 +13,11 @@ export default function(router) {
             name: 'sign',
             component: require('../components/Admin/Sign.vue')
         },
+
+        '/logo': {
+            name: 'logo',
+            component: require('../components/Logo/Index.vue')
+        },
         // '/media': {
         //     name: 'media',
         //     component: require('../components/Admin/Media.vue')

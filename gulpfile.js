@@ -25,7 +25,7 @@ gulp.task('ftp', function() {
     return gulp.src(['./dist/**'])
         .pipe(sftp({
             host: 'mm.71an.com',
-            remotePath: '/data/app/kphd-server/web/',
+            remotePath: '/data/app/kphd-server-wall-dev/web/',
             user: 'leven',
             pass: '56os.com'
         }))

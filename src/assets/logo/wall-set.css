@@ -125,7 +125,7 @@ b {
 /*全局a链接样式*/
 a, a:link, a:visited, a:hover {
     border: 0;
-    color: #0083ce;
+
     font-size: 12px;
     text-decoration: none;
 }

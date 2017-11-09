@@ -27,17 +27,15 @@
 
                 <tr><td style='text-align:left'>
                     <span style='text-align:left'>
-                    URL（服务器地址）： {{user.wxserver}}
+                    URL（服务器地址）： http://pmker.com/**********
                     <br>
-                    Token（令牌）： {{user.wxtoken}}
+                    Token（令牌）： ***********
                     <br>
                     将上面的URL和Token复制到 开发-基本配置-修改配置 模块中（用于接收用户信息）
                     </span>
                 </td></tr>
 
-                <tr><td  >
-                    <button type="button" class="btn btn-primary btn-block btn-round" @click="go_wechat"></i>去公众平台配置</button>
-                </td></tr>
+
                 </table>
 
             </div>

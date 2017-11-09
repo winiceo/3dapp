@@ -612,7 +612,7 @@
 
                                     //layer.closeAll()
                                     _vm.item.pic = item;
-                                    item.url=_vm.app.img+ item.url
+                                    item.url=_vm.app.ossimg+ item.url
                                     callBack(item)
                                    // $("#egImg")[0].src =_vm.app.img+ item.url;
 

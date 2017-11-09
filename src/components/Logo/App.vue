@@ -39,6 +39,7 @@
                     _vm.$set("app.token", token);
                     _vm.$set("app.api", API_ROOT + "/api/v1")
                     _vm.$set("app.img", API_ROOT)
+                    _vm.$set("app.ossimg", "http://kphd-static.oss-cn-qingdao.aliyuncs.com/")
                     _vm.$set("app.aid",_vm.$route.query.id)
                    // _vm.$set("app.upload", API_ROOT + "/common/image/new")
                     _vm.$set("app.upload",_vm.app.api + "/common/image/new")

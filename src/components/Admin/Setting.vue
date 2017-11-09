@@ -87,31 +87,58 @@
                                         </div>
                                         <template v-if="item.wxbound==1">
                                             <div>
-                                            <div class="row row-lg" style='background-color: #f7f7f7;width:99%;padding:10px;margin-left:10px' >
 
-                                                <div class="form-group col-sm-3">
-                                                    上墙关键字
-                                                </div>
-                                                <div class="form-group col-sm-98">
-                                                    <input type="text" class="form-control"
-                                                           v-model="item.wxword" placeholder="我要上墙">
-                                                </div>
-                                                <hr>
+                                                <Row>
+                                                    <i-col span="4">上墙关键字</i-col>
+                                                    <i-col span="6"><input type="text" class="form-control"
+                                                                            v-model="item.wxword" placeholder="我要上墙"></i-col>
 
-                                                <div class="form-group col-sm-3">
-                                                    关注后自动回复上墙消息
-                                                </div>
-                                                <div class="form-group col-sm-9">
-                                                    <Switch :checked="item.wechat_auto_reply" @on-change="changeReply">
+                                                    <i-col span="6">关注后自动回复上墙消息</i-col>
+                                                    <i-col span="6"> <Switch :checked="item.wechat_auto_reply" @on-change="changeReply">
                                                         <span slot="open">开</span>
                                                         <span slot="close">关</span>
-                                                    </Switch>
+                                                    </Switch></i-col>
+                                                </Row>
+                                                <BR>
 
-                                                </div>
+                                                <Row>
+                                                    <i-col span="4">使用公众号</i-col>
+                                                    <i-col span="20">
+                                                        <Card>
+                                                            <p slot="title">
+                                                                <Icon type="ios-film-outline"></Icon>
+                                                                选择已授权公众号
+                                                            </p>
+                                                            <a href="#" slot="extra"
+                                                               @click.prevent="getUserInfo">
+                                                                <Icon type="ios-loop-strong"></Icon>
+                                                                刷新
+                                                            </a>
+                                                            <a href="#" slot="extra"
+                                                               @click.prevent="gowechat">
+                                                                <Icon type="plus-circled"></Icon>
+                                                                添加新公众号
+
+                                                            </a>
+                                                            <ul>
 
 
+                                                                <li v-for="(index,u) in userinfo.wxoas_config"
+                                                                    style='margin:1px'
+                                                                    v-bind:class='{"liactiv":item.wxoas_key==u.key}'>
+                                                 <span @click="selectwechat(u)">
+                                                               {{{getAvatar(u)}}} - {{ u.name }}
+                                                </span>
+                                                                </li>
+
+                                                            </ul>
+                                                        </Card>
+
+
+                                                    </i-col>
+                                                </Row>
+                                                <br>
                                             </div>
-                                                </div>
 
 
                                         </template>
@@ -280,7 +307,9 @@
 
 </template>
 <style>
-
+.liactiv{
+  background-color:#ebf7ff;
+}
 </style>
 <script>
 
@@ -311,6 +340,7 @@
         },
         data(){
             return {
+                userinfo:{},
                 app: {},
                 index: 0,
                 showLeft: false,
@@ -349,7 +379,7 @@
                 });
 //                flatpickr.init.prototype.l10n.weekdays.longhand = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'];
 //                flatpickr('.flatpickr')
-
+                this.getUserInfo();
                 window.Site.cc();
                 window.AppNoteBook = Site.extend({
                     handleHeight: function () {
@@ -501,6 +531,31 @@
                 console.log(this.skip)
                 this.getdata();
 
+            },
+
+            getUserInfo(){
+                var _vm=this;
+                _vm.getuserinfo(function(userinfo){
+                    _vm.userinfo=userinfo
+
+                })
+            },
+
+            getAvatar(n){
+                var img=n.data.head_img?n.data.head_img:"http://getbootstrapadmin.com/remark/global/portraits/1.jpg"
+
+                return "<img src='"+img+"' width='40' height='40'>"
+            },
+            selectwechat(u){
+
+                this.item.wxoas_key=u.key
+            },
+            dateChanged: function (e) {
+                console.log(e)
+            },
+            gowechat:function(e){
+
+              window.open("/app/wall.html#!/wechat")
             },
 
 

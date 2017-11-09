@@ -3,51 +3,67 @@
     <Navbar></Navbar>
 
 
-
     <div class="page animsition">
 
-        <div class="row cc"><div class="col-xlg-12 col-md-12">
-            <!-- Example Panel With Labels And Badges -->
-            <div class="panel">
-                <div class="panel-heading">
+        <div class="row cc">
+            <div class="col-xlg-12 col-md-12">
+                <!-- Example Panel With Labels And Badges -->
+                <div class="panel">
+                    <div class="panel-heading">
 
-                    <h3 class="panel-title">个人中心</h3>
-                </div>
-                <div class="panel-body">
-                    <p>您好{{user.username}},你还可以创建<span class='aleft'>({{user.activity_left}})</span>场活动;<br>
-                        当前账号余额为<span class='money'>{{user.money/100}}</span>元<a href="javascript:void(0)" @click="pay_wechat" data-animation="scale-up"
-                                                                                data-toggle="modal" class='btn   btn-primary pay-btn' role="menuitem"  role="menuitem">红包立即充值</a></p>
+                        <h3 class="panel-title">个人中心</h3>
+                    </div>
+                    <div class="panel-body">
+                        <p>您好{{user.username}},你还可以创建<span class='aleft'>({{user.activity_left}})</span>场活动;<br>
+                            红包余额为<span class='money'>{{user.money}}</span>元<a href="javascript:void(0)"
+                                                                                  @click="pay_wechat"
+                                                                                  data-animation="scale-up"
+                                                                                  data-toggle="modal"
+                                                                                  class='btn   btn-primary pay-btn'
+                                                                                  role="menuitem"
+                                                                                  role="menuitem">红包立即充值</a>
+                        </p>
 
-                    <hr>
-                    <p style="text-align:center">
-                        免费与付功能完全一样，只有人数的限制<br>
-                        <button type="button" class="btn  btn-animate btn-animate-side btn-default" v-link="'new_activity'">
-                            创建免费活动(仅限20人以内)
-                        </button>
-                        <button type="button" class="btn btn-animate btn-animate-side btn-success  " @click="new_pay_activity">
-                            创建付费活动(无人数限制)
-                        </button>
-                    </p>
+                        <hr>
+                        <p style="text-align:center">
+                            免费与付功能完全一样，只有人数的限制<br>
+                            <button type="button" class="btn  btn-animate btn-animate-side btn-default"
+                                    v-link="'new_activity'">
+                                创建免费活动(仅限20人以内)
+                            </button>
+                            <button type="button" class="btn btn-animate btn-animate-side btn-success  "
+                                    @click="new_pay_activity">
+                                创建付费活动(无人数限制)
+                            </button>
+                        </p>
+                    </div>
                 </div>
+                <!-- End Example Panel With Labels And Badges -->
             </div>
-            <!-- End Example Panel With Labels And Badges -->
-        </div>
             <div class="col-lg-12 col-md-12">
                 <div class="row">
                     <template v-for="(n,p) in products">
+
+
                         <a href="javascript:void(0)" @click="get_code(p)" data-animation="scale-up"
-                           data-toggle="modal"  role="menuitem"  role="menuitem">
-                    <div class="col-md-6">
-                        <div class="widget">
-                            <div class="widget-content padding-25 bg-green-600">
-                                <div class="counter counter-lg">
-                                    <span class="counter-number">{{p.price}}￥</span>
-                                    <div class="counter-des">{{p.title}}</div>
+                           data-toggle="modal" role="menuitem" role="menuitem">
+
+                            <div class="col-md-6">
+                                <div class="widget">
+                                    <div class="widget-content padding-25 bg-green-600" style="text-align:center" >
+
+                                        <Tooltip placement="top" content="点击购买此产品"  >
+                                            <div class="counter counter-lg">
+                                                <span class="counter-number">{{p.price}}￥</span>
+                                                <div class="counter-des">{{p.title}}</div>
+                                            </div>
+                                        </Tooltip>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                            </a>
+                        </a>
+
+
                     </template>
 
 
@@ -55,9 +71,7 @@
             </div>
 
 
-
-
-     </div>
+        </div>
 
         <div class="modal fade modal-super-scaled mybody" id="get_code" aria-hidden="true"
              aria-labelledby="exampleModalTitle" role="dialog" tabindex="-1">
@@ -87,10 +101,9 @@
                         </div>
 
 
-
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default margin-0" data-dismiss="modal" @click="save">确定
+                        <button type="button" class="btn btn-default margin-0" data-dismiss="modal">确定
                         </button>
                         <button type="button" class="btn btn-primary" data-dismiss="modal">取消</button>
 
@@ -108,15 +121,23 @@
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">×</span>
                         </button>
-                        <h4 class="modal-title">账户充值</h4>
+                        <h4 class="modal-title">红包充值</h4>
                     </div>
                     <div class="modal-body ">
 
                         <div class="widget widget-shadow">
                             <div class="widget-header bg-white-600 text-center  ">
-                                <div class="font-size-20 black"><input type="number" class="  input-sm  "  v-model="price" style='border: 1px solid #e4eaec;' placeholder="100" style='width:100px;' step="1">元</div>
+                                <div class="font-size-20 black"><input type="number" class="  input-sm  "
+                                                                       v-model="price"
+                                                                       style='border: 1px solid #e4eaec;'
+                                                                       placeholder="100" style='width:100px;' min="10"
+                                                                       max="100000" step="1"
+                                                                       @change="pay.pr_qrcode_url=false">元
+                                </div>
                                 <br>
-                                <button type="button" class="btn btn-success" @click="get_pay_code"><i class="icon wb-check" aria-hidden="true"></i>充值</button>
+                                <button type="button" class="btn btn-success" @click="get_pay_code"><i
+                                        class="icon wb-check" aria-hidden="true"></i>充值
+                                </button>
 
                             </div>
                         </div>
@@ -138,10 +159,9 @@
                         </div>
 
 
-
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default margin-0" data-dismiss="modal" @click="save">确定
+                        <button type="button" class="btn btn-default margin-0" data-dismiss="modal">确定
                         </button>
                         <button type="button" class="btn btn-primary" data-dismiss="modal">取消</button>
 
@@ -161,14 +181,10 @@
                         </button>
                         <h4 class="modal-title">友情提示</h4>
                     </div>
-                    <div class="modal-body " style="height:100px;" >
+                    <div class="modal-body " style="height:100px;">
 
 
-                                <span style="padding:20px;font-size:18px;margin:10px">你当前不能创建付费活动，请购买</span>
-
-
-
-
+                        <span style="padding:20px;font-size:18px;margin:10px">你当前不能创建付费活动，请购买</span>
 
 
                     </div>
@@ -184,6 +200,9 @@
 
 </template>
 <style>
+.top{
+text-align:center;
+}
 .mytable{
 
 text-align:center;
@@ -360,6 +379,8 @@ padding-left:10px;
 text-align:center;
 }
 
+
+
 </style>
 <script>
 
@@ -397,6 +418,15 @@ text-align:center;
             }
 
         },
+         watch: {
+            // 如果 question 发生改变，这个函数就会运行
+            price: function (value) {
+              var value=parseInt(value)+""
+              this.pay.pr_qrcode_url=false
+              this.price=value.replace(/[^\d]/g,'')
+              //this.get_pay_code()
+            }
+          },
         methods: {
             start: function () {
 
@@ -511,7 +541,7 @@ text-align:center;
 
 
                 var _vm = this;
-                var price=_vm.price*100
+                var price=_vm.price
                 api(_vm).get(_vm.app.api + '/common/user/recharge/'+price ).then(function (res) {
                     var data=res.data.items
                     _vm.pay=data;
@@ -570,6 +600,8 @@ text-align:center;
 
         }
     }
+
+
 
 
 

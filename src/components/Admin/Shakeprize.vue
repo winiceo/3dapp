@@ -181,7 +181,7 @@
 
 
                                                         <div class="form-group" v-if="co.type==1">
-                                                            <label class="control-label">红包金额(分),不能小于100</label>
+                                                            <label class="control-label">红包金额(元),不能小于1元</label>
 
                                                             <input type="number" min=1 class="oo_name form-control" name="amount[]" placeholder="红包金额" v-model="co.amount">
 
@@ -597,9 +597,9 @@
                                     message: '选项不能为空'
                                 },
                                 between: {
-                                    min: 100,
-                                    max: 20000,
-                                    message: '金额大小为100-20000之间单们为分'
+                                    min: 1,
+                                    max: 200,
+                                    message: '金额大小为1-200之间单们为元'
                                 }
                             }
                         }
